@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wyświetlacz Alfanumeryczny</title>
+    <style>
+        /* Resetowanie domyślnych marginesów i paddingów dla body i html */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+            padding-top: 100px;
+        }
+
+        #display-section {
+            background-color: #333;
+            color: white;
+            font-size: 2em;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0 10px;
+            border-radius: 4px;
+            width: 90vw;
+            max-width: 600px;
+            height: 60px;
+            box-sizing: border-box;
+            /* Usunięto: overflow: hidden; i white-space: nowrap; z #display-section */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+        }
+
+        /* Nowe style dla kontenera tekstu wyświetlacza i timera */
+        #display-content-wrapper {
+            display: flex;
+            justify-content: space-between; /* Rozsuwa elementy na boki */
+            align-items: center;
+            width: 100%; /* Zajmuje całą dostępną szerokość display-section */
+            /* Przewijanie będzie na #display, nie tutaj */
+            overflow: hidden; /* Upewnij się, że ten wrapper nie powoduje własnego scrolla */
+            white-space: nowrap; /* Zachowaj dla tego wrappera, aby elementy były w jednej linii */
+        }
+
+        #display {
+            flex-grow: 1; /* Pozwala zawartości wyświetlacza zajmować dostępną przestrzeń */
+            text-align: left; /* Zapewnia wyrównanie tekstu do lewej */
+            /* Kluczowe właściwości dla przewijania: */
+            overflow-x: auto; /* Pozwala na przewijanie poziome, jeśli zawartość jest za duża */
+            white-space: nowrap; /* Zapobiega zawijaniu tekstu do nowej linii w samym displayu */
+            -webkit-overflow-scrolling: touch; /* Poprawia płynność przewijania na urządzeniach iOS */
+            
+            /* Dodatkowe dla lepszego wyglądu przewijania: */
+            scrollbar-width: thin; /* Dla Firefoxa - cieńszy scrollbar */
+            scrollbar-color: #888 #555; /* Kolor scrollbara dla Firefoxa */
+        }
+
+        /* Dla Chrome/Safari/Edge: dostosowanie wyglądu scrollbara */
+        #display::-webkit-scrollbar {
+            height: 8px; /* Wysokość poziomego scrollbara */
+        }
+
+        #display::-webkit-scrollbar-track {
+            background: #555; /* Tło ścieżki scrollbara */
+            border-radius: 10px;
+        }
+
+        #display::-webkit-scrollbar-thumb {
+            background: #888; /* Kolor suwaka scrollbara */
+            border-radius: 10px;
+        }
+
+        #display::-webkit-scrollbar-thumb:hover {
+            background: #aaa; /* Kolor suwaka po najechaniu myszką */
+        }
+
+        #countdown-timer {
+            margin-left: 10px; /* Odstęp między tekstem wyświetlacza a timerem */
+            font-size: 0.8em; /* Nieco mniejsza czcionka dla timera */
+            color: #ccc; /* Jaśniejszy kolor dla timera */
+            min-width: 40px; /* Zapewnia miejsce na dwie cyfry (np. "60") */
+            text-align: right;
+            flex-shrink: 0; /* Zapobiega zmniejszaniu się timera */
+        }
+
+
+        .main-content-container {
+            max-width: 320px;
+            width: 90vw;
+            box-sizing: border-box;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            height: 60px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: #d0d0d0;
+        }
+
+        .btn-reset {
+            background-color: #ff6347;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .btn-reset:hover {
+            background-color: #e55337;
+        }
+
+        .btn-list-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #4CAF50;
+            color: white;
+            grid-column: span 1;
+            height: 60px;
+            font-size: 1.5em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-list-label:hover {
+            background-color: #45a049;
+        }
+
+        /* Style dla panelu logowania */
+        #admin-panel {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #admin-panel input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 10vh;
+            font-size: 1.5em;
+        }
+        #admin-panel button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            height: 20vh;
+            font-size: 2em;
+        }
+
+        #admin-panel button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Sekcja dla komunikatów serwera */
+        #message-section {
+            width: 90vw;
+            max-width: 320px;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff;
+            min-height: 40px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #admin-message {
+            margin: 0;
+            word-break: break-word;
+        }
+
+        /* Sekcja do wyświetlania zawartości pliku */
+        #file-content-section {
+            width: 90vw;
+            max-width: 600px;
+            height: 200px;
+            background-color: #222;
+            color: white;
+            font-size: 1.1em;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-y: scroll;
+            box-sizing: border-box;
+            margin-top: 20px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Styl dla pojedynczych linii w liście */
+        .list-item {
+            padding: 5px 0;
+            border-bottom: 1px solid #444;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        /* Zmiana koloru tekstu po najechaniu myszką dla lepszego kontrastu */
+        .list-item:hover {
+            background-color: #444;
+            color: #ffffff;
+        }
+
+        /* Ukryj input file */
+        #file-input {
+            display: none;
+        }
+
+        /* Klasa ukrywająca elementy */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="display-section">
+        <div id="display-content-wrapper">
+            <span id="display"></span>
+            <span id="countdown-timer"></span>
+        </div>
+    </div>
+
+    <div class="main-content-container">
+        <div id="admin-panel">
+            <button onclick="attemptAdminLogin()">Odblokuj</button>
+            <input type="text" id="secret-code-input" placeholder="Podaj hasło">
+        </div>
+
+        <div class="buttons hidden" id="keypad-buttons">
+            <button class="btn" onclick="appendToDisplay('1')">1</button>
+            <button class="btn" onclick="appendToDisplay('2')">2</button>
+            <button class="btn" onclick="appendToDisplay('3')">3</button>
+            <button class="btn" onclick="appendToDisplay('4')">4</button>
+            <button class="btn" onclick="appendToDisplay('5')">5</button>
+            <button class="btn" onclick="appendToDisplay('6')">6</button>
+            <button class="btn" onclick="appendToDisplay('7')">7</button>
+            <button class="btn" onclick="appendToDisplay('8')">8</button>
+            <button class="btn" onclick="appendToDisplay('9')">9</button>
+            <button class="btn" onclick="appendToDisplay('I')">I</button>
+            <button class="btn" onclick="appendToDisplay('0')">0</button>
+            <button class="btn" onclick="appendToDisplay('W')">W</button>
+            <button class="btn btn-reset" onclick="clearDisplay()">Reset</button>
+            <label for="file-input" class="btn btn-list-label" id="list-button-label">Lista</label>
+            <input type="file" id="file-input" accept=".txt">
+        </div>
+    </div>
+
+    <div id="message-section" class="hidden">
+        <p id="admin-message"></p>
+    </div>
+
+    <input type="file" id="file-input" accept=".txt"> 
+
+    <div id="file-content-section" class="hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
