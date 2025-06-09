@@ -54,7 +54,7 @@
             transition: background-color 0.3s ease;
             margin: 0;
             padding: 0;
-            height: 400px; /* Sztywna wysokość dla body */
+            height: 800px; /* Sztywna wysokość dla body ustawiona na 800px */
             overflow-y: scroll; /* Włącza przewijanie wewnątrz body */
             overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania w body */
             position: relative; /* Potrzebne do pozycjonowania z-index dla elementów w body */
@@ -66,7 +66,8 @@
 
         /* Dodatkowy element, który pomoże wymusić przewijanie, jeśli zawartość jest za krótka */
         #scroll-spacer {
-            min-height: calc(100vh - 100px); /* Tworzy przestrzeń do przewinięcia, aby panel był początkowo poza widokiem */
+            /* Nowa wartość min-height, aby zapewnić przewijanie przy 800px wysokości body */
+            min-height: calc(800px - 200px); /* 800px (wysokość body) - ~200px (wysokość górnych elementów + panel) */
             width: 1px; /* Minimalna szerokość */
             flex-grow: 1; /* Rozszerza się, zajmując dostępną przestrzeń */
         }
@@ -257,7 +258,7 @@
             border-radius: 3px;
             width: 100%;
             box-sizing: border-box;
-            height: 10vh; /* Może być problematyczne przy 400px wysokości body */
+            height: 10vh; /* Może być problematyczne przy 800px wysokości body */
             font-size: 1.5em;
             background-color: var(--input-bg);
             color: var(--input-color);
@@ -272,7 +273,7 @@
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
-            height: 20vh; /* Może być problematyczne przy 400px wysokości body */
+            height: 20vh; /* Może być problematyczne przy 800px wysokości body */
             font-size: 2em;
             transition: background-color 0.2s;
         }
