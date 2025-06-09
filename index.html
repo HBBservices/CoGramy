@@ -21,6 +21,8 @@
             --reset-button-hover-bg: #6B231D; /* Nieco jaśniejszy dla hovera */
             --list-button-bg: #145C2E; /* Bardzo, bardzo ciemny, głęboki zielony (jak Odblokuj) */
             --list-button-hover-bg: #1A6C37; /* Nieco jaśniejszy dla hovera */
+            --fullscreen-button-bg: #0D3E53; /* Bardzo ciemny, głęboki niebieski dla guzika pełnoekranowego */
+            --fullscreen-button-hover-bg: #134F6A; /* Nieco jaśniejszy dla hovera */
 
             /* Kolory panelu admina - bardzo ciemne */
             --admin-panel-border: #2E3942; /* Ciemniejsza granica */
@@ -165,7 +167,6 @@
             max-width: 320px;
             width: 90vw;
             box-sizing: border-box;
-            /* KLUCZOWA ZMIANA: Zwiększ margines, aby klawiatura zaczynała się poniżej górnego displaya i warstwy zakrywającej */
             margin-top: calc(20px + 60px + 10px + 20px); /* Odległość wyświetlacza od góry (20px) + wysokość wyświetlacza (60px) + dolny margines overlay (10px) + dodatkowy margines dla klawiatury (20px) */
             margin-left: auto;
             margin-right: auto;
@@ -232,6 +233,17 @@
         }
         .btn-list-label:hover {
             background-color: var(--list-button-hover-bg);
+        }
+
+        /* Nowy styl dla guzika pełnoekranowego */
+        .btn-fullscreen {
+            background-color: var(--fullscreen-button-bg);
+            color: var(--display-color);
+            grid-column: span 3; /* Zajmuje całą szerokość siatki */
+        }
+
+        .btn-fullscreen:hover {
+            background-color: var(--fullscreen-button-hover-bg);
         }
 
         /* Style dla panelu logowania */
@@ -414,6 +426,7 @@
             <button class="btn btn-reset" onclick="clearDisplay()">Reset</button>
             <label for="file-input" class="btn btn-list-label" id="list-button-label">Lista</label>
             <input type="file" id="file-input" accept=".txt">
+            <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
         </div>
         <div id="message-section" class="hidden">
             <p id="admin-message"></p>
