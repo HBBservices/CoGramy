@@ -72,6 +72,8 @@ function connectWebSocket() {
                 adminPanel.classList.add('hidden-panel'); // Ukryj panel logowania po udanym logowaniu
                 keypadButtons.classList.remove('hidden'); // Pokazujemy klawiaturę
                 updateAdminMessage('', 'green', false);
+                // KLUCZOWA ZMIANA: Przewiń stronę na samą górę po udanym zalogowaniu
+                window.scrollTo({ top: 0, behavior: 'instant' });
             } else {
                 isAdmin = false;
                 updateAdminMessage('Nieprawidłowy kod. Spróbuj ponownie.', 'red', true);
