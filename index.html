@@ -40,7 +40,8 @@
         html, body {
             margin: 0;
             padding: 0;
-            height: 100%;
+            /* Zwiększamy wysokość html i body, aby można było przewijać */
+            min-height: 150vh; /* Zapewnia wystarczającą wysokość do przewinięcia panelu */
             overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania */
         }
 
@@ -50,10 +51,9 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            min-height: 100vh;
             background-color: var(--body-bg);
             transition: background-color 0.3s ease;
-            padding-bottom: 20px; /* Dodajemy padding na dole, aby było miejsce na panel logowania */
+            /* Usunięto padding-bottom, bo panel będzie w przepływie dokumentu */
         }
 
         #display-section {
@@ -135,10 +135,14 @@
             margin-right: auto;
             position: relative;
             z-index: 1;
-            flex-shrink: 0; /* Zapobiega kurczeniu się kontenera */
-            display: flex; /* Ustawiamy flex, żeby panel i guziki się układały */
-            flex-direction: column; /* Układamy elementy w kolumnie */
-            align-items: center; /* Centrujemy je horyzontalnie */
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Zwiększ margines dolny, aby stworzyć przewijaną przestrzeń pod przyciskami,
+               ale nad panelem logowania */
+            margin-bottom: calc(100vh - 100px); /* Tworzy przestrzeń, aby panel logowania był początkowo poza ekranem */
+            /* Możesz dostosować 100px, w zależności od tego, jak wysoko na ekranie ma być panel logowania po przewinięciu */
         }
 
         .buttons {
@@ -210,15 +214,17 @@
             gap: 10px;
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease;
 
-            /* Zmienione pozycjonowanie na fixed */
-            position: fixed; /* Będzie przewijał się ze stroną, ale jest "przyklejony" do viewportu */
-            bottom: 20px; /* 20px od dolnej krawędzi viewportu */
-            left: 50%;
-            transform: translateX(-50%); /* Centrowanie horyzontalne */
-            width: 90vw; /* Szerokość jak reszta kontenerów */
+            /* Zmieniono na relative - będzie w normalnym przepływie dokumentu i przewijał się */
+            position: relative;
+            margin-left: auto; /* Centrowanie horyzontalne */
+            margin-right: auto;
+            width: 90vw;
             max-width: 320px;
-            z-index: 999; /* Niższy niż display, ale wyższy niż main-content-container */
+            z-index: 1; /* Pod displayem, ale w normalnym przepływie */
             box-sizing: border-box;
+            /* Usunięto top/bottom/transform, bo nie jest fixed */
+            margin-top: -100vh; /* Początkowo panel będzie przesunięty bardzo wysoko,
+                                    aby jego górna krawędź była poniżej dolnej krawędzi viewportu */
         }
 
         /* Ukrycie panelu po zalogowaniu */
@@ -226,6 +232,12 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none; /* Wyłącza interakcje, gdy jest niewidoczny */
+            /* Przesuń go poza widoczny obszar, aby nie zajmował miejsca */
+            margin-top: 0; /* Zmień margin-top na normalny po ukryciu, żeby nie wpływał na scroll */
+            height: 0;
+            padding: 0;
+            border: none;
+            overflow: hidden;
         }
 
         #admin-panel input {
@@ -267,7 +279,7 @@
             padding: 10px;
             border: 1px solid var(--message-section-border);
             border-radius: 5px;
-            background-color: var(--message-section-bg);
+            background-color: var(--message-container-bg); /* Poprawiona zmienna */
             min-height: 40px;
             box-sizing: border-box;
             display: flex;
@@ -344,6 +356,11 @@
         </div>
     </div>
 
+    <div id="admin-panel">
+        <button onclick="attemptAdminLogin()">Odblokuj</button>
+        <input type="text" id="secret-code-input" placeholder="Podaj hasło">
+    </div>
+
     <div class="main-content-container">
         <div class="buttons hidden" id="keypad-buttons">
             <button class="btn" onclick="appendToDisplay('1')">1</button>
@@ -369,11 +386,6 @@
     </div>
 
     <div id="file-content-section" class="hidden"></div>
-
-    <div id="admin-panel">
-        <button onclick="attemptAdminLogin()">Odblokuj</button>
-        <input type="text" id="secret-code-input" placeholder="Podaj hasło">
-    </div>
 
     <script src="script.js"></script>
 </body>
