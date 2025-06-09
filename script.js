@@ -10,7 +10,6 @@ const fileContentSection = document.getElementById('file-content-section');
 const listButtonLabel = document.getElementById('list-button-label');
 
 const countdownTimerDisplay = document.getElementById('countdown-timer');
-// const modeToggle = document.getElementById('mode-toggle'); // Usunięto odwołanie do guzika trybu
 
 let socket;
 let isAdmin = false;
@@ -59,8 +58,8 @@ function connectWebSocket() {
     socket.onopen = () => {
         console.log('Połączono z serwerem WebSocket na Renderze');
         updateAdminMessage('', 'green', false);
-        // Po udanym połączeniu, pokazujemy panel logowania
-        adminPanel.classList.add('active');
+        // Po udanym połączeniu panel logowania powinien być widoczny poprzez przewinięcie strony
+        // Nie dodajemy już klasy 'active' tutaj, bo nie zmienia ona pozycji
     };
 
     socket.onmessage = (event) => {
@@ -71,8 +70,8 @@ function connectWebSocket() {
         } else if (message.type === 'authResponse') {
             if (message.success) {
                 isAdmin = true;
-                adminPanel.classList.remove('active'); // Ukryj panel logowania po udanym logowaniu
-                keypadButtons.classList.remove('hidden');
+                // adminPanel.classList.remove('active'); // Nie używamy już do pozycjonowania, ale można by użyć do innych zmian wizualnych
+                keypadButtons.classList.remove('hidden'); // Pokazujemy klawiaturę
                 updateAdminMessage('', 'green', false);
             } else {
                 isAdmin = false;
@@ -91,7 +90,7 @@ function connectWebSocket() {
     socket.onclose = (event) => {
         console.log('Rozłączono z serwerem WebSocket:', event.code, event.reason);
         isAdmin = false;
-        adminPanel.classList.add('active'); // Pokaż panel logowania po rozłączeniu
+        // adminPanel.classList.add('active'); // Jeśli chcesz, aby panel logowania był widoczny po rozłączeniu (poprzez przewinięcie)
         keypadButtons.classList.add('hidden');
         fileContentSection.classList.add('hidden');
         updateAdminMessage('Rozłączono. Próba ponownego połączenia...', 'orange', true);
@@ -107,11 +106,8 @@ function connectWebSocket() {
     };
 }
 
-// Usunięto funkcje setDarkMode, setLightMode i toggleTheme
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Usunięto ładowanie preferencji motywu z localStorage
-
     connectWebSocket();
 
     secretCodeInput.addEventListener('keypress', (event) => {
@@ -206,8 +202,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateAdminMessage('', '', false);
         }
     });
-
-    // Usunięto modeToggle.addEventListener('click', toggleTheme);
 });
 
 function attemptAdminLogin() {
