@@ -122,21 +122,28 @@ wss.on('connection', ws => {
                 // Po resecie ręcznym, wyślij potwierdzenie do klienta (opcjonalnie, ale dobra praktyka)
                 ws.send(JSON.stringify({ type: 'resetConfirmed' }));
                 shouldStartNewCountUp = false; // Po manualnym resecie nie rozpoczynamy liczenia, tylko czekamy na kolejny input
-            } else if (parsedMessage.type === 'input' && typeof parsedMessage.value === 'string' && parsedMessage.value.length === 1 && /[0-9IW]/.test(parsedMessage.value)) {
-                // Dodaj znak do wyświetlacza, jeśli to dozwolony znak
-                currentDisplayValue += parsedMessage.value;
+            }
+            // ZMODYFIKOWANA LINIA: Teraz akceptuje stringi o długości 1 (cyfry) lub 2 (' I', ' W')
+            else if (parsedMessage.type === 'input' && typeof parsedMessage.value === 'string' && 
+                     (parsedMessage.value.length === 1 && /[0-9]/.test(parsedMessage.value)) || // Cyfry
+                     (parsedMessage.value.length === 2 && (parsedMessage.value === ' I' || parsedMessage.value === ' W'))) { // ' I' lub ' W'
+                currentDisplayValue += parsedMessage.value; // Dodaj otrzymany znak (ze spacją lub bez)
                 shouldStartNewCountUp = true; // Wpisanie znaku -> start licznika
-            } else {
+            } else if (parsedMessage.type === 'backspace') {
+                // Obsługa backspace: usuwamy ostatni znak
+                currentDisplayValue = currentDisplayValue.slice(0, -1);
+                shouldStartNewCountUp = false; // Backspace nie uruchamia timera od nowa
+            }
+            else {
                 console.warn('Nieznany typ wiadomości lub nieprawidłowa wartość od autoryzowanego klienta:', parsedMessage);
             }
 
-            // Rozpocznij nowe liczenie w górę TYLKO jeśli była zmiana wartości wyświetlacza
+            // Rozpocznij nowe liczenie w górę TYLKO jeśli była zmiana wartości wyświetlacza, która powinna to zainicjować
             if (shouldStartNewCountUp) {
                 startServerCountUp();
             }
 
             // Zawsze rozgłoś nowy stan wyświetlacza do wszystkich podłączonych klientów
-            // (aktualizacje licznika są rozgłaszane przez setInterval w startServerCountUp)
             broadcastDisplayUpdate();
         } else {
             console.log('Nieautoryzowany klient próbował wprowadzić dane.');
