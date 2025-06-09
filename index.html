@@ -82,7 +82,7 @@
             bottom: 0;
         }
 
-        /* Sekcja dla komunikatów serwera - teraz na samej górze */
+        /* Sekcja dla komunikatów serwera przeniesiona wyżej i z fixed position */
         #message-section {
             width: 90vw;
             max-width: 320px;
@@ -189,12 +189,13 @@
         #top-overlay {
             position: fixed;
             top: 0;
-            left: 0;
+            left: 0; /* Dodano: Zapewnia zakotwiczenie do lewej krawędzi viewportu */
+            width: 100vw; /* Dodano: Zapewnia pokrycie całej szerokości viewportu */
             /* Wysokość top-overlay: Od góry strony do 10px PONIŻEJ dolnej krawędzi displaya */
             /* 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (nowy odstęp) */
             height: calc(10px + 25px + 5px + 60px + 10px);
             background-color: var(--body-bg); /* Ten sam kolor co tło body */
-            z-index: 999; /* Niżej niż display i message-section */
+            z-index: 999; /* Niżej niż display i message-section, ale wyżej niż przewijana zawartość */
             pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
         }
 
