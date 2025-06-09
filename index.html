@@ -149,14 +149,12 @@
             transition: color 0.3s ease;
         }
 
-        /* KLUCZOWA ZMIANA: Nowa warstwa zakrywająca */
         #top-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            /* Wysokość: 20px (od góry do wyświetlacza) + 60px (wysokość wyświetlacza) + 10px (margines pod wyświetlaczem) */
-            height: calc(20px + 60px + 10px);
+            height: calc(20px + 60px + 10px); /* 20px (top display) + 60px (display height) + 10px (padding/gap below display) */
             background-color: var(--body-bg); /* Ten sam kolor co tło body */
             z-index: 999; /* Niżej niż display, wyżej niż reszta zawartości */
             pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
@@ -167,8 +165,8 @@
             max-width: 320px;
             width: 90vw;
             box-sizing: border-box;
-            /* Zwiększ margines, aby zawartość zaczynała się poniżej displaya i nowej warstwy */
-            margin-top: calc(20px + 60px + 10px + 20px); /* 20px display top + 60px display height + 10px overlay bottom margin + 20px normal margin-top for buttons */
+            /* KLUCZOWA ZMIANA: Zwiększ margines, aby klawiatura zaczynała się poniżej górnego displaya i warstwy zakrywającej */
+            margin-top: calc(20px + 60px + 10px + 20px); /* Odległość wyświetlacza od góry (20px) + wysokość wyświetlacza (60px) + dolny margines overlay (10px) + dodatkowy margines dla klawiatury (20px) */
             margin-left: auto;
             margin-right: auto;
             position: relative;
@@ -177,7 +175,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 500px; /* Nadal wystarczająca wysokość dla zawartości przed panelem admina */
+            min-height: 500px;
         }
 
         .buttons {
@@ -250,7 +248,7 @@
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease, padding 0.5s ease, border 0.5s ease;
 
             position: absolute; /* Pozycjonowanie absolutne względem przewijanego body */
-            top: 600px; /* Ustawienie na 600px od góry body */
+            top: 600px; /* Ustawienie na 600px od góry body (poza widokiem, gdy klawiatura jest widoczna) */
             left: 50%;
             transform: translateX(-50%); /* Centrowanie horyzontalne */
             margin-left: auto;
@@ -337,18 +335,15 @@
         #file-content-section {
             width: 90vw;
             max-width: 600px;
-            /* KLUCZOWA ZMIANA: Wysokość jest teraz dynamiczna */
             height: auto;
-            /* KLUCZOWA ZMIANA: Dodaj min-height, aby lista była widoczna nawet bez wielu elementów */
-            min-height: 100px; /* Minimalna wysokość sekcji listy */
-            /* KLUCZOWA ZMIANA: Dodaj flexbox do kontenera głównego, aby lista mogła się rozciągnąć */
-            flex-grow: 1; /* Pozwala sekcji listy na rozciąganie się i wypełnianie dostępnej przestrzeni */
+            min-height: 100px;
+            flex-grow: 1;
             background-color: var(--file-content-section-bg);
             color: var(--file-content-section-color);
             font-size: 1.1em;
             padding: 10px;
             border-radius: 4px;
-            overflow-y: scroll; /* Pozostaw przewijanie dla samej listy, jeśli przekroczy wysokość strony */
+            overflow-y: scroll;
             box-sizing: border-box;
             margin-top: 20px;
             box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
@@ -357,7 +352,6 @@
             margin-right: auto;
             position: relative;
             z-index: 1;
-            /* Nowe właściwości Flexbox dla poprawnego pozycjonowania */
             display: flex;
             flex-direction: column;
         }
