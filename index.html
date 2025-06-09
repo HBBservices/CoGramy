@@ -5,35 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wyświetlacz Alfanumeryczny</title>
     <style>
-        /* Jedna kolorystyka */
+        /* Jedna kolorystyka - Stonowane, pastelowe odcienie */
         :root {
-            --body-bg: #f0f0f0; /* Przywrócony domyślny kolor tła */
-            --display-bg: #333;
-            --display-color: white;
-            --main-container-bg: #fff;
-            --main-container-shadow: rgba(0, 0, 0, 0.1);
-            --button-bg: #e0e0e0;
-            --button-hover-bg: #d0d0d0;
-            --reset-button-bg: #ff6347;
-            --reset-button-hover-bg: #e55337;
-            --list-button-bg: #4CAF50;
-            --list-button-hover-bg: #45a049;
-            --admin-panel-border: #ccc;
-            --admin-panel-bg: #f9f9f9;
-            --admin-panel-shadow: rgba(0, 0, 0, 0.1);
-            --input-border: #ccc;
-            --input-bg: white;
-            --input-color: black;
-            --admin-button-bg: #000080; /* GRANATOWY */
-            --admin-button-hover-bg: #000066; /* Ciemniejszy granat dla hovera */
-            --message-section-border: #ddd;
-            --message-section-bg: #fff;
-            --file-content-section-bg: #222;
-            --file-content-section-color: white;
-            --list-item-border: #444;
-            --list-item-hover-bg: #444;
-            --list-item-hover-color: #ffffff;
-            --countdown-timer-color: #ccc;
+            /* Nowe kolory bazowe */
+            --body-bg: #2C3E50; /* Ciemny granatowo-szary */
+            --display-bg: #34495E; /* Nieco jaśniejszy granatowo-szary dla wyświetlacza */
+            --display-color: #ECF0F1; /* Jasny szary dla czcionki wyświetlacza */
+            --main-container-bg: #34495E; /* Tło kontenera głównego */
+            --main-container-shadow: rgba(0, 0, 0, 0.2); /* Cień kontenera głównego */
+
+            /* Kolory przycisków */
+            --button-bg: #7F8C8D; /* Stonowany szary dla przycisków klawiatury */
+            --button-hover-bg: #95A5A6; /* Jaśniejszy szary dla hovera */
+            --reset-button-bg: #C0392B; /* Stonowany ciemny bordowy */
+            --reset-button-hover-bg: #E74C3C; /* Jaśniejszy bordowy dla hovera */
+            --list-button-bg: #27AE60; /* Stonowany ciemny zielony (jak Odblokuj) */
+            --list-button-hover-bg: #2ECC71; /* Jaśniejszy zielony dla hovera */
+
+            /* Kolory panelu admina */
+            --admin-panel-border: #4A6070; /* Ciemniejsza granica */
+            --admin-panel-bg: #3B5364; /* Tło panelu admina */
+            --admin-panel-shadow: rgba(0, 0, 0, 0.25); /* Cień panelu admina */
+            --input-border: #5A7B8D; /* Granica inputu */
+            --input-bg: #ECF0F1; /* Biały dla tła inputu */
+            --input-color: #2C3E50; /* Ciemny granatowy dla tekstu inputu */
+            --admin-button-bg: #27AE60; /* Stonowany ciemny zielony dla guzika Odblokuj */
+            --admin-button-hover-bg: #2ECC71; /* Jaśniejszy zielony dla hovera */
+
+            /* Kolory sekcji komunikatów i plików */
+            --message-section-border: #5A7B8D;
+            --message-section-bg: #3B5364;
+            --file-content-section-bg: #2C3E50; /* Ciemny granatowo-szary dla sekcji pliku */
+            --file-content-section-color: #ECF0F1; /* Jasny szary dla czcionki sekcji pliku */
+
+            /* Kolory listy plików */
+            --list-item-border: #4A6070;
+            --list-item-hover-bg: #4A6070;
+            --list-item-hover-color: #ECF0F1;
+
+            /* Kolor timera */
+            --countdown-timer-color: #BDC3C7; /* Jasny szary dla timera */
         }
 
         /* Resetowanie domyślnych marginesów i paddingów dla body i html */
@@ -51,11 +62,12 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            background-color: var(--body-bg); /* Przywrócony poprzedni kolor tła */
-            transition: background-color 0.3s ease;
+            background-color: var(--body-bg); /* Używamy zmiennej dla koloru tła body */
+            color: var(--display-color); /* Domyślny kolor czcionki dla body i ogólnie tekstu */
+            transition: background-color 0.3s ease, color 0.3s ease;
             margin: 0;
             padding: 0;
-            min-height: 1000px; /* Wysokość body ustawiona na 1000px */
+            min-height: 800px; /* Wysokość body ustawiona na 800px */
             height: auto;
             overflow-y: visible;
             overflow-x: hidden;
@@ -175,7 +187,7 @@
             cursor: pointer;
             background-color: var(--button-bg);
             transition: background-color 0.2s;
-            color: black;
+            color: var(--display-color); /* Kolor czcionki przycisków */
         }
 
         .btn:hover {
@@ -184,7 +196,7 @@
 
         .btn-reset {
             background-color: var(--reset-button-bg);
-            color: white;
+            color: var(--display-color); /* Kolor czcionki przycisku reset */
             grid-column: span 2;
         }
 
@@ -197,7 +209,7 @@
             align-items: center;
             justify-content: center;
             background-color: var(--list-button-bg);
-            color: white;
+            color: var(--display-color); /* Kolor czcionki przycisku lista */
             grid-column: span 1;
             height: 60px;
             font-size: 1.5em;
@@ -264,7 +276,7 @@
         #admin-panel button {
             padding: 8px 15px;
             background-color: var(--admin-button-bg);
-            color: white;
+            color: var(--display-color); /* Kolor czcionki guzika odblokuj */
             border: none;
             border-radius: 3px;
             cursor: pointer;
@@ -303,6 +315,7 @@
         #admin-message {
             margin: 0;
             word-break: break-word;
+            color: var(--display-color); /* Upewnij się, że komunikat też jest biały */
         }
 
         /* Sekcja do wyświetlania zawartości pliku */
