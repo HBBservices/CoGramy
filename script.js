@@ -10,6 +10,7 @@ const fileContentSection = document.getElementById('file-content-section');
 const listButtonLabel = document.getElementById('list-button-label');
 
 const countdownTimerDisplay = document.getElementById('countdown-timer'); // Referencja do elementu timera
+const modeToggle = document.getElementById('mode-toggle'); // Nowa referencja do przycisku przełączania trybu
 
 let socket;
 let isAdmin = false;
@@ -56,7 +57,6 @@ function connectWebSocket() {
     if (socket && (socket.readyState === WebSocket.CLOSING || socket.readyState === WebSocket.CLOSED)) {
         socket = null;
     }
-
 
     socket = new WebSocket(RENDER_SERVER_URL);
 
@@ -112,7 +112,38 @@ function connectWebSocket() {
     };
 }
 
+// --- Funkcje do obsługi trybu jasnego/ciemnego ---
+function setDarkMode() {
+    document.body.classList.add('dark-mode');
+    localStorage.setItem('theme', 'dark');
+    modeToggle.textContent = 'Tryb Jasny'; // Zmień tekst przycisku
+}
+
+function setLightMode() {
+    document.body.classList.remove('dark-mode');
+    localStorage.setItem('theme', 'light');
+    modeToggle.textContent = 'Tryb Ciemny'; // Zmień tekst przycisku
+}
+
+function toggleTheme() {
+    if (document.body.classList.contains('dark-mode')) {
+        setLightMode();
+    } else {
+        setDarkMode();
+    }
+}
+
+// --- Inicjalizacja po załadowaniu DOM ---
 document.addEventListener('DOMContentLoaded', () => {
+    // Sprawdź zapisany motyw w localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        setDarkMode();
+    } else {
+        // Domyślnie tryb jasny, jeśli brak zapisanego lub jest 'light'
+        setLightMode();
+    }
+
     connectWebSocket();
 
     secretCodeInput.addEventListener('keypress', (event) => {
@@ -216,12 +247,13 @@ document.addEventListener('DOMContentLoaded', () => {
             updateAdminMessage('', '', false); // Wyczyść komunikat, jeśli plik nie został wybrany
         }
     });
+
+    modeToggle.addEventListener('click', toggleTheme); // Obsługa kliknięcia przycisku
 });
 
 function attemptAdminLogin() {
     const code = secretCodeInput.value;
     updateAdminMessage('', '', false); // Wyczyść poprzednie komunikaty
-    // NIE UKRYWAMY fileContentSection tutaj przy próbie logowania
     
     if (socket && socket.readyState === WebSocket.OPEN) {
         socket.send(JSON.stringify({ type: 'auth', code: code }));
@@ -233,10 +265,8 @@ function attemptAdminLogin() {
 
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-        // Wysyłamy wiadomość o wprowadzeniu danych do serwera
         socket.send(JSON.stringify({ type: 'input', value: char }));
         updateAdminMessage('', '', false); // Wyczyść komunikat
-        // NIE UKRYWAMY fileContentSection tutaj po wprowadzeniu danych
     } else if (!isAdmin) {
         updateAdminMessage('Tylko uprawnieni użytkownicy mogą wprowadzać znaki.', 'red', true);
     } else {
@@ -246,10 +276,8 @@ function appendToDisplay(char) {
 
 function clearDisplay() {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-        // Wysyłamy żądanie resetu do serwera
         socket.send(JSON.stringify({ type: 'reset' }));
         updateAdminMessage('', '', false); // Wyczyść komunikat
-        // NIE UKRYWAMY fileContentSection tutaj po resecie
     } else if (!isAdmin) {
         updateAdminMessage('Tylko uprawnieni użytkownicy mogą resetować wyświetlacz.', 'red', true);
     } else {
