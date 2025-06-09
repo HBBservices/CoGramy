@@ -204,7 +204,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// NOWA FUNKCJA: Obsługa trybu pełnoekranowego
 function toggleFullScreen() {
     if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen().catch(err => {
@@ -256,8 +255,12 @@ document.addEventListener('keydown', (event) => {
     if (!isAdmin) return;
 
     const key = event.key.toUpperCase();
-    if (/[0-9IW]/.test(key)) {
+    if (/[0-9]/.test(key)) { // TYLKO cyfry, aby uniknąć podwójnych spacji
         appendToDisplay(key);
+    } else if (key === 'I') {
+        appendToDisplay(' I'); // Dodaj spację przed 'I'
+    } else if (key === 'W') {
+        appendToDisplay(' W'); // Dodaj spację przed 'W'
     } else if (event.key === 'Backspace') {
         console.log("Backspace pressed - wymaga implementacji na serwerze.");
     } else if (event.key === 'Delete') {
