@@ -264,12 +264,12 @@ document.addEventListener('keydown', (event) => {
     if (!isAdmin) return;
 
     const key = event.key.toUpperCase();
-    if (/[0-9]/.test(key)) { // TYLKO cyfry, aby uniknąć podwójnych spacji
+    if (/[0-9]/.test(key)) {
         appendToDisplay(key);
     } else if (key === 'I') {
-        appendToDisplay(' I'); // Dodaj spację przed 'I'
+        appendToDisplay('I');
     } else if (key === 'W') {
-        appendToDisplay(' W'); // Dodaj spację przed 'W'
+        appendToDisplay('W');
     } else if (event.key === 'Backspace') {
         console.log("Backspace pressed - wymaga implementacji na serwerze.");
     } else if (event.key === 'Delete') {
