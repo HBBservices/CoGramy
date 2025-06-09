@@ -5,45 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wyświetlacz Alfanumeryczny</title>
     <style>
-        /* Jedna kolorystyka - Stonowane, pastelowe odcienie */
+        /* Jedna kolorystyka - Stonowane, bardzo ciemne odcienie (jasność ok. 10%) */
         :root {
-            /* Nowe kolory bazowe */
-            --body-bg: #2C3E50; /* Ciemny granatowo-szary */
-            --display-bg: #34495E; /* Nieco jaśniejszy granatowo-szary dla wyświetlacza */
-            --display-color: #ECF0F1; /* Jasny szary dla czcionki wyświetlacza */
-            --main-container-bg: #34495E; /* Tło kontenera głównego */
-            --main-container-shadow: rgba(0, 0, 0, 0.2); /* Cień kontenera głównego */
+            /* Nowe kolory bazowe - znacznie ciemniejsze */
+            --body-bg: #1A222B; /* Bardzo ciemny granatowo-szary (ok. 15% jasności) */
+            --display-bg: #202B36; /* Nieco jaśniejszy, ale wciąż bardzo ciemny granatowo-szary */
+            --display-color: #BDC3C7; /* Jasny szary dla czcionki wyświetlacza (jasność ok. 75%) */
+            --main-container-bg: #202B36; /* Tło kontenera głównego */
+            --main-container-shadow: rgba(0, 0, 0, 0.4); /* Cień kontenera głównego - mocniejszy na ciemnym tle */
 
-            /* Kolory przycisków */
-            --button-bg: #7F8C8D; /* Stonowany szary dla przycisków klawiatury */
-            --button-hover-bg: #95A5A6; /* Jaśniejszy szary dla hovera */
-            --reset-button-bg: #C0392B; /* Stonowany ciemny bordowy */
-            --reset-button-hover-bg: #E74C3C; /* Jaśniejszy bordowy dla hovera */
-            --list-button-bg: #27AE60; /* Stonowany ciemny zielony (jak Odblokuj) */
-            --list-button-hover-bg: #2ECC71; /* Jaśniejszy zielony dla hovera */
+            /* Kolory przycisków - ciemniejsze pastelowe */
+            --button-bg: #3E4A56; /* Bardzo stonowany ciemny szary dla przycisków klawiatury */
+            --button-hover-bg: #4A5866; /* Nieco jaśniejszy dla hovera */
+            --reset-button-bg: #7B241C; /* Bardzo ciemny, głęboki bordowy */
+            --reset-button-hover-bg: #903028; /* Nieco jaśniejszy dla hovera */
+            --list-button-bg: #1B7A3C; /* Bardzo ciemny, głęboki zielony (jak Odblokuj) */
+            --list-button-hover-bg: #258D4B; /* Nieco jaśniejszy dla hovera */
 
-            /* Kolory panelu admina */
-            --admin-panel-border: #4A6070; /* Ciemniejsza granica */
-            --admin-panel-bg: #3B5364; /* Tło panelu admina */
-            --admin-panel-shadow: rgba(0, 0, 0, 0.25); /* Cień panelu admina */
-            --input-border: #5A7B8D; /* Granica inputu */
-            --input-bg: #ECF0F1; /* Biały dla tła inputu */
-            --input-color: #2C3E50; /* Ciemny granatowy dla tekstu inputu */
-            --admin-button-bg: #27AE60; /* Stonowany ciemny zielony dla guzika Odblokuj */
-            --admin-button-hover-bg: #2ECC71; /* Jaśniejszy zielony dla hovera */
+            /* Kolory panelu admina - ciemniejsze */
+            --admin-panel-border: #3A4650; /* Ciemniejsza granica */
+            --admin-panel-bg: #2B3742; /* Tło panelu admina */
+            --admin-panel-shadow: rgba(0, 0, 0, 0.5); /* Cień panelu admina */
+            --input-border: #4A5660; /* Granica inputu */
+            --input-bg: #ECF0F1; /* Biały dla tła inputu (pozostawiamy jasny dla czytelności) */
+            --input-color: #1A222B; /* Bardzo ciemny granatowy dla tekstu inputu */
+            --admin-button-bg: #1B7A3C; /* Bardzo ciemny, głęboki zielony dla guzika Odblokuj */
+            --admin-button-hover-bg: #258D4B; /* Nieco jaśniejszy dla hovera */
 
-            /* Kolory sekcji komunikatów i plików */
-            --message-section-border: #5A7B8D;
-            --message-section-bg: #3B5364;
-            --file-content-section-bg: #2C3E50; /* Ciemny granatowo-szary dla sekcji pliku */
-            --file-content-section-color: #ECF0F1; /* Jasny szary dla czcionki sekcji pliku */
+            /* Kolory sekcji komunikatów i plików - ciemniejsze */
+            --message-section-border: #4A5660;
+            --message-section-bg: #2B3742;
+            --file-content-section-bg: #1A222B; /* Bardzo ciemny granatowo-szary dla sekcji pliku */
+            --file-content-section-color: #BDC3C7; /* Jasny szary dla czcionki sekcji pliku */
 
-            /* Kolory listy plików */
-            --list-item-border: #4A6070;
-            --list-item-hover-bg: #4A6070;
+            /* Kolory listy plików - ciemniejsze */
+            --list-item-border: #3A4650;
+            --list-item-hover-bg: #3A4650;
             --list-item-hover-color: #ECF0F1;
 
-            /* Kolor timera */
+            /* Kolor timera - jasny, aby był widoczny */
             --countdown-timer-color: #BDC3C7; /* Jasny szary dla timera */
         }
 
