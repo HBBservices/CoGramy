@@ -6,323 +6,332 @@
     <title>Wyświetlacz Alfanumeryczny</title>
     <style>
         /* Jedna kolorystyka */
-:root {
-    --body-bg: #f0f0f0;
-    --display-bg: #333;
-    --display-color: white;
-    --main-container-bg: #fff;
-    --main-container-shadow: rgba(0, 0, 0, 0.1);
-    --button-bg: #e0e0e0;
-    --button-hover-bg: #d0d0d0;
-    --reset-button-bg: #ff6347;
-    --reset-button-hover-bg: #e55337;
-    --list-button-bg: #4CAF50;
-    --list-button-hover-bg: #45a049;
-    --admin-panel-border: #ccc;
-    --admin-panel-bg: #f9f9f9;
-    --admin-panel-shadow: rgba(0, 0, 0, 0.1);
-    --input-border: #ccc;
-    --input-bg: white;
-    --input-color: black;
-    --admin-button-bg: #000080; /* GRANATOWY */
-    --admin-button-hover-bg: #000066; /* Ciemniejszy granat dla hovera */
-    --message-section-border: #ddd;
-    --message-section-bg: #fff;
-    --file-content-section-bg: #222;
-    --file-content-section-color: white;
-    --list-item-border: #444;
-    --list-item-hover-bg: #444;
-    --list-item-hover-color: #ffffff;
-    --countdown-timer-color: #ccc;
-}
+        :root {
+            --body-bg: #f0f0f0;
+            --display-bg: #333;
+            --display-color: white;
+            --main-container-bg: #fff;
+            --main-container-shadow: rgba(0, 0, 0, 0.1);
+            --button-bg: #e0e0e0;
+            --button-hover-bg: #d0d0d0;
+            --reset-button-bg: #ff6347;
+            --reset-button-hover-bg: #e55337;
+            --list-button-bg: #4CAF50;
+            --list-button-hover-bg: #45a049;
+            --admin-panel-border: #ccc;
+            --admin-panel-bg: #f9f9f9;
+            --admin-panel-shadow: rgba(0, 0, 0, 0.1);
+            --input-border: #ccc;
+            --input-bg: white;
+            --input-color: black;
+            --admin-button-bg: #000080; /* GRANATOWY */
+            --admin-button-hover-bg: #000066; /* Ciemniejszy granat dla hovera */
+            --message-section-border: #ddd;
+            --message-section-bg: #fff;
+            --file-content-section-bg: #222;
+            --file-content-section-color: white;
+            --list-item-border: #444;
+            --list-item-hover-bg: #444;
+            --list-item-hover-color: #ffffff;
+            --countdown-timer-color: #ccc;
+        }
 
-/* Resetowanie domyślnych marginesów i paddingów dla body i html */
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-}
+        /* Resetowanie domyślnych marginesów i paddingów dla body i html */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania */
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    flex-direction: column;
-    /* justify-content: flex-start;  Niepotrzebne, jeśli chcemy by reszta contentu się scrollowała */
-    align-items: center; /* Centrowanie w poziomie */
-    min-height: 100vh;
-    background-color: var(--body-bg);
-    padding-top: 100px; /* Nadal dajemy padding dla przestrzeni pod fixed displayem */
-    transition: background-color 0.3s ease;
-    overflow-y: auto; /* Zezwól na przewijanie pionowe dla całego body */
-}
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--body-bg);
+            transition: background-color 0.3s ease;
+            padding-bottom: 20px; /* Dodajemy padding na dole, aby było miejsce na panel logowania */
+        }
 
-#display-section {
-    background-color: var(--display-bg);
-    color: var(--display-color);
-    font-size: 2em;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 0 10px;
-    border-radius: 4px;
-    width: 90vw;
-    max-width: 600px;
-    height: 60px;
-    box-sizing: border-box;
-    box-shadow: 0 2px 5px var(--main-container-shadow);
-    /* Gwarantuje stałą pozycję i wycentrowanie */
-    position: fixed;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000; /* Zawsze na wierzchu */
-    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-}
+        #display-section {
+            background-color: var(--display-bg);
+            color: var(--display-color);
+            font-size: 2em;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0 10px;
+            border-radius: 4px;
+            width: 90vw;
+            max-width: 600px;
+            height: 60px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px var(--main-container-shadow);
+            position: fixed; /* Zawsze na górze */
+            top: 20px; /* 20px od górnej krawędzi */
+            left: 50%;
+            transform: translateX(-50%); /* Centrowanie horyzontalne */
+            z-index: 1000; /* Zawsze na wierzchu */
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-/* Nowe style dla kontenera tekstu wyświetlacza i timera */
-#display-content-wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
-}
+        #display-content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
 
-#display {
-    flex-grow: 1;
-    text-align: left;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: var(--button-bg) var(--display-bg);
-    transition: scrollbar-color 0.3s ease;
-}
+        #display {
+            flex-grow: 1;
+            text-align: left;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--button-bg) var(--display-bg);
+            transition: scrollbar-color 0.3s ease;
+        }
 
-/* Dla Chrome/Safari/Edge: dostosowanie wyglądu scrollbara */
-#display::-webkit-scrollbar {
-    height: 8px;
-}
+        #display::-webkit-scrollbar {
+            height: 8px;
+        }
 
-#display::-webkit-scrollbar-track {
-    background: var(--display-bg);
-    border-radius: 10px;
-}
+        #display::-webkit-scrollbar-track {
+            background: var(--display-bg);
+            border-radius: 10px;
+        }
 
-#display::-webkit-scrollbar-thumb {
-    background: var(--button-bg);
-    border-radius: 10px;
-}
+        #display::-webkit-scrollbar-thumb {
+            background: var(--button-bg);
+            border-radius: 10px;
+        }
 
-#display::-webkit-scrollbar-thumb:hover {
-    background: var(--button-hover-bg);
-}
+        #display::-webkit-scrollbar-thumb:hover {
+            background: var(--button-hover-bg);
+        }
 
-#countdown-timer {
-    margin-left: 10px;
-    font-size: 0.8em;
-    color: var(--countdown-timer-color);
-    min-width: 40px;
-    text-align: right;
-    flex-shrink: 0;
-    transition: color 0.3s ease;
-}
+        #countdown-timer {
+            margin-left: 10px;
+            font-size: 0.8em;
+            color: var(--countdown-timer-color);
+            min-width: 40px;
+            text-align: right;
+            flex-shrink: 0;
+            transition: color 0.3s ease;
+        }
 
-.main-content-container {
-    max-width: 320px;
-    width: 90vw;
-    box-sizing: border-box;
-    /* Aby umożliwić centrowanie elementów wewnątrz, jeśli są relative */
-    /* margin: 0 auto; - usuwamy to, bo body jest już flex container z align-items: center */
-}
+        .main-content-container {
+            max-width: 320px;
+            width: 90vw;
+            box-sizing: border-box;
+            margin-top: 100px; /* Aby zawartość zaczynała się poniżej fixed displaya */
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0; /* Zapobiega kurczeniu się kontenera */
+            display: flex; /* Ustawiamy flex, żeby panel i guziki się układały */
+            flex-direction: column; /* Układamy elementy w kolumnie */
+            align-items: center; /* Centrujemy je horyzontalnie */
+        }
 
-.buttons {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 20px;
-    background-color: var(--main-container-bg);
-    border-radius: 8px;
-    box-shadow: 0 0 10px var(--main-container-shadow);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    margin-top: 20px; /* Trochę odstępu od góry, jeśli widoczne */
-}
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            background-color: var(--main-container-bg);
+            border-radius: 8px;
+            box-shadow: 0 0 10px var(--main-container-shadow);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
 
-.btn {
-    height: 60px;
-    font-size: 1.5em;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: var(--button-bg);
-    transition: background-color 0.2s;
-    color: black;
-}
+        .btn {
+            height: 60px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: var(--button-bg);
+            transition: background-color 0.2s;
+            color: black;
+        }
 
-.btn:hover {
-    background-color: var(--button-hover-bg);
-}
+        .btn:hover {
+            background-color: var(--button-hover-bg);
+        }
 
-.btn-reset {
-    background-color: var(--reset-button-bg);
-    color: white;
-    grid-column: span 2;
-}
+        .btn-reset {
+            background-color: var(--reset-button-bg);
+            color: white;
+            grid-column: span 2;
+        }
 
-.btn-reset:hover {
-    background-color: var(--reset-button-hover-bg);
-}
+        .btn-reset:hover {
+            background-color: var(--reset-button-hover-bg);
+        }
 
-.btn-list-label {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--list-button-bg);
-    color: white;
-    grid-column: span 1;
-    height: 60px;
-    font-size: 1.5em;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-.btn-list-label:hover {
-    background-color: var(--list-button-hover-bg);
-}
+        .btn-list-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--list-button-bg);
+            color: white;
+            grid-column: span 1;
+            height: 60px;
+            font-size: 1.5em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-list-label:hover {
+            background-color: var(--list-button-hover-bg);
+        }
 
-/* Style dla panelu logowania */
-#admin-panel {
-    text-align: center;
-    padding: 15px;
-    border: 1px solid var(--admin-panel-border);
-    border-radius: 5px;
-    background-color: var(--admin-panel-bg);
-    box-shadow: 0 0 10px var(--admin-panel-shadow);
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, bottom 0.5s ease-out;
+        /* Style dla panelu logowania */
+        #admin-panel {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid var(--admin-panel-border);
+            border-radius: 5px;
+            background-color: var(--admin-panel-bg);
+            box-shadow: 0 0 10px var(--admin-panel-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease;
 
-    /* Powrót do fixed dla centrowania, ale domyślnie poza ekranem */
-    position: fixed;
-    bottom: -100vh; /* Początkowo poza ekranem */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90vw;
-    max-width: 320px;
-    z-index: 1000; /* Zawsze na wierzchu, gdy jest widoczny */
-}
+            /* Zmienione pozycjonowanie na fixed */
+            position: fixed; /* Będzie przewijał się ze stroną, ale jest "przyklejony" do viewportu */
+            bottom: 20px; /* 20px od dolnej krawędzi viewportu */
+            left: 50%;
+            transform: translateX(-50%); /* Centrowanie horyzontalne */
+            width: 90vw; /* Szerokość jak reszta kontenerów */
+            max-width: 320px;
+            z-index: 999; /* Niższy niż display, ale wyższy niż main-content-container */
+            box-sizing: border-box;
+        }
 
-/* Styl dla aktywnego panelu logowania (gdy widoczny) */
-#admin-panel.active {
-    bottom: 20px; /* Przesunięcie na widoczną pozycję na dole ekranu, gdy jest 'active' */
-}
+        /* Ukrycie panelu po zalogowaniu */
+        #admin-panel.hidden-panel {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none; /* Wyłącza interakcje, gdy jest niewidoczny */
+        }
 
+        #admin-panel input {
+            padding: 8px;
+            border: 1px solid var(--input-border);
+            border-radius: 3px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 10vh;
+            font-size: 1.5em;
+            background-color: var(--input-bg);
+            color: var(--input-color);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        #admin-panel button {
+            padding: 8px 15px;
+            background-color: var(--admin-button-bg);
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            height: 20vh;
+            font-size: 2em;
+            transition: background-color 0.2s;
+        }
 
-#admin-panel input {
-    padding: 8px;
-    border: 1px solid var(--input-border);
-    border-radius: 3px;
-    width: 100%;
-    box-sizing: border-box;
-    height: 10vh;
-    font-size: 1.5em;
-    background-color: var(--input-bg);
-    color: var(--input-color);
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-}
-#admin-panel button {
-    padding: 8px 15px;
-    background-color: var(--admin-button-bg);
-    color: white;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    width: 100%;
-    box-sizing: border-box;
-    height: 20vh;
-    font-size: 2em;
-    transition: background-color 0.2s;
-}
+        #admin-panel button:hover {
+            background-color: var(--admin-button-hover-bg);
+        }
 
-#admin-panel button:hover {
-    background-color: var(--admin-button-hover-bg);
-}
+        /* Sekcja dla komunikatów serwera */
+        #message-section {
+            width: 90vw;
+            max-width: 320px;
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid var(--message-section-border);
+            border-radius: 5px;
+            background-color: var(--message-section-bg);
+            min-height: 40px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+        }
+        #admin-message {
+            margin: 0;
+            word-break: break-word;
+        }
 
-/* Sekcja dla komunikatów serwera */
-#message-section {
-    width: 90vw;
-    max-width: 320px;
-    text-align: center;
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid var(--message-section-border);
-    border-radius: 5px;
-    background-color: var(--message-section-bg);
-    min-height: 40px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease, border-color 0.3s ease;
-    margin-left: auto; /* Centrowanie w poziomie */
-    margin-right: auto; /* Centrowanie w poziomie */
-}
-#admin-message {
-    margin: 0;
-    word-break: break-word;
-}
+        /* Sekcja do wyświetlania zawartości pliku */
+        #file-content-section {
+            width: 90vw;
+            max-width: 600px;
+            height: 200px;
+            background-color: var(--file-content-section-bg);
+            color: var(--file-content-section-color);
+            font-size: 1.1em;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-y: scroll;
+            box-sizing: border-box;
+            margin-top: 20px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+        }
 
-/* Sekcja do wyświetlania zawartości pliku */
-#file-content-section {
-    width: 90vw;
-    max-width: 600px;
-    height: 200px;
-    background-color: var(--file-content-section-bg);
-    color: var(--file-content-section-color);
-    font-size: 1.1em;
-    padding: 10px;
-    border-radius: 4px;
-    overflow-y: scroll;
-    box-sizing: border-box;
-    margin-top: 20px;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-    transition: background-color 0.3s ease, color 0.3s ease;
-    margin-left: auto; /* Centrowanie w poziomie */
-    margin-right: auto; /* Centrowanie w poziomie */
-}
+        /* Styl dla pojedynczych linii w liście */
+        .list-item {
+            padding: 5px 0;
+            border-bottom: 1px solid var(--list-item-border);
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, border-bottom 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        .list-item:hover {
+            background-color: var(--list-item-hover-bg);
+            color: var(--list-item-hover-color);
+        }
 
-/* Styl dla pojedynczych linii w liście */
-.list-item {
-    padding: 5px 0;
-    border-bottom: 1px solid var(--list-item-border);
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s, border-bottom 0.3s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-.list-item:last-child {
-    border-bottom: none;
-}
-/* Zmiana koloru tekstu po najechaniu myszką dla lepszego kontrastu */
-.list-item:hover {
-    background-color: var(--list-item-hover-bg);
-    color: var(--list-item-hover-color);
-}
+        /* Ukryj input file */
+        #file-input {
+            display: none;
+        }
 
-/* Ukryj input file */
-#file-input {
-    display: none;
-}
-
-/* Klasa ukrywająca elementy */
-.hidden {
-    display: none !important;
-}
+        /* Klasa ukrywająca elementy */
+        .hidden {
+            display: none !important;
+        }
 
     </style>
 </head>
@@ -336,11 +345,6 @@ body {
     </div>
 
     <div class="main-content-container">
-        <div id="admin-panel">
-            <button onclick="attemptAdminLogin()">Odblokuj</button>
-            <input type="text" id="secret-code-input" placeholder="Podaj hasło">
-        </div>
-
         <div class="buttons hidden" id="keypad-buttons">
             <button class="btn" onclick="appendToDisplay('1')">1</button>
             <button class="btn" onclick="appendToDisplay('2')">2</button>
@@ -365,6 +369,11 @@ body {
     </div>
 
     <div id="file-content-section" class="hidden"></div>
+
+    <div id="admin-panel">
+        <button onclick="attemptAdminLogin()">Odblokuj</button>
+        <input type="text" id="secret-code-input" placeholder="Podaj hasło">
+    </div>
 
     <script src="script.js"></script>
 </body>
