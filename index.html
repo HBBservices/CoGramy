@@ -71,7 +71,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             margin: 0;
             padding: 0;
-            min-height: 850px; /* Zwiększona wysokość body o 50px */
+            min-height: 1200px; /* Zwiększona wysokość body do 1200px */
             height: auto;
             overflow-y: visible;
             overflow-x: hidden;
@@ -169,7 +169,7 @@
             width: 90vw;
             max-width: 600px;
             text-align: center;
-            margin-top: calc(20px + 60px + 10px + 10px); /* Odległość od góry po displayu i overlayu */
+            margin-top: 100px; /* Zmieniono top na 100px od góry body */
             margin-bottom: 20px; /* Margines poniżej logo */
             z-index: 1; /* Upewnij się, że jest nad tłem, ale pod keypadem */
             flex-shrink: 0; /* Zapobiega zmniejszaniu się kontenera */
@@ -188,8 +188,8 @@
             max-width: 320px;
             width: 90vw;
             box-sizing: border-box;
-            /* Zwiększ margines, aby klawiatura zaczynała się poniżej logo */
-            margin-top: 0; /* Teraz jest tuż pod logo */
+            /* Przesunięcie w dół, aby znaleźć się pod logo i górnym wyświetlaczem */
+            margin-top: 0; /* Teraz jest tuż pod logo, które ma swoje pozycjonowanie */
             margin-left: auto;
             margin-right: auto;
             position: relative;
