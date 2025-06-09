@@ -14,25 +14,27 @@
             --main-container-bg: #12161A; /* Tło kontenera głównego */
             --main-container-shadow: rgba(0, 0, 0, 0.6); /* Cień kontenera głównego - jeszcze mocniejszy na ciemnym tle */
 
-            /* Kolory przycisków - bardzo ciemne pastelowe */
+            /* Kolory przycisków klawiatury - bardzo ciemne pastelowe */
             --button-bg: #232C34; /* Bardzo stonowany ciemny szary dla przycisków klawiatury */
             --button-hover-bg: #2E3942; /* Nieco jaśniejszy dla hovera */
             --reset-button-bg: #5C1C16; /* Bardzo, bardzo ciemny, głęboki bordowy */
             --reset-button-hover-bg: #6B231D; /* Nieco jaśniejszy dla hovera */
             --list-button-bg: #145C2E; /* Bardzo, bardzo ciemny, głęboki zielony (jak Odblokuj) */
             --list-button-hover-bg: #1A6C37; /* Nieco jaśniejszy dla hovera */
-            --fullscreen-button-bg: #0D3E53; /* Bardzo ciemny, głęboki niebieski dla guzika pełnoekranowego */
+            --fullscreen-button-bg: #0D3E53; /* Bardzo ciemny, głęboki niebieski dla guzika pełnoekranowego i teraz Odblokuj */
             --fullscreen-button-hover-bg: #134F6A; /* Nieco jaśniejszy dla hovera */
+
 
             /* Kolory panelu admina - bardzo ciemne */
             --admin-panel-border: #2E3942; /* Ciemniejsza granica */
             --admin-panel-bg: #1A222B; /* Tło panelu admina */
             --admin-panel-shadow: rgba(0, 0, 0, 0.7); /* Cień panelu admina */
-            --input-border: #3A4650; /* Granica inputu */
-            --input-bg: #ECF0F1; /* Biały dla tła inputu (pozostawiamy jasny dla czytelności) */
-            --input-color: #0D1013; /* Bardzo, bardzo ciemny granatowy dla tekstu inputu */
-            --admin-button-bg: #145C2E; /* Bardzo, bardzo ciemny, głęboki zielony dla guzika Odblokuj */
-            --admin-button-hover-bg: #1A6C37; /* Nieco jaśniejszy dla hovera */
+            --input-border: #12161A; /* Zmieniony na kolor display-bg */
+            --input-bg: #12161A; /* Zmieniony na kolor display-bg */
+            --input-color: #BDC3C7; /* Zmieniony na kolor display-color */
+            
+            /* --admin-button-bg: #145C2E; USUNIĘTA STARA ZMIENNA */
+            --admin-button-hover-bg: #1A6C37; /* Pozostawiamy dla spójności, choć teraz nieużywana bezpośrednio */
 
             /* Kolory sekcji komunikatów i plików - bardzo ciemne */
             --message-section-border: #3A4650;
@@ -235,7 +237,7 @@
             background-color: var(--list-button-hover-bg);
         }
 
-        /* Nowy styl dla guzika pełnoekranowego */
+        /* Nowy styl dla guzika pełnoekranowego w klawiaturze */
         .btn-fullscreen {
             background-color: var(--fullscreen-button-bg);
             color: var(--display-color);
@@ -288,19 +290,21 @@
 
         #admin-panel input {
             padding: 8px;
-            border: 1px solid var(--input-border);
+            border: 1px solid var(--input-border); /* Zmienione na kolor display-bg */
             border-radius: 3px;
             width: 100%;
             box-sizing: border-box;
             height: 50px;
             font-size: 1.5em;
-            background-color: var(--input-bg);
-            color: var(--input-color);
+            background-color: var(--input-bg); /* Zmienione na kolor display-bg */
+            color: var(--input-color); /* Zmienione na kolor display-color */
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
+
+        /* Zmieniamy styl przycisku Odblokuj na ten sam co Fullscreen */
         #admin-panel button {
             padding: 8px 15px;
-            background-color: var(--admin-button-bg);
+            background-color: var(--fullscreen-button-bg); /* Używamy koloru guzika pełnoekranowego */
             color: var(--display-color); /* Kolor czcionki guzika odblokuj */
             border: none;
             border-radius: 3px;
@@ -313,7 +317,7 @@
         }
 
         #admin-panel button:hover {
-            background-color: var(--admin-button-hover-bg);
+            background-color: var(--fullscreen-button-hover-bg); /* Używamy koloru hovera guzika pełnoekranowego */
         }
 
         /* Sekcja dla komunikatów serwera */
@@ -436,8 +440,9 @@
     </div>
 
     <div id="admin-panel">
-        <button onclick="attemptAdminLogin()">Odblokuj</button>
         <input type="text" id="secret-code-input" placeholder="Podaj hasło">
+        <button onclick="attemptAdminLogin()">Odblokuj</button>
+        <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
     </div>
 
     <script src="script.js"></script>
