@@ -7,7 +7,7 @@
     <style>
         /* Jedna kolorystyka */
         :root {
-            --body-bg: #f0f0f0;
+            --body-bg: #f0f0f0; /* Zostaw to jako domyślny, ale body będzie miało override */
             --display-bg: #333;
             --display-color: white;
             --main-container-bg: #fff;
@@ -50,11 +50,11 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            background-color: var(--body-bg);
+            background-color: lightgreen; /* JASNOZIELONE TŁO DLA CAŁEGO PRZEWIJANEGO OBSZARU */
             transition: background-color 0.3s ease;
             margin: 0;
             padding: 0;
-            height: 1000px; /* Zwiększona wysokość dla body do 1000px */
+            height: 1500px; /* Zwiększona wysokość dla body do 1500px */
             overflow-y: scroll; /* Włącza przewijanie wewnątrz body */
             overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania w body */
             position: relative; /* Kluczowe dla pozycjonowania #admin-panel */
@@ -225,7 +225,7 @@
             top: 600px; /* Ustawienie na 600px od góry body */
             left: 50%;
             transform: translateX(-50%); /* Centrowanie horyzontalne */
-            margin-left: auto; /* Centrowanie horyhoryzontalne */
+            margin-left: auto; /* Centrowanie horyzontalne */
             margin-right: auto;
             width: 90vw;
             max-width: 320px;
