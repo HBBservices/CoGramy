@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wyświetlacz Alfanumeryczny</title>
     <style>
-        /* Zmienne CSS dla trybu jasnego i ciemnego */
+        /* Jedna kolorystyka */
         :root {
-            /* Tryb jasny (domyślny) */
             --body-bg: #f0f0f0;
             --display-bg: #333;
             --display-color: white;
@@ -25,8 +24,8 @@
             --input-border: #ccc;
             --input-bg: white;
             --input-color: black;
-            --admin-button-bg: #007bff;
-            --admin-button-hover-bg: #0056b3;
+            --admin-button-bg: #000080; /* GRANATOWY */
+            --admin-button-hover-bg: #000066; /* Ciemniejszy granat dla hovera */
             --message-section-border: #ddd;
             --message-section-bg: #fff;
             --file-content-section-bg: #222;
@@ -35,45 +34,6 @@
             --list-item-hover-bg: #444;
             --list-item-hover-color: #ffffff;
             --countdown-timer-color: #ccc;
-            --mode-toggle-bg: var(--button-bg);
-            --mode-toggle-color: var(--input-color);
-            --mode-toggle-border: var(--input-border);
-            --mode-toggle-hover-bg: var(--button-hover-bg);
-        }
-
-        /* Tryb ciemny - zmienione kolory na granatowo-czarne z szarymi czcionkami */
-        body.dark-mode {
-            --body-bg: #101525; /* Bardzo ciemny granat/prawie czarny */
-            --display-bg: #1A2036; /* Ciemniejszy granat */
-            --display-color: #A0A0A0; /* Szary */
-            --main-container-bg: #1A2036; /* Ciemniejszy granat */
-            --main-container-shadow: rgba(0, 0, 0, 0.5);
-            --button-bg: #252B44; /* Ciemny granat */
-            --button-hover-bg: #303650; /* nieznacznie jaśniejszy granat */
-            --reset-button-bg: #E74C3C; /* Zachowano czerwień dla resetu */
-            --reset-button-hover-bg: #C0392B;
-            --list-button-bg: #2ECC71; /* Zachowano zieleń dla listy */
-            --list-button-hover-bg: #27AE60;
-            --admin-panel-border: #1A2036; /* Ciemniejszy granat */
-            --admin-panel-bg: #101525; /* Bardzo ciemny granat/prawie czarny */
-            --admin-panel-shadow: rgba(0, 0, 0, 0.5);
-            --input-border: #252B44; /* Ciemny granat */
-            --input-bg: #1A2036; /* Ciemniejsze tło inputu */
-            --input-color: #A0A0A0; /* Szara czcionka inputu */
-            --admin-button-bg: #3498DB; /* Ciemny niebieski dla przycisku odblokuj */
-            --admin-button-hover-bg: #2980B9;
-            --message-section-border: #1A2036; /* Ciemniejszy granat */
-            --message-section-bg: #101525; /* Bardzo ciemny granat/prawie czarny */
-            --file-content-section-bg: #1A2036; /* Ciemniejszy granat */
-            --file-content-section-color: #A0A0A0; /* Szary */
-            --list-item-border: #252B44; /* Ciemny granat */
-            --list-item-hover-bg: #303650; /* nieznacznie jaśniejszy granat */
-            --list-item-hover-color: #E0E0E0; /* Jaśniejsza szarość */
-            --countdown-timer-color: #A0A0A0; /* Szary */
-            --mode-toggle-bg: #252B44; /* Granat */
-            --mode-toggle-color: #A0A0A0; /* Szary */
-            --mode-toggle-border: #1A2036; /* Ciemniejszy granat */
-            --mode-toggle-hover-bg: #303650; /* nieznacznie jaśniejszy granat */
         }
 
         /* Resetowanie domyślnych marginesów i paddingów dla body i html */
@@ -167,35 +127,7 @@
             transition: color 0.3s ease;
         }
 
-        /* Kontener dla guzika zmiany trybu */
-        #mode-toggle-container {
-            position: fixed; /* Pozostaje na stałej pozycji */
-            top: 90px; /* Poniżej displaya (20px top + 60px height = 80px, +10px odstępu) */
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 999; /* Niżej niż display, wyżej niż reszta */
-            width: 90vw;
-            max-width: 600px; /* Tak samo jak display */
-            display: flex;
-            justify-content: flex-end; /* Wyrównaj przycisk do prawej */
-            padding-right: 10px; /* Odsunięcie od prawej krawędzi kontenera */
-            box-sizing: border-box;
-        }
-
-        #mode-toggle {
-            background-color: var(--mode-toggle-bg);
-            color: var(--mode-toggle-color);
-            border: 1px solid var(--mode-toggle-border);
-            border-radius: 5px;
-            padding: 5px 10px; /* Mniejszy padding dla guzika */
-            cursor: pointer;
-            font-size: 0.8em; /* Mniejsza czcionka */
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-
-        #mode-toggle:hover {
-            background-color: var(--mode-toggle-hover-bg);
-        }
+        /* Usunięto kontener dla guzika zmiany trybu, nie jest już potrzebny */
 
         .main-content-container {
             max-width: 320px;
@@ -271,20 +203,19 @@
             gap: 10px;
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 
-            /* Przesunięcie panelu logowania poza ekran */
-            position: fixed; /* Zmiana z relative na fixed */
-            bottom: -100vh; /* Przesunięcie poniżej dolnej krawędzi viewportu */
+            position: fixed;
+            bottom: -100vh;
             left: 50%;
             transform: translateX(-50%);
-            width: 90vw; /* Zachowaj szerokość */
-            max-width: 320px; /* Zachowaj max-szerokość */
-            z-index: 1000; /* Upewnij się, że jest nad innymi elementami gdy jest potrzebny */
-            transition: bottom 0.5s ease-out; /* Płynne przejście */
+            width: 90vw;
+            max-width: 320px;
+            z-index: 1000;
+            transition: bottom 0.5s ease-out;
         }
 
         /* Styl dla aktywnego panelu logowania (gdy widoczny) */
         #admin-panel.active {
-            bottom: 20px; /* Przesunięcie na widoczną pozycję na dole ekranu */
+            bottom: 20px;
         }
 
 
@@ -389,10 +320,6 @@
     </style>
 </head>
 <body>
-
-    <div id="mode-toggle-container">
-        <button id="mode-toggle">Przełącz Tryb</button>
-    </div>
 
     <div id="display-section">
         <div id="display-content-wrapper">
