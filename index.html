@@ -57,21 +57,14 @@
             height: 800px; /* Sztywna wysokość dla body */
             overflow-y: scroll; /* Włącza przewijanie wewnątrz body */
             overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania w body */
-            position: relative; /* Potrzebne do pozycjonowania z-index dla elementów w body */
+            position: relative; /* Kluczowe dla pozycjonowania #admin-panel */
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
         }
 
-        /* Dodatkowy element, który pomoże wymusić przewijanie, jeśli zawartość jest za krótka */
-        #scroll-spacer {
-            /* Nowa wartość min-height: zwiększona, aby wymusić większy zakres przewijania */
-            /* Używamy vh, aby lepiej dostosować się do wysokości ekranu smartfona */
-            min-height: 100vh; /* Zapewnia, że jest co najmniej jedna pełna wysokość viewportu miejsca do przewinięcia */
-            width: 1px; /* Minimalna szerokość */
-            flex-grow: 1; /* Rozszerza się, zajmując dostępną przestrzeń */
-        }
+        /* Usunięto #scroll-spacer, ponieważ panel będzie pozycjonowany absolutnie */
 
 
         #display-section {
@@ -88,7 +81,7 @@
             height: 60px;
             box-sizing: border-box;
             box-shadow: 0 2px 5px var(--main-container-shadow);
-            position: fixed; /* Zawsze na górze */
+            position: fixed; /* Zawsze na górze viewportu przeglądarki */
             top: 20px; /* 20px od górnej krawędzi viewportu */
             left: 50%;
             transform: translateX(-50%); /* Centrowanie horyzontalne */
@@ -157,6 +150,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            /* Zwiększ min-height, aby zawartość przed panelem logowania była wystarczająca */
+            min-height: 300px; /* Dostosuj, jeśli keypad i inne elementy są zbyt krótkie */
         }
 
         .buttons {
@@ -228,9 +223,10 @@
             gap: 10px;
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease, padding 0.5s ease, border 0.5s ease;
 
-            position: relative; /* Przewija się ze stroną */
-            margin-top: auto; /* Wypycha panel na dół, jeśli jest wystarczająco miejsca */
-            margin-bottom: 20px; /* Odstęp od dołu okna body, jeśli jest dużo miejsca */
+            position: absolute; /* Pozycjonowanie absolutne względem przewijanego body */
+            top: 400px; /* Ustawienie na 400px od góry body */
+            left: 50%;
+            transform: translateX(-50%); /* Centrowanie horyzontalne */
             margin-left: auto; /* Centrowanie horyzontalne */
             margin-right: auto;
             width: 90vw;
@@ -251,6 +247,7 @@
             margin-bottom: 0;
             border: none;
             overflow: hidden;
+            top: 0; /* Zresetuj top, gdy ukryty, aby nie zajmował miejsca */
         }
 
         #admin-panel input {
@@ -259,7 +256,7 @@
             border-radius: 3px;
             width: 100%;
             box-sizing: border-box;
-            height: 10vh; /* Może być problematyczne przy 800px wysokości body, lepiej ustalić w px lub % */
+            height: 50px; /* Ustawienie stałej wysokości w px, aby uniknąć problemów z vh */
             font-size: 1.5em;
             background-color: var(--input-bg);
             color: var(--input-color);
@@ -274,7 +271,7 @@
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
-            height: 20vh; /* Może być problematyczne przy 800px wysokości body, lepiej ustalić w px lub % */
+            height: 60px; /* Ustawienie stałej wysokości w px, aby uniknąć problemów z vh */
             font-size: 2em;
             transition: background-color 0.2s;
         }
@@ -394,8 +391,6 @@
     </div>
 
     <div id="file-content-section" class="hidden"></div>
-
-    <div id="scroll-spacer"></div>
 
     <div id="admin-panel">
         <button onclick="attemptAdminLogin()">Odblokuj</button>
