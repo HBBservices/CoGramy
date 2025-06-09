@@ -23,8 +23,8 @@
             --admin-panel-bg: #f9f9f9;
             --admin-panel-shadow: rgba(0, 0, 0, 0.1);
             --input-border: #ccc;
-            --input-bg: white; /* Ustawienie tła inputu na białe dla trybu jasnego */
-            --input-color: black; /* Ustawienie koloru czcionki inputu na czarny dla trybu jasnego */
+            --input-bg: white;
+            --input-color: black;
             --admin-button-bg: #007bff;
             --admin-button-hover-bg: #0056b3;
             --message-section-border: #ddd;
@@ -35,37 +35,45 @@
             --list-item-hover-bg: #444;
             --list-item-hover-color: #ffffff;
             --countdown-timer-color: #ccc;
+            --mode-toggle-bg: var(--button-bg);
+            --mode-toggle-color: var(--input-color);
+            --mode-toggle-border: var(--input-border);
+            --mode-toggle-hover-bg: var(--button-hover-bg);
         }
 
-        /* Tryb ciemny */
+        /* Tryb ciemny - zmienione kolory na granatowo-czarne z szarymi czcionkami */
         body.dark-mode {
-            --body-bg: #1a1a2e;
-            --display-bg: #272343;
-            --display-color: #e0e0e0;
-            --main-container-bg: #2e2e4e;
-            --main-container-shadow: rgba(0, 0, 0, 0.3);
-            --button-bg: #4a4a6e;
-            --button-hover-bg: #5a5a8e;
-            --reset-button-bg: #c0392b;
-            --reset-button-hover-bg: #a02d22;
-            --list-button-bg: #27ae60;
-            --list-button-hover-bg: #229954;
-            --admin-panel-border: #3d3d5c;
-            --admin-panel-bg: #2e2e4e;
-            --admin-panel-shadow: rgba(0, 0, 0, 0.3);
-            --input-border: #5a5a8e;
-            --input-bg: #3c3c62; /* Ciemne tło inputu w trybie ciemnym */
-            --input-color: #e0e0e0; /* Jasna czcionka inputu w trybie ciemnym */
-            --admin-button-bg: #1a5276;
-            --admin-button-hover-bg: #154060;
-            --message-section-border: #3d3d5c;
-            --message-section-bg: #2e2e4e;
-            --file-content-section-bg: #272343;
-            --file-content-section-color: #e0e0e0;
-            --list-item-border: #5a5a8e;
-            --list-item-hover-bg: #5a5a8e;
-            --list-item-hover-color: #ffffff;
-            --countdown-timer-color: #a0a0a0;
+            --body-bg: #101525; /* Bardzo ciemny granat/prawie czarny */
+            --display-bg: #1A2036; /* Ciemniejszy granat */
+            --display-color: #A0A0A0; /* Szary */
+            --main-container-bg: #1A2036; /* Ciemniejszy granat */
+            --main-container-shadow: rgba(0, 0, 0, 0.5);
+            --button-bg: #252B44; /* Ciemny granat */
+            --button-hover-bg: #303650; /* nieznacznie jaśniejszy granat */
+            --reset-button-bg: #E74C3C; /* Zachowano czerwień dla resetu */
+            --reset-button-hover-bg: #C0392B;
+            --list-button-bg: #2ECC71; /* Zachowano zieleń dla listy */
+            --list-button-hover-bg: #27AE60;
+            --admin-panel-border: #1A2036; /* Ciemniejszy granat */
+            --admin-panel-bg: #101525; /* Bardzo ciemny granat/prawie czarny */
+            --admin-panel-shadow: rgba(0, 0, 0, 0.5);
+            --input-border: #252B44; /* Ciemny granat */
+            --input-bg: #1A2036; /* Ciemniejsze tło inputu */
+            --input-color: #A0A0A0; /* Szara czcionka inputu */
+            --admin-button-bg: #3498DB; /* Ciemny niebieski dla przycisku odblokuj */
+            --admin-button-hover-bg: #2980B9;
+            --message-section-border: #1A2036; /* Ciemniejszy granat */
+            --message-section-bg: #101525; /* Bardzo ciemny granat/prawie czarny */
+            --file-content-section-bg: #1A2036; /* Ciemniejszy granat */
+            --file-content-section-color: #A0A0A0; /* Szary */
+            --list-item-border: #252B44; /* Ciemny granat */
+            --list-item-hover-bg: #303650; /* nieznacznie jaśniejszy granat */
+            --list-item-hover-color: #E0E0E0; /* Jaśniejsza szarość */
+            --countdown-timer-color: #A0A0A0; /* Szary */
+            --mode-toggle-bg: #252B44; /* Granat */
+            --mode-toggle-color: #A0A0A0; /* Szary */
+            --mode-toggle-border: #1A2036; /* Ciemniejszy granat */
+            --mode-toggle-hover-bg: #303650; /* nieznacznie jaśniejszy granat */
         }
 
         /* Resetowanie domyślnych marginesów i paddingów dla body i html */
@@ -82,14 +90,14 @@
             justify-content: flex-start;
             align-items: center;
             min-height: 100vh;
-            background-color: var(--body-bg); /* Użycie zmiennej */
+            background-color: var(--body-bg);
             padding-top: 100px;
-            transition: background-color 0.3s ease; /* Płynne przejście */
+            transition: background-color 0.3s ease;
         }
 
         #display-section {
-            background-color: var(--display-bg); /* Użycie zmiennej */
-            color: var(--display-color); /* Użycie zmiennej */
+            background-color: var(--display-bg);
+            color: var(--display-color);
             font-size: 2em;
             display: flex;
             justify-content: flex-start;
@@ -100,7 +108,7 @@
             max-width: 600px;
             height: 60px;
             box-sizing: border-box;
-            box-shadow: 0 2px 5px var(--main-container-shadow); /* Użycie zmiennej */
+            box-shadow: 0 2px 5px var(--main-container-shadow);
             position: fixed;
             top: 20px;
             left: 50%;
@@ -126,7 +134,7 @@
             white-space: nowrap;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: thin;
-            scrollbar-color: var(--button-bg) var(--display-bg); /* Kolory scrollbara zależne od trybu */
+            scrollbar-color: var(--button-bg) var(--display-bg);
             transition: scrollbar-color 0.3s ease;
         }
 
@@ -136,29 +144,58 @@
         }
 
         #display::-webkit-scrollbar-track {
-            background: var(--display-bg); /* Tło ścieżki scrollbara */
+            background: var(--display-bg);
             border-radius: 10px;
         }
 
         #display::-webkit-scrollbar-thumb {
-            background: var(--button-bg); /* Kolor suwaka scrollbara */
+            background: var(--button-bg);
             border-radius: 10px;
         }
 
         #display::-webkit-scrollbar-thumb:hover {
-            background: var(--button-hover-bg); /* Kolor suwaka po najechaniu myszką */
+            background: var(--button-hover-bg);
         }
 
         #countdown-timer {
             margin-left: 10px;
             font-size: 0.8em;
-            color: var(--countdown-timer-color); /* Użycie zmiennej */
+            color: var(--countdown-timer-color);
             min-width: 40px;
             text-align: right;
             flex-shrink: 0;
             transition: color 0.3s ease;
         }
 
+        /* Kontener dla guzika zmiany trybu */
+        #mode-toggle-container {
+            position: fixed; /* Pozostaje na stałej pozycji */
+            top: 90px; /* Poniżej displaya (20px top + 60px height = 80px, +10px odstępu) */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999; /* Niżej niż display, wyżej niż reszta */
+            width: 90vw;
+            max-width: 600px; /* Tak samo jak display */
+            display: flex;
+            justify-content: flex-end; /* Wyrównaj przycisk do prawej */
+            padding-right: 10px; /* Odsunięcie od prawej krawędzi kontenera */
+            box-sizing: border-box;
+        }
+
+        #mode-toggle {
+            background-color: var(--mode-toggle-bg);
+            color: var(--mode-toggle-color);
+            border: 1px solid var(--mode-toggle-border);
+            border-radius: 5px;
+            padding: 5px 10px; /* Mniejszy padding dla guzika */
+            cursor: pointer;
+            font-size: 0.8em; /* Mniejsza czcionka */
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+
+        #mode-toggle:hover {
+            background-color: var(--mode-toggle-hover-bg);
+        }
 
         .main-content-container {
             max-width: 320px;
@@ -173,9 +210,9 @@
             width: 100%;
             box-sizing: border-box;
             padding: 20px;
-            background-color: var(--main-container-bg); /* Użycie zmiennej */
+            background-color: var(--main-container-bg);
             border-radius: 8px;
-            box-shadow: 0 0 10px var(--main-container-shadow); /* Użycie zmiennej */
+            box-shadow: 0 0 10px var(--main-container-shadow);
             transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -185,30 +222,30 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            background-color: var(--button-bg); /* Użycie zmiennej */
+            background-color: var(--button-bg);
             transition: background-color 0.2s;
-            color: black; /* Domyślny kolor tekstu na przyciskach numerycznych */
+            color: black;
         }
 
         .btn:hover {
-            background-color: var(--button-hover-bg); /* Użycie zmiennej */
+            background-color: var(--button-hover-bg);
         }
 
         .btn-reset {
-            background-color: var(--reset-button-bg); /* Użycie zmiennej */
+            background-color: var(--reset-button-bg);
             color: white;
             grid-column: span 2;
         }
 
         .btn-reset:hover {
-            background-color: var(--reset-button-hover-bg); /* Użycie zmiennej */
+            background-color: var(--reset-button-hover-bg);
         }
 
         .btn-list-label {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: var(--list-button-bg); /* Użycie zmiennej */
+            background-color: var(--list-button-bg);
             color: white;
             grid-column: span 1;
             height: 60px;
@@ -218,38 +255,55 @@
             transition: background-color 0.2s;
         }
         .btn-list-label:hover {
-            background-color: var(--list-button-hover-bg); /* Użycie zmiennej */
+            background-color: var(--list-button-hover-bg);
         }
 
         /* Style dla panelu logowania */
         #admin-panel {
             text-align: center;
             padding: 15px;
-            border: 1px solid var(--admin-panel-border); /* Użycie zmiennej */
+            border: 1px solid var(--admin-panel-border);
             border-radius: 5px;
-            background-color: var(--admin-panel-bg); /* Użycie zmiennej */
-            box-shadow: 0 0 10px var(--admin-panel-shadow); /* Użycie zmiennej */
+            background-color: var(--admin-panel-bg);
+            box-shadow: 0 0 10px var(--admin-panel-shadow);
             display: flex;
             flex-direction: column;
             gap: 10px;
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+
+            /* Przesunięcie panelu logowania poza ekran */
+            position: fixed; /* Zmiana z relative na fixed */
+            bottom: -100vh; /* Przesunięcie poniżej dolnej krawędzi viewportu */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90vw; /* Zachowaj szerokość */
+            max-width: 320px; /* Zachowaj max-szerokość */
+            z-index: 1000; /* Upewnij się, że jest nad innymi elementami gdy jest potrzebny */
+            transition: bottom 0.5s ease-out; /* Płynne przejście */
         }
+
+        /* Styl dla aktywnego panelu logowania (gdy widoczny) */
+        #admin-panel.active {
+            bottom: 20px; /* Przesunięcie na widoczną pozycję na dole ekranu */
+        }
+
+
         #admin-panel input {
             padding: 8px;
-            border: 1px solid var(--input-border); /* Użycie zmiennej */
+            border: 1px solid var(--input-border);
             border-radius: 3px;
             width: 100%;
             box-sizing: border-box;
             height: 10vh;
             font-size: 1.5em;
-            background-color: var(--input-bg); /* Użycie zmiennej */
-            color: var(--input-color); /* Użycie zmiennej */
+            background-color: var(--input-bg);
+            color: var(--input-color);
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
         }
         #admin-panel button {
             padding: 8px 15px;
-            background-color: var(--admin-button-bg); /* Użycie zmiennej */
-            color: white; /* Kolor napisu "Odblokuj" pozostaje biały */
+            background-color: var(--admin-button-bg);
+            color: white;
             border: none;
             border-radius: 3px;
             cursor: pointer;
@@ -261,7 +315,7 @@
         }
 
         #admin-panel button:hover {
-            background-color: var(--admin-button-hover-bg); /* Użycie zmiennej */
+            background-color: var(--admin-button-hover-bg);
         }
 
         /* Sekcja dla komunikatów serwera */
@@ -271,9 +325,9 @@
             text-align: center;
             margin-top: 10px;
             padding: 10px;
-            border: 1px solid var(--message-section-border); /* Użycie zmiennej */
+            border: 1px solid var(--message-section-border);
             border-radius: 5px;
-            background-color: var(--message-section-bg); /* Użycie zmiennej */
+            background-color: var(--message-section-bg);
             min-height: 40px;
             box-sizing: border-box;
             display: flex;
@@ -291,22 +345,22 @@
             width: 90vw;
             max-width: 600px;
             height: 200px;
-            background-color: var(--file-content-section-bg); /* Użycie zmiennej */
-            color: var(--file-content-section-color); /* Użycie zmiennej */
+            background-color: var(--file-content-section-bg);
+            color: var(--file-content-section-color);
             font-size: 1.1em;
             padding: 10px;
             border-radius: 4px;
             overflow-y: scroll;
             box-sizing: border-box;
             margin-top: 20px;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5); /* Cień bez zmiennej, bo zawsze ciemny */
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
             transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* Styl dla pojedynczych linii w liście */
         .list-item {
             padding: 5px 0;
-            border-bottom: 1px solid var(--list-item-border); /* Użycie zmiennej */
+            border-bottom: 1px solid var(--list-item-border);
             cursor: pointer;
             transition: background-color 0.2s, color 0.2s, border-bottom 0.3s ease;
             white-space: nowrap;
@@ -318,8 +372,8 @@
         }
         /* Zmiana koloru tekstu po najechaniu myszką dla lepszego kontrastu */
         .list-item:hover {
-            background-color: var(--list-item-hover-bg); /* Użycie zmiennej */
-            color: var(--list-item-hover-color); /* Użycie zmiennej */
+            background-color: var(--list-item-hover-bg);
+            color: var(--list-item-hover-color);
         }
 
         /* Ukryj input file */
@@ -332,30 +386,13 @@
             display: none !important;
         }
 
-        /* Styl dla przełącznika trybu */
-        #mode-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--button-bg);
-            color: var(--input-color); /* Zmienny kolor tekstu przycisku */
-            border: 1px solid var(--input-border);
-            border-radius: 5px;
-            padding: 8px 12px;
-            cursor: pointer;
-            font-size: 0.9em;
-            z-index: 1001;
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-
-        #mode-toggle:hover {
-            background-color: var(--button-hover-bg);
-        }
     </style>
 </head>
 <body>
 
-    <button id="mode-toggle">Przełącz Tryb</button>
+    <div id="mode-toggle-container">
+        <button id="mode-toggle">Przełącz Tryb</button>
+    </div>
 
     <div id="display-section">
         <div id="display-content-wrapper">
