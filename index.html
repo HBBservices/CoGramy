@@ -71,7 +71,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             margin: 0;
             padding: 0;
-            min-height: 1000px; /* Wysokość body do 1000px */
+            min-height: 1050px; /* Wysokość body do 1050px (1000px + 50px) */
             height: auto;
             overflow-y: visible;
             overflow-x: hidden;
@@ -313,8 +313,8 @@
             background-color: var(--admin-panel-bg);
             box-shadow: 0 0 10px var(--admin-panel-shadow);
             display: flex;
-            flex-direction: column;
-            gap: 10px;
+            flex-direction: column; /* Używamy flexbox dla pionowego układu */
+            gap: 10px; /* Odstęp między elementami */
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease, padding 0.5s ease, border 0.5s ease;
 
             position: absolute; /* Pozycjonowanie absolutne względem przewijanego body */
@@ -355,6 +355,7 @@
             background-color: var(--input-bg); /* Zmienione na kolor display-bg */
             color: var(--input-color); /* Zmienione na kolor display-color */
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            order: 3; /* Ustawia ten element na trzeciej pozycji w flexbox */
         }
 
         /* Zmieniamy styl przycisku Odblokuj na ten sam co Fullscreen */
@@ -376,6 +377,15 @@
             background-color: var(--fullscreen-button-hover-bg); /* Używamy koloru hovera guzika pełnoekranowego */
         }
 
+        /* Ustawiamy kolejność przycisków w panelu logowania */
+        #admin-panel .btn-fullscreen {
+            order: 1; /* Pełny ekran na pierwszej pozycji */
+        }
+
+        #admin-panel button:not(.btn-fullscreen) {
+            order: 2; /* Odblokuj na drugiej pozycji */
+        }
+
         #admin-panel .qr-code {
             max-width: 100%;
             height: auto;
@@ -383,6 +393,7 @@
             display: block; /* Upewnij się, że zajmuje całą szerokość i nie ma zbędnych marginesów */
             margin-left: auto;
             margin-right: auto;
+            order: 4; /* Obrazek na czwartej pozycji */
         }
 
         /* Sekcja do wyświetlania zawartości pliku */
@@ -441,6 +452,7 @@
     </style>
 </head>
 <body>
+    <!-- Sekcja komunikatów systemowych przeniesiona wyżej i z fixed position -->
     <div id="message-section" class="hidden">
         <p id="admin-message"></p>
     </div>
@@ -454,6 +466,7 @@
 
     <div id="top-overlay"></div>
 
+    <!-- Nowy kontener na logo -->
     <div id="logo-container">
         <img src="HBB_Logo.png" alt="Logo HBB">
     </div>
@@ -469,8 +482,10 @@
             <button class="btn" onclick="appendToDisplay('7')">7</button>
             <button class="btn" onclick="appendToDisplay('8')">8</button>
             <button class="btn" onclick="appendToDisplay('9')">9</button>
-            <button class="btn" onclick="appendToDisplay(' I')">I</button> <button class="btn" onclick="appendToDisplay('0')">0</button>
-            <button class="btn" onclick="appendToDisplay(' W')">W</button> <button class="btn btn-reset" onclick="clearDisplay()">Reset</button>
+            <button class="btn" onclick="appendToDisplay('I')">I</button>
+            <button class="btn" onclick="appendToDisplay('0')">0</button>
+            <button class="btn" onclick="appendToDisplay('W')">W</button>
+            <button class="btn btn-reset" onclick="clearDisplay()">Reset</button>
             <label for="file-input" class="btn btn-list-label" id="list-button-label">Lista</label>
             <input type="file" id="file-input" accept=".txt">
             <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
@@ -480,9 +495,9 @@
     </div>
 
     <div id="admin-panel">
-        <input type="text" id="secret-code-input" placeholder="Podaj hasło">
-        <button onclick="attemptAdminLogin()">Odblokuj</button>
         <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
+        <button onclick="attemptAdminLogin()">Odblokuj</button>
+        <input type="text" id="secret-code-input" placeholder="Podaj hasło">
         <img src="CoGramy_QRCode.png" alt="CoGramy QR Code" class="qr-code">
     </div>
 
