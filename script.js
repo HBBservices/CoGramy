@@ -16,13 +16,22 @@ let isAdmin = false;
 
 const RENDER_SERVER_URL = 'wss://cogramy.onrender.com';
 
+// Funkcja skracająca komunikaty
+function shortenMessage(message, maxLength = 35) { // Domyślna długość, możesz dostosować
+    if (message.length > maxLength) {
+        return message.substring(0, maxLength - 3) + '...';
+    }
+    return message;
+}
+
 function updateAdminMessage(text, color = 'black', show = true) {
     if (!adminMessage || !messageSection) {
         console.error("[updateAdminMessage ERROR] Brak elementów DOM adminMessage lub messageSection!");
         return;
     }
 
-    adminMessage.textContent = text;
+    // Skróć tekst przed ustawieniem
+    adminMessage.textContent = shortenMessage(text);
     adminMessage.style.color = color;
 
     const hasText = text.trim() !== '';
@@ -75,7 +84,7 @@ function connectWebSocket() {
                 window.scrollTo({ top: 0, behavior: 'instant' });
             } else {
                 isAdmin = false;
-                updateAdminMessage('Nieprawidłowy kod. Spróbuj ponownie.', 'red', true);
+                updateAdminMessage('Nieprawidłowy kod. Spróbuj ponownie.', 'red', true); // Ten komunikat zostanie skrócony
             }
         } else if (message.type === 'countUpUpdate') {
             updateCountUpDisplay(message.value);
@@ -83,7 +92,7 @@ function connectWebSocket() {
             display.textContent = '';
             updateCountUpDisplay(0);
         } else if (message.type === 'message') {
-            updateAdminMessage(message.text, 'red', true);
+            updateAdminMessage(message.text, 'red', true); // Ten komunikat również zostanie skrócony
         }
     };
 
@@ -93,14 +102,14 @@ function connectWebSocket() {
         adminPanel.classList.remove('hidden-panel'); // Pokaż panel logowania po rozłączeniu
         keypadButtons.classList.add('hidden');
         fileContentSection.classList.add('hidden');
-        updateAdminMessage('Rozłączono. Próba ponownego połączenia...', 'orange', true);
+        updateAdminMessage('Rozłączono. Próba ponownego połączenia...', 'orange', true); // Ten komunikat zostanie skrócony
         updateCountUpDisplay(0);
         setTimeout(connectWebSocket, 3000);
     };
 
     socket.onerror = (error) => {
         console.error('Błąd WebSocket:', error);
-        updateAdminMessage('Wystąpił błąd połączenia. Sprawdź konsolę.', 'red', true);
+        updateAdminMessage('Wystąpił błąd połączenia. Sprawdź konsolę.', 'red', true); // Ten komunikat zostanie skrócony
         updateCountUpDisplay(0);
         socket.close();
     };
