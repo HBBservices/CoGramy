@@ -9,14 +9,13 @@ const fileInput = document.getElementById('file-input');
 const fileContentSection = document.getElementById('file-content-section');
 const listButtonLabel = document.getElementById('list-button-label');
 
-const countdownTimerDisplay = document.getElementById('countdown-timer'); // Referencja do elementu timera
-const modeToggle = document.getElementById('mode-toggle'); // Nowa referencja do przycisku przełączania trybu
+const countdownTimerDisplay = document.getElementById('countdown-timer');
+const modeToggle = document.getElementById('mode-toggle');
 
 let socket;
 let isAdmin = false;
 
-// Zaktualizowany URL dla nowego Web Service na Renderze "CoGramy"
-const RENDER_SERVER_URL = 'wss://cogramy.onrender.com'; // Zmień na 'wss://TwojaNazwaUslugi.onrender.com'
+const RENDER_SERVER_URL = 'wss://cogramy.onrender.com';
 
 function updateAdminMessage(text, color = 'black', show = true) {
     if (!adminMessage || !messageSection) {
@@ -36,24 +35,21 @@ function updateAdminMessage(text, color = 'black', show = true) {
     }
 }
 
-// Funkcja WYWOŁYWANA PRZEZ WIADOMOŚĆ Z SERWERA, aby zaktualizować licznik (teraz liczy w górę)
 function updateCountUpDisplay(time) {
-    if (time > 0 && time <= 60) { // Zegar jest widoczny tylko, gdy liczy od 1 do 60
+    if (time > 0 && time <= 60) {
         countdownTimerDisplay.textContent = time;
-        countdownTimerDisplay.classList.remove('hidden'); // Upewnij się, że jest widoczny
-    } else { // Jeśli czas to 0 (po resecie) lub poza zakresem, ukryj zegar
-        countdownTimerDisplay.textContent = ''; // Wyczyść tekst
-        countdownTimerDisplay.classList.add('hidden'); // Ukryj element
+        countdownTimerDisplay.classList.remove('hidden');
+    } else {
+        countdownTimerDisplay.textContent = '';
+        countdownTimerDisplay.classList.add('hidden');
     }
 }
 
 function connectWebSocket() {
-    // Sprawdź, czy socket już istnieje i jest otwarty, aby uniknąć wielokrotnych połączeń
     if (socket && socket.readyState === WebSocket.OPEN) {
         console.log('Socket już otwarty, nie nawiązuję nowego połączenia.');
         return;
     }
-    // Jeśli socket istnieje, ale jest w stanie CLOSING lub CLOSED, ustaw na null przed utworzeniem nowego
     if (socket && (socket.readyState === WebSocket.CLOSING || socket.readyState === WebSocket.CLOSED)) {
         socket = null;
     }
@@ -63,8 +59,8 @@ function connectWebSocket() {
     socket.onopen = () => {
         console.log('Połączono z serwerem WebSocket na Renderze');
         updateAdminMessage('', 'green', false);
-        // Po ponownym połączeniu, stan displaya i timera zostanie wysłany przez serwer,
-        // więc nie musimy ich tutaj czyścić ani ustawiać.
+        // Po udanym połączeniu, pokazujemy panel logowania
+        adminPanel.classList.add('active');
     };
 
     socket.onmessage = (event) => {
@@ -75,10 +71,9 @@ function connectWebSocket() {
         } else if (message.type === 'authResponse') {
             if (message.success) {
                 isAdmin = true;
-                adminPanel.classList.add('hidden');
+                adminPanel.classList.remove('active'); // Ukryj panel logowania po udanym logowaniu
                 keypadButtons.classList.remove('hidden');
-                // NIE UKRYWAMY fileContentSection tutaj po autoryzacji
-                updateAdminMessage('', 'green', false); // Wyczyść komunikat
+                updateAdminMessage('', 'green', false);
             } else {
                 isAdmin = false;
                 updateAdminMessage('Nieprawidłowy kod. Spróbuj ponownie.', 'red', true);
@@ -87,7 +82,7 @@ function connectWebSocket() {
             updateCountUpDisplay(message.value);
         } else if (message.type === 'resetConfirmed') {
             display.textContent = '';
-            updateCountUpDisplay(0); // Wyczyść licznik i UKRYJ go
+            updateCountUpDisplay(0);
         } else if (message.type === 'message') {
             updateAdminMessage(message.text, 'red', true);
         }
@@ -96,33 +91,32 @@ function connectWebSocket() {
     socket.onclose = (event) => {
         console.log('Rozłączono z serwerem WebSocket:', event.code, event.reason);
         isAdmin = false;
-        adminPanel.classList.remove('hidden');
-        keypadButtons.classList.add('hidden'); // Ukryj klawiaturę
-        fileContentSection.classList.add('hidden'); // UKRYJ sekcję pliku po rozłączeniu (tutaj ma sens)
+        adminPanel.classList.add('active'); // Pokaż panel logowania po rozłączeniu
+        keypadButtons.classList.add('hidden');
+        fileContentSection.classList.add('hidden');
         updateAdminMessage('Rozłączono. Próba ponownego połączenia...', 'orange', true);
-        updateCountUpDisplay(0); // Wyczyść licznik i UKRYJ go po rozłączeniu
-        setTimeout(connectWebSocket, 3000); // Spróbuj ponownie połączyć po 3 sekundach
+        updateCountUpDisplay(0);
+        setTimeout(connectWebSocket, 3000);
     };
 
     socket.onerror = (error) => {
         console.error('Błąd WebSocket:', error);
         updateAdminMessage('Wystąpił błąd połączenia. Sprawdź konsolę.', 'red', true);
-        updateCountUpDisplay(0); // Wyczyść licznik i UKRYJ go w przypadku błędu
-        socket.close(); // Zamknij socket po błędzie, aby wywołać onclose i próbę ponownego połączenia
+        updateCountUpDisplay(0);
+        socket.close();
     };
 }
 
-// --- Funkcje do obsługi trybu jasnego/ciemnego ---
 function setDarkMode() {
     document.body.classList.add('dark-mode');
     localStorage.setItem('theme', 'dark');
-    modeToggle.textContent = 'Tryb Jasny'; // Zmień tekst przycisku
+    modeToggle.textContent = 'Tryb Jasny';
 }
 
 function setLightMode() {
     document.body.classList.remove('dark-mode');
     localStorage.setItem('theme', 'light');
-    modeToggle.textContent = 'Tryb Ciemny'; // Zmień tekst przycisku
+    modeToggle.textContent = 'Tryb Ciemny';
 }
 
 function toggleTheme() {
@@ -133,14 +127,11 @@ function toggleTheme() {
     }
 }
 
-// --- Inicjalizacja po załadowaniu DOM ---
 document.addEventListener('DOMContentLoaded', () => {
-    // Sprawdź zapisany motyw w localStorage
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         setDarkMode();
     } else {
-        // Domyślnie tryb jasny, jeśli brak zapisanego lub jest 'light'
         setLightMode();
     }
 
@@ -161,8 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             updateAdminMessage('', '', false);
-            // Po kliknięciu "Lista", zawsze pokazujemy sekcję, ale tylko jeśli jest załadowany plik.
-            // Faktyczne pokazanie/ukrycie po załadowaniu pliku dzieje się w reader.onload
             if (fileContentSection.children.length > 0) {
                    fileContentSection.classList.remove('hidden');
             }
@@ -172,25 +161,24 @@ document.addEventListener('DOMContentLoaded', () => {
     fileInput.addEventListener('change', (event) => {
         if (!isAdmin) {
              updateAdminMessage('Tylko uprawnieni użytkownicy mogą ładować listy.', 'red', true);
-             fileInput.value = ''; // Wyczyść input file
+             fileInput.value = '';
              fileContentSection.classList.add('hidden');
              return;
         }
 
         const file = event.target.files[0];
         if (file) {
-            // Walidacja typu pliku
             if (file.type && !file.type.startsWith('text/')) {
                 updateAdminMessage('Proszę wybrać plik tekstowy (.txt).', 'red', true);
                 fileContentSection.classList.add('hidden');
-                fileInput.value = ''; // Wyczyść input file, aby móc ponownie wybrać ten sam plik po błędzie
+                fileInput.value = '';
                 return;
             }
 
             const reader = new FileReader();
             reader.onload = (e) => {
                 const fileContent = e.target.result;
-                fileContentSection.innerHTML = ''; // Wyczyść poprzednią zawartość
+                fileContentSection.innerHTML = '';
 
                 const lines = fileContent.split('\n');
                 let lineNumber = 0;
@@ -202,20 +190,16 @@ document.addEventListener('DOMContentLoaded', () => {
                         const lineDiv = document.createElement('div');
                         lineDiv.classList.add('list-item');
 
-                        // Formatuj numer linii z wiodącymi zerami
                         const formattedNumber = String(lineNumber).padStart(2, '0') + '. ';
                         
                         lineDiv.textContent = formattedNumber + trimmedLine;
-                        // Przechowaj oryginalną zawartość do wysłania na serwer
                         lineDiv.dataset.displayContent = formattedNumber + trimmedLine;
 
                         lineDiv.addEventListener('click', () => {
                             if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-                                // Wysyłamy wiadomość o aktualizacji do serwera
                                 socket.send(JSON.stringify({ type: 'updateDisplay', value: lineDiv.dataset.displayContent }));
-                                // Po wybraniu linii, NIE UKRYWAMY sekcji listy
-                                fileInput.value = ''; // Wyczyść input file (bo plik został wybrany)
-                                updateAdminMessage('', '', false); // Wyczyść komunikat
+                                fileInput.value = '';
+                                updateAdminMessage('', '', false);
                             } else if (!isAdmin) {
                                 updateAdminMessage('Tylko uprawnieni użytkownicy mogą zmieniać wyświetlacz.', 'red', true);
                             } else {
@@ -227,46 +211,44 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (fileContentSection.children.length > 0) {
-                    fileContentSection.classList.remove('hidden'); // Pokaż sekcję, jeśli są linie
+                    fileContentSection.classList.remove('hidden');
                 } else {
-                    fileContentSection.classList.add('hidden'); // Ukryj, jeśli plik jest pusty
+                    fileContentSection.classList.add('hidden');
                     updateAdminMessage('Plik jest pusty lub nie zawiera poprawnych linii.', 'orange', true);
                 }
 
-                fileInput.value = ''; // Wyczyść input file po załadowaniu
+                fileInput.value = '';
             };
             reader.onerror = () => {
                 updateAdminMessage('Błąd odczytu pliku.', 'red', true);
                 fileContentSection.classList.add('hidden');
-                fileInput.value = ''; // Wyczyść input file
+                fileInput.value = '';
             };
             reader.readAsText(file);
         } else {
-            // Jeśli użytkownik anulował wybór pliku lub nie wybrano żadnego
-            // Nie ukrywamy, jeśli już jest widoczna z poprzedniego ładowania
-            updateAdminMessage('', '', false); // Wyczyść komunikat, jeśli plik nie został wybrany
+            updateAdminMessage('', '', false);
         }
     });
 
-    modeToggle.addEventListener('click', toggleTheme); // Obsługa kliknięcia przycisku
+    modeToggle.addEventListener('click', toggleTheme);
 });
 
 function attemptAdminLogin() {
     const code = secretCodeInput.value;
-    updateAdminMessage('', '', false); // Wyczyść poprzednie komunikaty
+    updateAdminMessage('', '', false);
     
     if (socket && socket.readyState === WebSocket.OPEN) {
         socket.send(JSON.stringify({ type: 'auth', code: code }));
     } else {
         updateAdminMessage('Nie połączono z serwerem. Próbuję ponownie...', 'red', true);
-        connectWebSocket(); // Spróbuj ponownie połączyć, jeśli nie ma połączenia
+        connectWebSocket();
     }
 }
 
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
         socket.send(JSON.stringify({ type: 'input', value: char }));
-        updateAdminMessage('', '', false); // Wyczyść komunikat
+        updateAdminMessage('', '', false);
     } else if (!isAdmin) {
         updateAdminMessage('Tylko uprawnieni użytkownicy mogą wprowadzać znaki.', 'red', true);
     } else {
@@ -277,7 +259,7 @@ function appendToDisplay(char) {
 function clearDisplay() {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
         socket.send(JSON.stringify({ type: 'reset' }));
-        updateAdminMessage('', '', false); // Wyczyść komunikat
+        updateAdminMessage('', '', false);
     } else if (!isAdmin) {
         updateAdminMessage('Tylko uprawnieni użytkownicy mogą resetować wyświetlacz.', 'red', true);
     } else {
@@ -285,17 +267,13 @@ function clearDisplay() {
     }
 }
 
-// Obsługa klawiatury dla admina
 document.addEventListener('keydown', (event) => {
-    if (!isAdmin) return; // Tylko admin może używać klawiatury
+    if (!isAdmin) return;
 
-    const key = event.key.toUpperCase(); // Konwertuj na dużą literę
+    const key = event.key.toUpperCase();
     if (/[0-9IW]/.test(key)) {
         appendToDisplay(key);
     } else if (event.key === 'Backspace') {
-        // Aby obsłużyć Backspace, potrzebujesz nowej wiadomości do serwera
-        // Serwer musiałby wtedy skrócić `currentDisplayValue` o jeden znak.
-        // Poniżej tylko log konsoli, żebyś wiedział, że przycisk działa.
         console.log("Backspace pressed - wymaga implementacji na serwerze.");
     } else if (event.key === 'Delete') {
         clearDisplay();
