@@ -71,7 +71,7 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             margin: 0;
             padding: 0;
-            min-height: 1200px; /* Wysokość body do 1200px */
+            min-height: 1000px; /* Wysokość body do 1000px */
             height: auto;
             overflow-y: visible;
             overflow-x: hidden;
@@ -158,7 +158,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: calc(20px + 60px + 10px); /* 20px (top display) + 60px (display height) + 10px (padding/gap below display) */
+            height: calc(20px + 60px + 10px); /* 20px (top display) + 60px (display height) + 10px (nowy obszar) */
             background-color: var(--body-bg); /* Ten sam kolor co tło body */
             z-index: 999; /* Niżej niż display, wyżej niż reszta zawartości */
             pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
@@ -180,7 +180,7 @@
             height: auto; /* Zachowuje proporcje */
             display: block; /* Usuwa dodatkowy dół wynikający z inline-block */
             margin: 0 auto; /* Centruje obrazek horyzontalnie */
-            max-height: 150px; /* Ogranicz wysokość logo, aby nie było za duże */
+            max-height: 120px; /* Zmniejszona wysokość o 80% (poprzednio 150px * 0.8 = 120px) */
         }
 
 
@@ -347,8 +347,6 @@
             width: 90vw;
             max-width: 320px;
             text-align: center;
-            /* Ustawienie wysokości na 300px od góry ekranu, z uwzględnieniem, że jest to element statyczny,
-               a body ma `position: relative`, więc `top` będzie odnosiło się do początku body. */
             position: absolute; /* Zmieniamy na pozycjonowanie absolutne */
             top: 300px; /* 300px od górnej krawędzi body */
             left: 50%;
