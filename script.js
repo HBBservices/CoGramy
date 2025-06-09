@@ -58,8 +58,8 @@ function connectWebSocket() {
     socket.onopen = () => {
         console.log('Połączono z serwerem WebSocket na Renderze');
         updateAdminMessage('', 'green', false);
-        // Po udanym połączeniu panel logowania powinien być widoczny poprzez przewinięcie strony
-        adminPanel.classList.remove('hidden-panel'); // Panel jest domyślnie widoczny po starcie, usuwamy ukrycie
+        // Panel logowania jest domyślnie widoczny po starcie, ale poza ekranem
+        adminPanel.classList.remove('hidden-panel');
     };
 
     socket.onmessage = (event) => {
