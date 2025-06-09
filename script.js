@@ -58,8 +58,8 @@ function connectWebSocket() {
     socket.onopen = () => {
         console.log('Połączono z serwerem WebSocket na Renderze');
         updateAdminMessage('', 'green', false);
-        // Po udanym połączeniu, pokazujemy panel logowania (przesuwamy go na ekran)
-        adminPanel.classList.add('active');
+        // Po udanym połączeniu panel logowania powinien być widoczny
+        adminPanel.classList.remove('hidden-panel'); // Panel jest domyślnie widoczny po starcie
     };
 
     socket.onmessage = (event) => {
@@ -70,8 +70,8 @@ function connectWebSocket() {
         } else if (message.type === 'authResponse') {
             if (message.success) {
                 isAdmin = true;
-                adminPanel.classList.remove('active'); // Ukryj panel logowania po udanym logowaniu
-                keypadButtons.classList.remove('hidden'); // Pokaż klawiaturę
+                adminPanel.classList.add('hidden-panel'); // Ukryj panel logowania po udanym logowaniu
+                keypadButtons.classList.remove('hidden'); // Pokazujemy klawiaturę
                 updateAdminMessage('', 'green', false);
             } else {
                 isAdmin = false;
@@ -90,7 +90,7 @@ function connectWebSocket() {
     socket.onclose = (event) => {
         console.log('Rozłączono z serwerem WebSocket:', event.code, event.reason);
         isAdmin = false;
-        adminPanel.classList.add('active'); // Pokaż panel logowania po rozłączeniu
+        adminPanel.classList.remove('hidden-panel'); // Pokaż panel logowania po rozłączeniu
         keypadButtons.classList.add('hidden');
         fileContentSection.classList.add('hidden');
         updateAdminMessage('Rozłączono. Próba ponownego połączenia...', 'orange', true);
