@@ -7,7 +7,7 @@
     <style>
         /* Jedna kolorystyka */
         :root {
-            --body-bg: #f0f0f0; /* Zostaw to jako domyślny, ale body będzie miało override */
+            --body-bg: #f0f0f0;
             --display-bg: #333;
             --display-color: white;
             --main-container-bg: #fff;
@@ -40,8 +40,10 @@
         html {
             margin: 0;
             padding: 0;
-            height: 100%; /* HTML zajmuje całą dostępną wysokość */
-            overflow: hidden; /* Zapobiega przewijaniu całego okna przeglądarki */
+            height: 100%;
+            /* KLUCZOWA ZMIANA: Zezwól na przewijanie na poziomie HTML, aby body mogło się przewijać */
+            overflow-y: scroll; /* Umożliwia przewijanie całego dokumentu */
+            overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania */
         }
 
         body {
@@ -54,9 +56,11 @@
             transition: background-color 0.3s ease;
             margin: 0;
             padding: 0;
-            height: 1500px; /* Zwiększona wysokość dla body do 1500px */
-            overflow-y: scroll; /* Włącza przewijanie wewnątrz body */
-            overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania w body */
+            /* KLUCZOWA ZMIANA: Zmień wysokość body na min-height, aby mogło się rozciągać w zależności od zawartości, ale zachować minimalną widoczność */
+            min-height: 1500px; /* Minimalna wysokość body, aby pokazać przewijanie */
+            height: auto; /* Pozwól body na rozciąganie się, jeśli zawartość jest większa niż min-height */
+            overflow-y: visible; /* Pozwól HTML na zarządzanie przewijaniem, jeśli jest to nadrzędny element */
+            overflow-x: hidden;
             position: relative; /* Kluczowe dla pozycjonowania #admin-panel */
             top: 0;
             left: 0;
@@ -225,7 +229,7 @@
             top: 600px; /* Ustawienie na 600px od góry body */
             left: 50%;
             transform: translateX(-50%); /* Centrowanie horyzontalne */
-            margin-left: auto; /* Centrowanie horyzontalne */
+            margin-left: auto;
             margin-right: auto;
             width: 90vw;
             max-width: 320px;
