@@ -64,8 +64,6 @@
             bottom: 0;
         }
 
-        /* Usunięto #scroll-spacer, ponieważ panel będzie pozycjonowany absolutnie */
-
 
         #display-section {
             background-color: var(--display-bg);
@@ -151,7 +149,7 @@
             flex-direction: column;
             align-items: center;
             /* Zwiększ min-height, aby zawartość przed panelem logowania była wystarczająca */
-            min-height: 300px; /* Dostosuj, jeśli keypad i inne elementy są zbyt krótkie */
+            min-height: 500px; /* Zwiększono, aby zapewnić miejsce przed panelem na 600px */
         }
 
         .buttons {
@@ -224,7 +222,7 @@
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease, padding 0.5s ease, border 0.5s ease;
 
             position: absolute; /* Pozycjonowanie absolutne względem przewijanego body */
-            top: 400px; /* Ustawienie na 400px od góry body */
+            top: 600px; /* Ustawienie na 600px od góry body */
             left: 50%;
             transform: translateX(-50%); /* Centrowanie horyzontalne */
             margin-left: auto; /* Centrowanie horyzontalne */
@@ -256,7 +254,7 @@
             border-radius: 3px;
             width: 100%;
             box-sizing: border-box;
-            height: 50px; /* Ustawienie stałej wysokości w px, aby uniknąć problemów z vh */
+            height: 50px;
             font-size: 1.5em;
             background-color: var(--input-bg);
             color: var(--input-color);
@@ -271,7 +269,7 @@
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
-            height: 60px; /* Ustawienie stałej wysokości w px, aby uniknąć problemów z vh */
+            height: 60px;
             font-size: 2em;
             transition: background-color 0.2s;
         }
