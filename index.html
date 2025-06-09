@@ -149,11 +149,26 @@
             transition: color 0.3s ease;
         }
 
+        /* KLUCZOWA ZMIANA: Nowa warstwa zakrywająca */
+        #top-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            /* Wysokość: 20px (od góry do wyświetlacza) + 60px (wysokość wyświetlacza) + 10px (margines pod wyświetlaczem) */
+            height: calc(20px + 60px + 10px);
+            background-color: var(--body-bg); /* Ten sam kolor co tło body */
+            z-index: 999; /* Niżej niż display, wyżej niż reszta zawartości */
+            pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
+        }
+
+
         .main-content-container {
             max-width: 320px;
             width: 90vw;
             box-sizing: border-box;
-            margin-top: 100px; /* Aby zawartość zaczynała się poniżej fixed displaya */
+            /* Zwiększ margines, aby zawartość zaczynała się poniżej displaya i nowej warstwy */
+            margin-top: calc(20px + 60px + 10px + 20px); /* 20px display top + 60px display height + 10px overlay bottom margin + 20px normal margin-top for buttons */
             margin-left: auto;
             margin-right: auto;
             position: relative;
@@ -385,6 +400,8 @@
             <span id="countdown-timer"></span>
         </div>
     </div>
+
+    <div id="top-overlay"></div>
 
     <div class="main-content-container">
         <div class="buttons hidden" id="keypad-buttons">
