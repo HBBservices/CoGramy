@@ -82,6 +82,38 @@
             bottom: 0;
         }
 
+        /* Sekcja dla komunikatów serwera - teraz na samej górze */
+        #message-section {
+            width: 90vw;
+            max-width: 320px;
+            text-align: center;
+            position: fixed; /* Zawsze widoczny na górze viewportu */
+            top: 10px; /* 10px od górnej krawędzi viewportu */
+            left: 50%;
+            transform: translateX(-50%); /* Centrowanie horyzontalne */
+            padding: 5px 10px; /* Zmniejszony padding, aby zmieścić w jednej linii */
+            border: 1px solid var(--message-section-border);
+            border-radius: 5px;
+            background-color: var(--message-section-bg);
+            min-height: 25px; /* Minimalna wysokość dostosowana do mniejszej czcionki */
+            height: auto; /* Pozwala na dynamiczną wysokość, ale preferujemy jedną linię */
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            z-index: 1001; /* Najwyższy z-index, aby był nad displayem */
+        }
+
+        #admin-message {
+            margin: 0;
+            word-break: break-word; /* Dla pewności, ale staramy się unikać przełamywania */
+            color: var(--display-color);
+            font-size: 0.8em; /* Zmniejszona czcionka do 80% */
+            white-space: nowrap; /* Zapobiega zawijaniu tekstu */
+            overflow: hidden; /* Ukrywa nadmiarowy tekst */
+            text-overflow: ellipsis; /* Dodaje '...' do nadmiarowego tekstu */
+        }
 
         #display-section {
             background-color: var(--display-bg);
@@ -98,10 +130,11 @@
             box-sizing: border-box;
             box-shadow: 0 2px 5px var(--main-container-shadow);
             position: fixed; /* Zawsze na górze viewportu przeglądarki */
-            top: 20px; /* 20px od górnej krawędzi viewportu */
+            /* Ustawienie displaya 5px poniżej obszaru komunikatów */
+            top: calc(10px + 25px + 5px); /* top message (10px) + min-height message (25px) + odstęp (5px) */
             left: 50%;
             transform: translateX(-50%); /* Centrowanie horyzontalne */
-            z-index: 1000; /* Zawsze na wierzchu */
+            z-index: 1000; /* Zawsze na wierzchu, ale pod komunikatem */
             transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -157,10 +190,10 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: calc(20px + 60px + 10px); /* 20px (top display) + 60px (display height) + 10px (nowy obszar) */
+            /* Wysokość top-overlay musi pokrywać message-section, display-section i odstęp */
+            height: calc(10px + 25px + 5px + 60px + 10px); /* top message (10px) + min-height message (25px) + odstęp (5px) + display height (60px) + poprzedni odstęp (10px) */
             background-color: var(--body-bg); /* Ten sam kolor co tło body */
-            z-index: 999; /* Niżej niż display, wyżej niż reszta zawartości */
+            z-index: 999; /* Niżej niż display i message-section */
             pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
         }
 
@@ -169,7 +202,7 @@
             width: 90vw;
             max-width: 600px;
             text-align: center;
-            margin-top: 100px; /* 100px od góry body */
+            margin-top: calc(10px + 25px + 5px + 60px + 20px); /* Odległość od góry body, uwzględniając nowe elementy na fixed position */
             margin-bottom: 20px; /* Margines poniżej logo */
             z-index: 1; /* Upewnij się, że jest nad tłem, ale pod keypadem */
             flex-shrink: 0; /* Zapobiega zmniejszaniu się kontenera */
@@ -188,8 +221,7 @@
             max-width: 320px;
             width: 90vw;
             box-sizing: border-box;
-            /* Przesunięcie w dół, aby znaleźć się pod logo i górnym wyświetlaczem */
-            margin-top: 0; /* Teraz jest tuż pod logo, które ma swoje pozycjonowanie */
+            margin-top: 0; /* Jest tuż pod logo, które ma swoje pozycjonowanie */
             margin-left: auto;
             margin-right: auto;
             position: relative;
@@ -342,35 +374,6 @@
             background-color: var(--fullscreen-button-hover-bg); /* Używamy koloru hovera guzika pełnoekranowego */
         }
 
-        /* Sekcja dla komunikatów serwera */
-        #message-section {
-            width: 90vw;
-            max-width: 320px;
-            text-align: center;
-            position: absolute; /* Zmieniamy na pozycjonowanie absolutne */
-            top: 300px; /* 300px od górnej krawędzi body */
-            left: 50%;
-            transform: translateX(-50%); /* Centrowanie horyzontalne */
-            margin-top: 0; /* Resetujemy poprzedni margin-top */
-            padding: 10px;
-            border: 1px solid var(--message-section-border);
-            border-radius: 5px;
-            background-color: var(--message-section-bg);
-            min-height: 40px;
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-            z-index: 500; /* Ustawiamy wyższe z-index, aby było nad innymi elementami */
-        }
-
-        #admin-message {
-            margin: 0;
-            word-break: break-word;
-            color: var(--display-color); /* Upewnij się, że komunikat też jest biały */
-        }
-
         /* Sekcja do wyświetlania zawartości pliku */
         #file-content-section {
             width: 90vw;
@@ -427,6 +430,9 @@
     </style>
 </head>
 <body>
+    <div id="message-section" class="hidden">
+        <p id="admin-message"></p>
+    </div>
 
     <div id="display-section">
         <div id="display-content-wrapper">
@@ -458,10 +464,6 @@
             <input type="file" id="file-input" accept=".txt">
             <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
         </div>
-        <div id="message-section" class="hidden">
-            <p id="admin-message"></p>
-        </div>
-
         <div id="file-content-section" class="hidden"></div>
     </div>
 
