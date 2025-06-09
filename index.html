@@ -21,9 +21,10 @@
             --reset-button-hover-bg: #6B231D; /* Nieco jaśniejszy dla hovera */
             --list-button-bg: #145C2E; /* Bardzo, bardzo ciemny, głęboki zielony (jak Odblokuj) */
             --list-button-hover-bg: #1A6C37; /* Nieco jaśniejszy dla hovera */
-            --fullscreen-button-bg: #0D3E53; /* Bardzo ciemny, głęboki niebieski dla guzika pełnoekranowego i teraz Odblokuj */
-            --fullscreen-button-hover-bg: #134F6A; /* Nieco jaśniejszy dla hovera */
 
+            /* Nowy kolor dla guzika pełnoekranowego i Odblokuj */
+            --dark-navy-button-bg: #0A1016; /* Bardzo, bardzo ciemny granatowy */
+            --dark-navy-button-hover-bg: #10161C; /* Nieco jaśniejszy dla hovera */
 
             /* Kolory panelu admina - bardzo ciemne */
             --admin-panel-border: #2E3942; /* Ciemniejsza granica */
@@ -189,8 +190,8 @@
         #top-overlay {
             position: fixed;
             top: 0;
-            left: 0; /* Dodano: Zapewnia zakotwiczenie do lewej krawędzi viewportu */
-            width: 100vw; /* Dodano: Zapewnia pokrycie całej szerokości viewportu */
+            left: 0;
+            width: 100vw;
             /* Wysokość top-overlay: Od góry strony do 10px PONIŻEJ dolnej krawędzi displaya */
             /* 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (nowy odstęp) */
             height: calc(10px + 25px + 5px + 60px + 10px);
@@ -204,11 +205,11 @@
             width: 90vw;
             max-width: 600px;
             text-align: center;
-            /* Nowe przesunięcie logo: 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (nowy odstęp) */
-            margin-top: calc(10px + 25px + 5px + 60px + 10px + 10px); /* <--- NOWA WARTOŚĆ */
-            margin-bottom: 20px;
-            z-index: 1;
-            flex-shrink: 0;
+            /* Nowe przesunięcie logo: 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (odstęp top-overlay) + 10px (nowy odstęp) */
+            margin-top: calc(10px + 25px + 5px + 60px + 10px + 10px);
+            margin-bottom: 20px; /* Margines poniżej logo */
+            z-index: 1; /* Upewnij się, że jest nad tłem, ale pod keypadem */
+            flex-shrink: 0; /* Zapobiega zmniejszaniu się kontenera */
         }
 
         #logo-container img {
@@ -216,7 +217,7 @@
             height: auto;
             display: block;
             margin: 0 auto;
-            max-height: 90px; /* Nowa wysokość: 60% z poprzednich 150px */
+            max-height: 90px; /* Nowa wysokość: 60% z poprzednich 150px (tj. 90px) */
         }
 
 
@@ -233,7 +234,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 500px; /* Utrzymaj minimalną wysokość, ale uwzględnij nowy element */
+            min-height: 500px;
         }
 
         .buttons {
@@ -251,14 +252,14 @@
         }
 
         .btn {
-            height: 57px; /* Zmniejszona wysokość o 5% z 60px (60 * 0.95 = 57) */
+            height: 57px;
             font-size: 1.5em;
             border: none;
             border-radius: 4px;
             cursor: pointer;
             background-color: var(--button-bg);
             transition: background-color 0.2s;
-            color: var(--display-color); /* Kolor czcionki przycisków */
+            color: var(--display-color);
         }
 
         .btn:hover {
@@ -267,9 +268,9 @@
 
         .btn-reset {
             background-color: var(--reset-button-bg);
-            color: var(--display-color); /* Kolor czcionki przycisku reset */
+            color: var(--display-color);
             grid-column: span 2;
-            height: 60px; /* Reset przycisków specjalnych nie zmienia wysokości */
+            height: 60px;
         }
 
         .btn-reset:hover {
@@ -281,9 +282,9 @@
             align-items: center;
             justify-content: center;
             background-color: var(--list-button-bg);
-            color: var(--display-color); /* Kolor czcionki przycisku lista */
+            color: var(--display-color);
             grid-column: span 1;
-            height: 60px; /* Lista przycisków specjalnych nie zmienia wysokości */
+            height: 60px;
             font-size: 1.5em;
             border-radius: 4px;
             cursor: pointer;
@@ -295,14 +296,14 @@
 
         /* Nowy styl dla guzika pełnoekranowego w klawiaturze */
         .btn-fullscreen {
-            background-color: var(--fullscreen-button-bg);
+            background-color: var(--dark-navy-button-bg); /* Zmieniono na bardzo ciemny granatowy */
             color: var(--display-color);
-            grid-column: span 3; /* Zajmuje całą szerokość siatki */
-            height: 60px; /* Fullscreen przycisków specjalnych nie zmienia wysokości */
+            grid-column: span 3;
+            height: 60px;
         }
 
         .btn-fullscreen:hover {
-            background-color: var(--fullscreen-button-hover-bg);
+            background-color: var(--dark-navy-button-hover-bg); /* Zmieniono na nieco jaśniejszy granatowy dla hovera */
         }
 
         /* Style dla panelu logowania */
@@ -314,56 +315,56 @@
             background-color: var(--admin-panel-bg);
             box-shadow: 0 0 10px var(--admin-panel-shadow);
             display: flex;
-            flex-direction: column; /* Używamy flexbox dla pionowego układu */
-            gap: 10px; /* Odstęp między elementami */
+            flex-direction: column;
+            gap: 10px;
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease, padding 0.5s ease, border 0.5s ease;
 
-            position: absolute; /* Pozycjonowanie absolutne względem przewijanego body */
-            top: 700px; /* Dopasuj tę wartość, jeśli układ się jeszcze nie zgadza */
+            position: absolute;
+            top: 700px;
             left: 50%;
-            transform: translateX(-50%); /* Centrowanie horyzontalne */
+            transform: translateX(-50%);
             margin-left: auto;
             margin-right: auto;
             width: 90vw;
             max-width: 320px;
             z-index: 1;
             box-sizing: border-box;
-            min-height: 100px; /* Minimalna wysokość, żeby panel był widoczny */
+            min-height: 100px;
         }
 
         /* Ukrycie panelu po zalogowaniu */
         #admin-panel.hidden-panel {
             opacity: 0;
             visibility: hidden;
-            pointer-events: none; /* Wyłącza interakcje, gdy jest niewidoczny */
+            pointer-events: none;
             height: 0;
             padding: 0;
             margin-top: 0;
             margin-bottom: 0;
             border: none;
             overflow: hidden;
-            top: 0; /* Zresetuj top, gdy ukryty, aby nie zajmował miejsca */
+            top: 0;
         }
 
         #admin-panel input {
             padding: 8px;
-            border: 1px solid var(--input-border); /* Zmienione na kolor display-bg */
+            border: 1px solid var(--input-border);
             border-radius: 3px;
             width: 100%;
             box-sizing: border-box;
             height: 50px;
             font-size: 1.5em;
-            background-color: var(--input-bg); /* Zmienione na kolor display-bg */
-            color: var(--input-color); /* Zmienione na kolor display-color */
+            background-color: var(--input-bg);
+            color: var(--input-color);
             transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            order: 3; /* Ustawia ten element na trzeciej pozycji w flexbox */
+            order: 3;
         }
 
         /* Zmieniamy styl przycisku Odblokuj na ten sam co Fullscreen */
         #admin-panel button {
             padding: 8px 15px;
-            background-color: var(--fullscreen-button-bg); /* Używamy koloru guzika pełnoekranowego */
-            color: var(--display-color); /* Kolor czcionki guzika odblokuj */
+            background-color: var(--dark-navy-button-bg); /* Zmieniono na bardzo ciemny granatowy */
+            color: var(--display-color);
             border: none;
             border-radius: 3px;
             cursor: pointer;
@@ -375,26 +376,26 @@
         }
 
         #admin-panel button:hover {
-            background-color: var(--fullscreen-button-hover-bg); /* Używamy koloru hovera guzika pełnoekranowego */
+            background-color: var(--dark-navy-button-hover-bg); /* Zmieniono na nieco jaśniejszy granatowy dla hovera */
         }
 
         /* Ustawiamy kolejność przycisków w panelu logowania */
         #admin-panel .btn-fullscreen {
-            order: 1; /* Pełny ekran na pierwszej pozycji */
+            order: 1;
         }
 
         #admin-panel button:not(.btn-fullscreen) {
-            order: 2; /* Odblokuj na drugiej pozycji */
+            order: 2;
         }
 
         #admin-panel .qr-code {
             max-width: 100%;
             height: auto;
-            margin-top: 10px; /* Odstęp od przycisków */
-            display: block; /* Upewnij się, że zajmuje całą szerokość i nie ma zbędnych marginesów */
+            margin-top: 10px;
+            display: block;
             margin-left: auto;
             margin-right: auto;
-            order: 4; /* Obrazek na czwartej pozycji */
+            order: 4;
         }
 
         /* Sekcja do wyświetlania zawartości pliku */
