@@ -127,8 +127,6 @@
             transition: color 0.3s ease;
         }
 
-        /* Usunięto kontener dla guzika zmiany trybu, nie jest już potrzebny */
-
         .main-content-container {
             max-width: 320px;
             width: 90vw;
@@ -203,20 +201,16 @@
             gap: 10px;
             transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 
-            position: fixed;
-            bottom: -100vh;
-            left: 50%;
-            transform: translateX(-50%);
+            /* Zmodyfikowane pozycjonowanie, aby był poza ekranem i wymagał przewinięcia */
+            position: relative;
+            margin-top: calc(100vh - 100px); /* Przesuwa panel poza dolną krawędź. Dostosuj 100px jeśli górne elementy mają inną wysokość */
             width: 90vw;
             max-width: 320px;
             z-index: 1000;
-            transition: bottom 0.5s ease-out;
         }
 
-        /* Styl dla aktywnego panelu logowania (gdy widoczny) */
-        #admin-panel.active {
-            bottom: 20px;
-        }
+        /* Klasa .active nie jest już używana do pozycjonowania, ale pozostała w JS do pokazywania/ukrywania keypadButtons */
+        /* #admin-panel.active { } */
 
 
         #admin-panel input {
