@@ -238,18 +238,10 @@ function attemptAdminLogin() {
     }
 }
 
-// Zmodyfikowana funkcja appendToDisplay
+// Przywrócona funkcja appendToDisplay - brak automatycznego dodawania spacji przed 'I' i 'W'
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-        let currentValue = display.textContent;
-        let charToSend = char;
-
-        // Sprawdź, czy poprzedni znak to cyfra, i czy dodajemy 'I' lub 'W'
-        if ((char === 'I' || char === 'W') && currentValue.length > 0 && /\d/.test(currentValue[currentValue.length - 1])) {
-            charToSend = ' ' + char;
-        }
-
-        socket.send(JSON.stringify({ type: 'input', value: charToSend }));
+        socket.send(JSON.stringify({ type: 'input', value: char }));
         updateAdminMessage('', '', false);
     } else if (!isAdmin) {
         updateAdminMessage('Tylko uprawnieni użytkownicy mogą wprowadzać znaki.', 'red', true);
