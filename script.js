@@ -72,7 +72,6 @@ function connectWebSocket() {
                 adminPanel.classList.add('hidden-panel'); // Ukryj panel logowania po udanym logowaniu
                 keypadButtons.classList.remove('hidden'); // Pokazujemy klawiaturę
                 updateAdminMessage('', 'green', false);
-                // KLUCZOWA ZMIANA: Przewiń stronę na samą górę po udanym zalogowaniu
                 window.scrollTo({ top: 0, behavior: 'instant' });
             } else {
                 isAdmin = false;
@@ -204,6 +203,20 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+// NOWA FUNKCJA: Obsługa trybu pełnoekranowego
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+            console.error(`Błąd wejścia w tryb pełnoekranowy: ${err.message}`);
+        });
+    } else {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        }
+    }
+}
+
 
 function attemptAdminLogin() {
     const code = secretCodeInput.value;
