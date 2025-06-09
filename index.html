@@ -190,8 +190,9 @@
             position: fixed;
             top: 0;
             left: 0;
-            /* Wysokość top-overlay musi pokrywać message-section, display-section i odstęp */
-            height: calc(10px + 25px + 5px + 60px + 10px); /* top message (10px) + min-height message (25px) + odstęp (5px) + display height (60px) + poprzedni odstęp (10px) */
+            /* Wysokość top-overlay: Od góry strony do 10px PONIŻEJ dolnej krawędzi displaya */
+            /* 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (nowy odstęp) */
+            height: calc(10px + 25px + 5px + 60px + 10px);
             background-color: var(--body-bg); /* Ten sam kolor co tło body */
             z-index: 999; /* Niżej niż display i message-section */
             pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
@@ -202,7 +203,8 @@
             width: 90vw;
             max-width: 600px;
             text-align: center;
-            margin-top: calc(10px + 25px + 5px + 60px + 20px); /* Odległość od góry body, uwzględniając nowe elementy na fixed position */
+            /* Przesunięcie logo na wysokość 200px od góry ekranu */
+            margin-top: 200px;
             margin-bottom: 20px; /* Margines poniżej logo */
             z-index: 1; /* Upewnij się, że jest nad tłem, ale pod keypadem */
             flex-shrink: 0; /* Zapobiega zmniejszaniu się kontenera */
@@ -374,6 +376,15 @@
             background-color: var(--fullscreen-button-hover-bg); /* Używamy koloru hovera guzika pełnoekranowego */
         }
 
+        #admin-panel .qr-code {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px; /* Odstęp od przycisków */
+            display: block; /* Upewnij się, że zajmuje całą szerokość i nie ma zbędnych marginesów */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
         /* Sekcja do wyświetlania zawartości pliku */
         #file-content-section {
             width: 90vw;
@@ -464,6 +475,7 @@
             <input type="file" id="file-input" accept=".txt">
             <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
         </div>
+        
         <div id="file-content-section" class="hidden"></div>
     </div>
 
@@ -471,6 +483,7 @@
         <input type="text" id="secret-code-input" placeholder="Podaj hasło">
         <button onclick="attemptAdminLogin()">Odblokuj</button>
         <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
+        <img src="CoGramy_QRCode.png" alt="CoGramy QR Code" class="qr-code">
     </div>
 
     <script src="script.js"></script>
