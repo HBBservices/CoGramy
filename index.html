@@ -199,17 +199,17 @@
             pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
         }
 
-#logo-container {
-    position: relative;
-    width: 90vw;
-    max-width: 600px;
-    text-align: center;
-    /* Nowe przesunięcie logo: 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (nowy odstęp) */
-    margin-top: calc(10px + 25px + 5px + 60px + 10px + 10px); /* <--- NOWA WARTOŚĆ */
-    margin-bottom: 20px;
-    z-index: 1;
-    flex-shrink: 0;
-}
+        #logo-container {
+            position: relative;
+            width: 90vw;
+            max-width: 600px;
+            text-align: center;
+            /* Nowe przesunięcie logo: 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (nowy odstęp) */
+            margin-top: calc(10px + 25px + 5px + 60px + 10px + 10px); /* <--- NOWA WARTOŚĆ */
+            margin-bottom: 20px;
+            z-index: 1;
+            flex-shrink: 0;
+        }
 
         #logo-container img {
             max-width: 100%; /* Obrazek nie wyjdzie poza kontener */
