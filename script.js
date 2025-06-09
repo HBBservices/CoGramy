@@ -238,10 +238,14 @@ function attemptAdminLogin() {
     }
 }
 
-// Przywrócona funkcja appendToDisplay - brak automatycznego dodawania spacji przed 'I' i 'W'
+// Zmodyfikowana funkcja appendToDisplay, aby dodawać spację przed 'I' i 'W'
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-        socket.send(JSON.stringify({ type: 'input', value: char }));
+        let charToSend = char;
+        if (char === 'I' || char === 'W') {
+            charToSend = ' ' + char; // Dodajemy spację bezpośrednio
+        }
+        socket.send(JSON.stringify({ type: 'input', value: charToSend }));
         updateAdminMessage('', '', false);
     } else if (!isAdmin) {
         updateAdminMessage('Tylko uprawnieni użytkownicy mogą wprowadzać znaki.', 'red', true);
@@ -265,12 +269,13 @@ document.addEventListener('keydown', (event) => {
     if (!isAdmin) return;
 
     const key = event.key.toUpperCase();
+    // Tutaj również musimy zmodyfikować logikę dla klawiszy I i W
     if (/[0-9]/.test(key)) {
         appendToDisplay(key);
     } else if (key === 'I') {
-        appendToDisplay('I');
+        appendToDisplay('I'); // appendToDisplay() już dodaje spację
     } else if (key === 'W') {
-        appendToDisplay('W');
+        appendToDisplay('W'); // appendToDisplay() już dodaje spację
     } else if (event.key === 'Backspace') {
         // Implementacja usunięcia ostatniego znaku powinna być obsłużona na serwerze
         // Na potrzeby front-endu możemy dodać tymczasowe usunięcie
