@@ -10,7 +10,7 @@ const fileContentSection = document.getElementById('file-content-section');
 const listButtonLabel = document.getElementById('list-button-label');
 
 const countdownTimerDisplay = document.getElementById('countdown-timer');
-const modeToggle = document.getElementById('mode-toggle');
+// const modeToggle = document.getElementById('mode-toggle'); // Usunięto odwołanie do guzika trybu
 
 let socket;
 let isAdmin = false;
@@ -107,33 +107,10 @@ function connectWebSocket() {
     };
 }
 
-function setDarkMode() {
-    document.body.classList.add('dark-mode');
-    localStorage.setItem('theme', 'dark');
-    modeToggle.textContent = 'Tryb Jasny';
-}
-
-function setLightMode() {
-    document.body.classList.remove('dark-mode');
-    localStorage.setItem('theme', 'light');
-    modeToggle.textContent = 'Tryb Ciemny';
-}
-
-function toggleTheme() {
-    if (document.body.classList.contains('dark-mode')) {
-        setLightMode();
-    } else {
-        setDarkMode();
-    }
-}
+// Usunięto funkcje setDarkMode, setLightMode i toggleTheme
 
 document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        setDarkMode();
-    } else {
-        setLightMode();
-    }
+    // Usunięto ładowanie preferencji motywu z localStorage
 
     connectWebSocket();
 
@@ -230,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    modeToggle.addEventListener('click', toggleTheme);
+    // Usunięto modeToggle.addEventListener('click', toggleTheme);
 });
 
 function attemptAdminLogin() {
