@@ -54,7 +54,7 @@
             transition: background-color 0.3s ease;
             margin: 0;
             padding: 0;
-            height: 800px; /* Sztywna wysokość dla body ustawiona na 800px */
+            height: 800px; /* Sztywna wysokość dla body */
             overflow-y: scroll; /* Włącza przewijanie wewnątrz body */
             overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania w body */
             position: relative; /* Potrzebne do pozycjonowania z-index dla elementów w body */
@@ -66,8 +66,9 @@
 
         /* Dodatkowy element, który pomoże wymusić przewijanie, jeśli zawartość jest za krótka */
         #scroll-spacer {
-            /* Nowa wartość min-height, aby zapewnić przewijanie przy 800px wysokości body */
-            min-height: calc(800px - 200px); /* 800px (wysokość body) - ~200px (wysokość górnych elementów + panel) */
+            /* Nowa wartość min-height: zwiększona, aby wymusić większy zakres przewijania */
+            /* Używamy vh, aby lepiej dostosować się do wysokości ekranu smartfona */
+            min-height: 100vh; /* Zapewnia, że jest co najmniej jedna pełna wysokość viewportu miejsca do przewinięcia */
             width: 1px; /* Minimalna szerokość */
             flex-grow: 1; /* Rozszerza się, zajmując dostępną przestrzeń */
         }
@@ -258,7 +259,7 @@
             border-radius: 3px;
             width: 100%;
             box-sizing: border-box;
-            height: 10vh; /* Może być problematyczne przy 800px wysokości body */
+            height: 10vh; /* Może być problematyczne przy 800px wysokości body, lepiej ustalić w px lub % */
             font-size: 1.5em;
             background-color: var(--input-bg);
             color: var(--input-color);
@@ -273,7 +274,7 @@
             cursor: pointer;
             width: 100%;
             box-sizing: border-box;
-            height: 20vh; /* Może być problematyczne przy 800px wysokości body */
+            height: 20vh; /* Może być problematyczne przy 800px wysokości body, lepiej ustalić w px lub % */
             font-size: 2em;
             transition: background-color 0.2s;
         }
