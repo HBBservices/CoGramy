@@ -7,7 +7,7 @@
     <style>
         /* Jedna kolorystyka */
         :root {
-            --body-bg: #f0f0f0;
+            --body-bg: #f0f0f0; /* Przywrócony domyślny kolor tła */
             --display-bg: #333;
             --display-color: white;
             --main-container-bg: #fff;
@@ -41,7 +41,6 @@
             margin: 0;
             padding: 0;
             height: 100%;
-            /* KLUCZOWA ZMIANA: Zezwól na przewijanie na poziomie HTML, aby body mogło się przewijać */
             overflow-y: scroll; /* Umożliwia przewijanie całego dokumentu */
             overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania */
         }
@@ -52,16 +51,15 @@
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            background-color: lightgreen; /* JASNOZIELONE TŁO DLA CAŁEGO PRZEWIJANEGO OBSZARU */
+            background-color: var(--body-bg); /* Przywrócony poprzedni kolor tła */
             transition: background-color 0.3s ease;
             margin: 0;
             padding: 0;
-            /* KLUCZOWA ZMIANA: Zmień wysokość body na min-height, aby mogło się rozciągać w zależności od zawartości, ale zachować minimalną widoczność */
-            min-height: 1500px; /* Minimalna wysokość body, aby pokazać przewijanie */
-            height: auto; /* Pozwól body na rozciąganie się, jeśli zawartość jest większa niż min-height */
-            overflow-y: visible; /* Pozwól HTML na zarządzanie przewijaniem, jeśli jest to nadrzędny element */
+            min-height: 1000px; /* Wysokość body ustawiona na 1000px */
+            height: auto;
+            overflow-y: visible;
             overflow-x: hidden;
-            position: relative; /* Kluczowe dla pozycjonowania #admin-panel */
+            position: relative;
             top: 0;
             left: 0;
             right: 0;
@@ -152,8 +150,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Zwiększ min-height, aby zawartość przed panelem logowania była wystarczająca */
-            min-height: 500px; /* Zapewnia wystarczającą przestrzeń, aby panel na 600px był przewijalny */
+            min-height: 500px;
         }
 
         .buttons {
