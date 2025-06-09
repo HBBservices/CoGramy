@@ -238,9 +238,18 @@ function attemptAdminLogin() {
     }
 }
 
+// Zmodyfikowana funkcja appendToDisplay
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-        socket.send(JSON.stringify({ type: 'input', value: char }));
+        let currentValue = display.textContent;
+        let charToSend = char;
+
+        // Sprawdź, czy poprzedni znak to cyfra, i czy dodajemy 'I' lub 'W'
+        if ((char === 'I' || char === 'W') && currentValue.length > 0 && /\d/.test(currentValue[currentValue.length - 1])) {
+            charToSend = ' ' + char;
+        }
+
+        socket.send(JSON.stringify({ type: 'input', value: charToSend }));
         updateAdminMessage('', '', false);
     } else if (!isAdmin) {
         updateAdminMessage('Tylko uprawnieni użytkownicy mogą wprowadzać znaki.', 'red', true);
@@ -271,7 +280,11 @@ document.addEventListener('keydown', (event) => {
     } else if (key === 'W') {
         appendToDisplay('W');
     } else if (event.key === 'Backspace') {
-        console.log("Backspace pressed - wymaga implementacji na serwerze.");
+        // Implementacja usunięcia ostatniego znaku powinna być obsłużona na serwerze
+        // Na potrzeby front-endu możemy dodać tymczasowe usunięcie
+        if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
+            socket.send(JSON.stringify({ type: 'backspace' })); // Nowy typ wiadomości dla serwera
+        }
     } else if (event.key === 'Delete') {
         clearDisplay();
     }
