@@ -1,5 +1,5 @@
 const express = require('express');
-const http = require('http');
+const http = require = require('http');
 const WebSocket = require('ws');
 const path = require('path');
 
@@ -123,14 +123,15 @@ wss.on('connection', ws => {
                 ws.send(JSON.stringify({ type: 'resetConfirmed' }));
                 shouldStartNewCountUp = false; // Po manualnym resecie nie rozpoczynamy liczenia, tylko czekamy na kolejny input
             }
-            // Zmieniono warunek dla 'input'
+            // ZMODYFIKOWANA LINIA: Teraz poprawnie akceptuje cyfry, "Instrumental" lub "Wokal"
             else if (parsedMessage.type === 'input' && typeof parsedMessage.value === 'string') {
-                // Akceptuj cyfry, "Instrumental" i "Wokal"
+                // Sprawdź, czy wartość jest cyfrą lub jednym ze specjalnych słów
                 if (/[0-9]/.test(parsedMessage.value) || parsedMessage.value === 'Instrumental' || parsedMessage.value === 'Wokal') {
                     currentDisplayValue += parsedMessage.value; // Dodaj otrzymany znak/słowo
                     shouldStartNewCountUp = true; // Wpisanie znaku/słowa -> start licznika
                 } else {
-                    console.warn('Nieprawidłowa wartość wejścia od autoryzowanego klienta:', parsedMessage.value);
+                    // Jeśli wartość nie pasuje do żadnego z oczekiwanych formatów, nie rób nic i zaloguj
+                    console.warn('Nieprawidłowa wartość input od autoryzowanego klienta:', parsedMessage.value);
                 }
             } else if (parsedMessage.type === 'backspace') {
                 // Obsługa backspace: usuwamy ostatni znak
@@ -138,6 +139,7 @@ wss.on('connection', ws => {
                 shouldStartNewCountUp = false; // Backspace nie uruchamia timera od nowa
             }
             else {
+                // Ta sekcja powinna być wykonywana tylko dla naprawdę nieznanych typów wiadomości
                 console.warn('Nieznany typ wiadomości lub nieprawidłowa wartość od autoryzowanego klienta:', parsedMessage);
             }
 
