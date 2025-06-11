@@ -123,18 +123,23 @@ wss.on('connection', ws => {
                 ws.send(JSON.stringify({ type: 'resetConfirmed' }));
                 shouldStartNewCountUp = false; // Po manualnym resecie nie rozpoczynamy liczenia, tylko czekamy na kolejny input
             }
-            // ZMODYFIKOWANA LINIA: Teraz akceptuje stringi o długości 1 (cyfry) lub 2 (' I', ' W')
-            else if (parsedMessage.type === 'input' && typeof parsedMessage.value === 'string' && 
-                     (parsedMessage.value.length === 1 && /[0-9]/.test(parsedMessage.value)) || // Cyfry
-                     (parsedMessage.value.length === 2 && (parsedMessage.value === ' I' || parsedMessage.value === ' W'))) { // ' I' lub ' W'
-                currentDisplayValue += parsedMessage.value; // Dodaj otrzymany znak (ze spacją lub bez)
-                shouldStartNewCountUp = true; // Wpisanie znaku -> start licznika
+            // ZMODYFIKOWANA LINIA: Teraz akceptuje stringi o długości 1 (cyfry) lub pełne słowa 'Instrumental', 'Wokal'
+            else if (parsedMessage.type === 'input' && typeof parsedMessage.value === 'string') {
+                // Sprawdź, czy wartość jest cyfrą lub jednym ze specjalnych słów
+                if (/[0-9]/.test(parsedMessage.value) || parsedMessage.value === 'Instrumental' || parsedMessage.value === 'Wokal') {
+                    currentDisplayValue += parsedMessage.value; // Dodaj otrzymany znak/słowo
+                    shouldStartNewCountUp = true; // Wpisanie znaku/słowa -> start licznika
+                } else {
+                    // Jeśli wartość nie pasuje do żadnego z oczekiwanych formatów, nie rób nic i zaloguj
+                    console.warn('Nieznana lub nieprawidłowa wartość input od autoryzowanego klienta:', parsedMessage.value);
+                }
             } else if (parsedMessage.type === 'backspace') {
                 // Obsługa backspace: usuwamy ostatni znak
                 currentDisplayValue = currentDisplayValue.slice(0, -1);
                 shouldStartNewCountUp = false; // Backspace nie uruchamia timera od nowa
             }
             else {
+                // Ta sekcja powinna być wykonywana tylko dla naprawdę nieznanych typów wiadomości
                 console.warn('Nieznany typ wiadomości lub nieprawidłowa wartość od autoryzowanego klienta:', parsedMessage);
             }
 
