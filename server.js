@@ -123,16 +123,14 @@ wss.on('connection', ws => {
                 ws.send(JSON.stringify({ type: 'resetConfirmed' }));
                 shouldStartNewCountUp = false; // Po manualnym resecie nie rozpoczynamy liczenia, tylko czekamy na kolejny input
             }
-            // ZMODYFIKOWANA LINIA (server.js): Teraz akceptuje pełne słowa "Instrumental" i "Wokal"
+            // Zmieniono warunek dla 'input'
             else if (parsedMessage.type === 'input' && typeof parsedMessage.value === 'string') {
-                // Sprawdzamy czy wartość to cyfra, " Instrumental", " Wokal", "Instrumental" lub "Wokal"
-                // Ta część została zmieniona, aby akceptować pełne słowa bez spacji wiodącej od frontendu,
-                // bo spacja jest już dodawana na froncie, jeśli potrzeba.
-                if (/[0-9]/.test(parsedMessage.value) || parsedMessage.value === ' Instrumental' || parsedMessage.value === ' Wokal' || parsedMessage.value === 'Instrumental' || parsedMessage.value === 'Wokal') {
-                    currentDisplayValue += parsedMessage.value;
-                    shouldStartNewCountUp = true;
+                // Akceptuj cyfry, "Instrumental" i "Wokal"
+                if (/[0-9]/.test(parsedMessage.value) || parsedMessage.value === 'Instrumental' || parsedMessage.value === 'Wokal') {
+                    currentDisplayValue += parsedMessage.value; // Dodaj otrzymany znak/słowo
+                    shouldStartNewCountUp = true; // Wpisanie znaku/słowa -> start licznika
                 } else {
-                    console.warn('Nieprawidłowa wartość wejściowa od autoryzowanego klienta:', parsedMessage.value);
+                    console.warn('Nieprawidłowa wartość wejścia od autoryzowanego klienta:', parsedMessage.value);
                 }
             } else if (parsedMessage.type === 'backspace') {
                 // Obsługa backspace: usuwamy ostatni znak
