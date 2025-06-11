@@ -135,17 +135,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateAdminMessage('', '', false);
             if (fileContentSection.children.length > 0) {
-                    fileContentSection.classList.remove('hidden');
+                fileContentSection.classList.remove('hidden');
             }
         });
     }
 
     fileInput.addEventListener('change', (event) => {
         if (!isAdmin) {
-             updateAdminMessage('Tylko uprawnieni użytkownicy mogą ładować listy.', 'red', true);
-             fileInput.value = '';
-             fileContentSection.classList.add('hidden');
-             return;
+            updateAdminMessage('Tylko uprawnieni użytkownicy mogą ładować listy.', 'red', true);
+            fileInput.value = '';
+            fileContentSection.classList.add('hidden');
+            return;
         }
 
         const file = event.target.files[0];
@@ -238,13 +238,13 @@ function attemptAdminLogin() {
     }
 }
 
-// Zmodyfikowana funkcja appendToDisplay: tylko podstawienie
+// Zmodyfikowana funkcja appendToDisplay, aby wysyłać pełne słowa
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
         let charToSend = char;
         if (char === 'I') { // Jeśli to 'I', wysyłamy 'Instrumental'
             charToSend = 'Instrumental';
-        } else if (char === 'W') { // Jeśli to 'W', wysyłamy 'Wokal';
+        } else if (char === 'W') { // Jeśli to 'W', wysyłamy 'Wokal'
             charToSend = 'Wokal';
         }
         socket.send(JSON.stringify({ type: 'input', value: charToSend }));
@@ -271,16 +271,18 @@ document.addEventListener('keydown', (event) => {
     if (!isAdmin) return;
 
     const key = event.key.toUpperCase();
-    // Bezpośrednie podstawienie dla klawiszy I i W
+    // Tutaj również musimy zmodyfikować logikę dla klawiszy I i W
     if (/[0-9]/.test(key)) {
         appendToDisplay(key);
     } else if (key === 'I') {
-        appendToDisplay('Instrumental'); // Zmieniono na 'Instrumental'
+        appendToDisplay('I'); // appendToDisplay() już dodaje spację
     } else if (key === 'W') {
-        appendToDisplay('Wokal'); // Zmieniono na 'Wokal'
+        appendToDisplay('W'); // appendToDisplay() już dodaje spację
     } else if (event.key === 'Backspace') {
+        // Implementacja usunięcia ostatniego znaku powinna być obsłużona na serwerze
+        // Na potrzeby front-endu możemy dodać tymczasowe usunięcie
         if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-            socket.send(JSON.stringify({ type: 'backspace' }));
+            socket.send(JSON.stringify({ type: 'backspace' })); // Nowy typ wiadomości dla serwera
         }
     } else if (event.key === 'Delete') {
         clearDisplay();
