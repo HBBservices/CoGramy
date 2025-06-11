@@ -1,506 +1,506 @@
 <!DOCTYPE html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wyświetlacz Alfanumeryczny</title>
-    <style>
-        /* Jedna kolorystyka - Stonowane, bardzo, bardzo ciemne odcienie (jasność ok. 5%) */
-        :root {
-            /* Nowe kolory bazowe - znacznie ciemniejsze */
-            --body-bg: #0D1013; /* Bardzo, bardzo ciemny granatowo-szary (ok. 5% jasności) */
-            --display-bg: #12161A; /* Nieco jaśniejszy, ale wciąż bardzo ciemny granatowo-szary */
-            --display-color: #BDC3C7; /* Jasny szary dla czcionki wyświetlacza (jasność ok. 75%, aby była czytelna) */
-            --main-container-bg: #12161A; /* Tło kontenera głównego */
-            --main-container-shadow: rgba(0, 0, 0, 0.6); /* Cień kontenera głównego - jeszcze mocniejszy na ciemnym tle */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wyświetlacz Alfanumeryczny</title>
+    <style>
+        /* Jedna kolorystyka - Stonowane, bardzo, bardzo ciemne odcienie (jasność ok. 5%) */
+        :root {
+            /* Nowe kolory bazowe - znacznie ciemniejsze */
+            --body-bg: #0D1013; /* Bardzo, bardzo ciemny granatowo-szary (ok. 5% jasności) */
+            --display-bg: #12161A; /* Nieco jaśniejszy, ale wciąż bardzo ciemny granatowo-szary */
+            --display-color: #BDC3C7; /* Jasny szary dla czcionki wyświetlacza (jasność ok. 75%, aby była czytelna) */
+            --main-container-bg: #12161A; /* Tło kontenera głównego */
+            --main-container-shadow: rgba(0, 0, 0, 0.6); /* Cień kontenera głównego - jeszcze mocniejszy na ciemnym tle */
 
-            /* Kolory przycisków klawiatury - bardzo ciemne pastelowe */
-            --button-bg: #232C34; /* Bardzo stonowany ciemny szary dla przycisków klawiatury */
-            --button-hover-bg: #2E3942; /* Nieco jaśniejszy dla hovera */
-            --reset-button-bg: #5C1C16; /* Bardzo, bardzo ciemny, głęboki bordowy */
-            --reset-button-hover-bg: #6B231D; /* Nieco jaśniejszy dla hovera */
-            --list-button-bg: #145C2E; /* Bardzo, bardzo ciemny, głęboki zielony (jak Odblokuj) */
-            --list-button-hover-bg: #1A6C37; /* Nieco jaśniejszy dla hovera */
+            /* Kolory przycisków klawiatury - bardzo ciemne pastelowe */
+            --button-bg: #232C34; /* Bardzo stonowany ciemny szary dla przycisków klawiatury */
+            --button-hover-bg: #2E3942; /* Nieco jaśniejszy dla hovera */
+            --reset-button-bg: #5C1C16; /* Bardzo, bardzo ciemny, głęboki bordowy */
+            --reset-button-hover-bg: #6B231D; /* Nieco jaśniejszy dla hovera */
+            --list-button-bg: #145C2E; /* Bardzo, bardzo ciemny, głęboki zielony (jak Odblokuj) */
+            --list-button-hover-bg: #1A6C37; /* Nieco jaśniejszy dla hovera */
 
-            /* Nowy kolor dla guzika pełnoekranowego i Odblokuj */
-            --dark-navy-button-bg: #0A1016; /* Bardzo, bardzo ciemny granatowy */
-            --dark-navy-button-hover-bg: #10161C; /* Nieco jaśniejszy dla hovera */
+            /* Nowy kolor dla guzika pełnoekranowego i Odblokuj */
+            --dark-navy-button-bg: #0A1016; /* Bardzo, bardzo ciemny granatowy */
+            --dark-navy-button-hover-bg: #10161C; /* Nieco jaśniejszy dla hovera */
 
-            /* Kolory panelu admina - bardzo ciemne */
-            --admin-panel-border: #2E3942; /* Ciemniejsza granica */
-            --admin-panel-bg: #1A222B; /* Tło panelu admina */
-            --admin-panel-shadow: rgba(0, 0, 0, 0.7); /* Cień panelu admina */
-            --input-border: #12161A; /* Zmieniony na kolor display-bg */
-            --input-bg: #12161A; /* Zmieniony na kolor display-bg */
-            --input-color: #BDC3C7; /* Zmieniony na kolor display-color */
-            
-            /* --admin-button-bg: #145C2E; USUNIĘTA STARA ZMIENNA */
-            --admin-button-hover-bg: #1A6C37; /* Pozostawiamy dla spójności, choć teraz nieużywana bezpośrednio */
+            /* Kolory panelu admina - bardzo ciemne */
+            --admin-panel-border: #2E3942; /* Ciemniejsza granica */
+            --admin-panel-bg: #1A222B; /* Tło panelu admina */
+            --admin-panel-shadow: rgba(0, 0, 0, 0.7); /* Cień panelu admina */
+            --input-border: #12161A; /* Zmieniony na kolor display-bg */
+            --input-bg: #12161A; /* Zmieniony na kolor display-bg */
+            --input-color: #BDC3C7; /* Zmieniony na kolor display-color */
+            
+            /* --admin-button-bg: #145C2E; USUNIĘTA STARA ZMIENNA */
+            --admin-button-hover-bg: #1A6C37; /* Pozostawiamy dla spójności, choć teraz nieużywana bezpośrednio */
 
-            /* Kolory sekcji komunikatów i plików - bardzo ciemne */
-            --message-section-border: #3A4650;
-            --message-section-bg: #1A222B;
-            --file-content-section-bg: #0D1013; /* Bardzo, bardzo ciemny granatowo-szary dla sekcji pliku */
-            --file-content-section-color: #BDC3C7; /* Jasny szary dla czcionki sekcji pliku */
+            /* Kolory sekcji komunikatów i plików - bardzo ciemne */
+            --message-section-border: #3A4650;
+            --message-section-bg: #1A222B;
+            --file-content-section-bg: #0D1013; /* Bardzo, bardzo ciemny granatowo-szary dla sekcji pliku */
+            --file-content-section-color: #BDC3C7; /* Jasny szary dla czcionki sekcji pliku */
 
-            /* Kolory listy plików - bardzo ciemne */
-            --list-item-border: #2E3942;
-            --list-item-hover-bg: #2E3942;
-            --list-item-hover-color: #ECF0F1;
+            /* Kolory listy plików - bardzo ciemne */
+            --list-item-border: #2E3942;
+            --list-item-hover-bg: #2E3942;
+            --list-item-hover-color: #ECF0F1;
 
-            /* Kolor timera - jasny, aby był widoczny */
-            --countdown-timer-color: #BDC3C7; /* Jasny szary dla timera */
-        }
+            /* Kolor timera - jasny, aby był widoczny */
+            --countdown-timer-color: #BDC3C7; /* Jasny szary dla timera */
+        }
 
-        /* Resetowanie domyślnych marginesów i paddingów dla body i html */
-        html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow-y: scroll; /* Umożliwia przewijanie całego dokumentu */
-            overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania */
-        }
+        /* Resetowanie domyślnych marginesów i paddingów dla body i html */
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-y: scroll; /* Umożliwia przewijanie całego dokumentu */
+            overflow-x: hidden; /* Zapobiega poziomemu paskowi przewijania */
+        }
 
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            background-color: var(--body-bg); /* Używamy zmiennej dla koloru tła body */
-            color: var(--display-color); /* Domyślny kolor czcionki dla body i ogólnie tekstu */
-            transition: background-color 0.3s ease, color 0.3s ease;
-            margin: 0;
-            padding: 0;
-            min-height: 1200px; /* Zwiększona wysokość body o 50px do 1100px (poprzednio 1050px) */
-            height: auto;
-            overflow-y: visible;
-            overflow-x: hidden;
-            position: relative;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            background-color: var(--body-bg); /* Używamy zmiennej dla koloru tła body */
+            color: var(--display-color); /* Domyślny kolor czcionki dla body i ogólnie tekstu */
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0;
+            padding: 0;
+            min-height: 1200px; /* Zwiększona wysokość body o 50px do 1100px (poprzednio 1050px) */
+            height: auto;
+            overflow-y: visible;
+            overflow-x: hidden;
+            position: relative;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
 
-        /* Sekcja dla komunikatów serwera przeniesiona wyżej i z fixed position */
-        #message-section {
-            width: 90vw;
-            max-width: 320px;
-            text-align: center;
-            position: fixed; /* Zawsze widoczny na górze viewportu */
-            top: 10px; /* 10px od górnej krawędzi viewportu */
-            left: 50%;
-            transform: translateX(-50%); /* Centrowanie horyzontalne */
-            padding: 5px 10px; /* Zmniejszony padding, aby zmieścić w jednej linii */
-            border: 1px solid var(--message-section-border);
-            border-radius: 5px;
-            background-color: var(--message-section-bg);
-            min-height: 25px; /* Minimalna wysokość dostosowana do mniejszej czcionki */
-            height: auto; /* Pozwala na dynamiczną wysokość, ale preferujemy jedną linię */
-            box-sizing: border-box;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-            z-index: 1001; /* Najwyższy z-index, aby był nad displayem */
-        }
+        /* Sekcja dla komunikatów serwera przeniesiona wyżej i z fixed position */
+        #message-section {
+            width: 90vw;
+            max-width: 320px;
+            text-align: center;
+            position: fixed; /* Zawsze widoczny na górze viewportu */
+            top: 10px; /* 10px od górnej krawędzi viewportu */
+            left: 50%;
+            transform: translateX(-50%); /* Centrowanie horyzontalne */
+            padding: 5px 10px; /* Zmniejszony padding, aby zmieścić w jednej linii */
+            border: 1px solid var(--message-section-border);
+            border-radius: 5px;
+            background-color: var(--message-section-bg);
+            min-height: 25px; /* Minimalna wysokość dostosowana do mniejszej czcionki */
+            height: auto; /* Pozwala na dynamiczną wysokość, ale preferujemy jedną linię */
+            box-sizing: border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            z-index: 1001; /* Najwyższy z-index, aby był nad displayem */
+        }
 
-        #admin-message {
-            margin: 0;
-            word-break: break-word; /* Dla pewności, ale staramy się unikać przełamywania */
-            color: var(--display-color);
-            font-size: 0.8em; /* Zmniejszona czcionka do 80% */
-            white-space: nowrap; /* Zapobiega zawijaniu tekstu */
-            overflow: hidden; /* Ukrywa nadmiarowy tekst */
-            text-overflow: ellipsis; /* Dodaje '...' do nadmiarowego tekstu */
-        }
+        #admin-message {
+            margin: 0;
+            word-break: break-word; /* Dla pewności, ale staramy się unikać przełamywania */
+            color: var(--display-color);
+            font-size: 0.8em; /* Zmniejszona czcionka do 80% */
+            white-space: nowrap; /* Zapobiega zawijaniu tekstu */
+            overflow: hidden; /* Ukrywa nadmiarowy tekst */
+            text-overflow: ellipsis; /* Dodaje '...' do nadmiarowego tekstu */
+        }
 
-        #display-section {
-            background-color: var(--display-bg);
-            color: var(--display-color);
-            font-size: 2em;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 0 10px;
-            border-radius: 4px;
-            width: 90vw;
-            max-width: 600px;
-            height: 60px;
-            box-sizing: border-box;
-            box-shadow: 0 2px 5px var(--main-container-shadow);
-            position: fixed; /* Zawsze na górze viewportu przeglądarki */
-            /* Ustawienie displaya 5px poniżej obszaru komunikatów */
-            top: calc(10px + 25px + 5px); /* top message (10px) + min-height message (25px) + odstęp (5px) */
-            left: 50%;
-            transform: translateX(-50%); /* Centrowanie horyzontalne */
-            z-index: 1000; /* Zawsze na wierzchu, ale pod komunikatem */
-            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
-        }
+        #display-section {
+            background-color: var(--display-bg);
+            color: var(--display-color);
+            font-size: 2em;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0 10px;
+            border-radius: 4px;
+            width: 90vw;
+            max-width: 600px;
+            height: 60px;
+            box-sizing: border-box;
+            box-shadow: 0 2px 5px var(--main-container-shadow);
+            position: fixed; /* Zawsze na górze viewportu przeglądarki */
+            /* Ustawienie displaya 5px poniżej obszaru komunikatów */
+            top: calc(10px + 25px + 5px); /* top message (10px) + min-height message (25px) + odstęp (5px) */
+            left: 50%;
+            transform: translateX(-50%); /* Centrowanie horyzontalne */
+            z-index: 1000; /* Zawsze na wierzchu, ale pod komunikatem */
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+        }
 
-        #display-content-wrapper {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            overflow: hidden;
-            white-space: nowrap;
-        }
+        #display-content-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+        }
 
-        #display {
-            flex-grow: 1;
-            text-align: left;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: thin;
-            scrollbar-color: var(--button-bg) var(--display-bg);
-            transition: scrollbar-color 0.3s ease;
-        }
+        #display {
+            flex-grow: 1;
+            text-align: left;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--button-bg) var(--display-bg);
+            transition: scrollbar-color 0.3s ease;
+        }
 
-        #display::-webkit-scrollbar {
-            height: 8px;
-        }
+        #display::-webkit-scrollbar {
+            height: 8px;
+        }
 
-        #display::-webkit-scrollbar-track {
-            background: var(--display-bg);
-            border-radius: 10px;
-        }
+        #display::-webkit-scrollbar-track {
+            background: var(--display-bg);
+            border-radius: 10px;
+        }
 
-        #display::-webkit-scrollbar-thumb {
-            background: var(--button-bg);
-            border-radius: 10px;
-        }
+        #display::-webkit-scrollbar-thumb {
+            background: var(--button-bg);
+            border-radius: 10px;
+        }
 
-        #display::-webkit-scrollbar-thumb:hover {
-            background: var(--button-hover-bg);
-        }
+        #display::-webkit-scrollbar-thumb:hover {
+            background: var(--button-hover-bg);
+        }
 
-        #countdown-timer {
-            margin-left: 10px;
-            font-size: 0.8em;
-            color: var(--countdown-timer-color);
-            min-width: 40px;
-            text-align: right;
-            flex-shrink: 0;
-            transition: color 0.3s ease;
-        }
+        #countdown-timer {
+            margin-left: 10px;
+            font-size: 0.8em;
+            color: var(--countdown-timer-color);
+            min-width: 40px;
+            text-align: right;
+            flex-shrink: 0;
+            transition: color 0.3s ease;
+        }
 
-        #top-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            /* Wysokość top-overlay: Od góry strony do 10px PONIŻEJ dolnej krawędzi displaya */
-            /* 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (nowy odstęp) */
-            height: calc(10px + 25px + 5px + 60px + 10px);
-            background-color: var(--body-bg); /* Ten sam kolor co tło body */
-            z-index: 999; /* Niżej niż display i message-section, ale wyżej niż przewijana zawartość */
-            pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
-        }
+        #top-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            /* Wysokość top-overlay: Od góry strony do 10px PONIŻEJ dolnej krawędzi displaya */
+            /* 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (nowy odstęp) */
+            height: calc(10px + 25px + 5px + 60px + 10px);
+            background-color: var(--body-bg); /* Ten sam kolor co tło body */
+            z-index: 999; /* Niżej niż display i message-section, ale wyżej niż przewijana zawartość */
+            pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
+        }
 
-        #logo-container {
-            position: relative;
-            width: 90vw;
-            max-width: 600px;
-            text-align: center;
-            /* Nowe przesunięcie logo: 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (odstęp top-overlay) + 10px (nowy odstęp) */
-            margin-top: calc(10px + 25px + 5px + 60px + 10px + 10px);
-            margin-bottom: 20px; /* Margines poniżej logo */
-            z-index: 1; /* Upewnij się, że jest nad tłem, ale pod keypadem */
-            flex-shrink: 0; /* Zapobiega zmniejszaniu się kontenera */
-        }
+        #logo-container {
+            position: relative;
+            width: 90vw;
+            max-width: 600px;
+            text-align: center;
+            /* Nowe przesunięcie logo: 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (odstęp top-overlay) + 10px (nowy odstęp) */
+            margin-top: calc(10px + 25px + 5px + 60px + 10px + 10px);
+            margin-bottom: 20px; /* Margines poniżej logo */
+            z-index: 1; /* Upewnij się, że jest nad tłem, ale pod keypadem */
+            flex-shrink: 0; /* Zapobiega zmniejszaniu się kontenera */
+        }
 
-        #logo-container img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-            margin: 0 auto;
-            max-height: 90px; /* Nowa wysokość: 60% z poprzednich 150px (tj. 90px) */
-        }
+        #logo-container img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            max-height: 90px; /* Nowa wysokość: 60% z poprzednich 150px (tj. 90px) */
+        }
 
 
-        .main-content-container {
-            max-width: 320px;
-            width: 90vw;
-            box-sizing: border-box;
-            margin-top: 0; /* Jest tuż pod logo, które ma swoje pozycjonowanie */
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-            z-index: 1;
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 500px;
-        }
+        .main-content-container {
+            max-width: 320px;
+            width: 90vw;
+            box-sizing: border-box;
+            margin-top: 0; /* Jest tuż pod logo, które ma swoje pozycjonowanie */
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 500px;
+        }
 
-        .buttons {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 10px;
-            width: 100%;
-            box-sizing: border-box;
-            padding: 20px;
-            background-color: var(--main-container-bg);
-            border-radius: 8px;
-            box-shadow: 0 0 10px var(--main-container-shadow);
-            transition: background-color 0.3s ease, box-shadow 0.3s ease;
-            margin-bottom: 20px;
-        }
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            background-color: var(--main-container-bg);
+            border-radius: 8px;
+            box-shadow: 0 0 10px var(--main-container-shadow);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px;
+        }
 
-        .btn {
-            height: 57px;
-            font-size: 1.5em;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            background-color: var(--button-bg);
-            transition: background-color 0.2s;
-            color: var(--display-color);
-        }
+        .btn {
+            height: 57px;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color: var(--button-bg);
+            transition: background-color 0.2s;
+            color: var(--display-color);
+        }
 
-        .btn:hover {
-            background-color: var(--button-hover-bg);
-        }
+        .btn:hover {
+            background-color: var(--button-hover-bg);
+        }
 
-        .btn-reset {
-            background-color: var(--reset-button-bg);
-            color: var(--display-color);
-            grid-column: span 2;
-            height: 60px;
-        }
+        .btn-reset {
+            background-color: var(--reset-button-bg);
+            color: var(--display-color);
+            grid-column: span 2;
+            height: 60px;
+        }
 
-        .btn-reset:hover {
-            background-color: var(--reset-button-hover-bg);
-        }
+        .btn-reset:hover {
+            background-color: var(--reset-button-hover-bg);
+        }
 
-        .btn-list-label {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: var(--list-button-bg);
-            color: var(--display-color);
-            grid-column: span 1;
-            height: 60px;
-            font-size: 1.5em;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .btn-list-label:hover {
-            background-color: var(--list-button-hover-bg);
-        }
+        .btn-list-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--list-button-bg);
+            color: var(--display-color);
+            grid-column: span 1;
+            height: 60px;
+            font-size: 1.5em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-list-label:hover {
+            background-color: var(--list-button-hover-bg);
+        }
 
-        /* Nowy styl dla guzika pełnoekranowego w klawiaturze */
-        .btn-fullscreen {
-            background-color: var(--dark-navy-button-bg); /* Zmieniono na bardzo ciemny granatowy */
-            color: var(--display-color);
-            grid-column: span 3;
-            height: 60px;
-        }
+        /* Nowy styl dla guzika pełnoekranowego w klawiaturze */
+        .btn-fullscreen {
+            background-color: var(--dark-navy-button-bg); /* Zmieniono na bardzo ciemny granatowy */
+            color: var(--display-color);
+            grid-column: span 3;
+            height: 60px;
+        }
 
-        .btn-fullscreen:hover {
-            background-color: var(--dark-navy-button-hover-bg); /* Zmieniono na nieco jaśniejszy granatowy dla hovera */
-        }
+        .btn-fullscreen:hover {
+            background-color: var(--dark-navy-button-hover-bg); /* Zmieniono na nieco jaśniejszy granatowy dla hovera */
+        }
 
-        /* Style dla panelu logowania */
-        #admin-panel {
-            text-align: center;
-            padding: 15px;
-            border: 1px solid var(--admin-panel-border);
-            border-radius: 5px;
-            background-color: var(--admin-panel-bg);
-            box-shadow: 0 0 10px var(--admin-panel-shadow);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease, padding 0.5s ease, border 0.5s ease;
+        /* Style dla panelu logowania */
+        #admin-panel {
+            text-align: center;
+            padding: 15px;
+            border: 1px solid var(--admin-panel-border);
+            border-radius: 5px;
+            background-color: var(--admin-panel-bg);
+            box-shadow: 0 0 10px var(--admin-panel-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease, padding 0.5s ease, border 0.5s ease;
 
-            position: absolute;
-            top: 700px;
-            left: 50%;
-            transform: translateX(-50%);
-            margin-left: auto;
-            margin-right: auto;
-            width: 90vw;
-            max-width: 320px;
-            z-index: 1;
-            box-sizing: border-box;
-            min-height: 100px;
-        }
+            position: absolute;
+            top: 700px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-left: auto;
+            margin-right: auto;
+            width: 90vw;
+            max-width: 320px;
+            z-index: 1;
+            box-sizing: border-box;
+            min-height: 100px;
+        }
 
-        /* Ukrycie panelu po zalogowaniu */
-        #admin-panel.hidden-panel {
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            height: 0;
-            padding: 0;
-            margin-top: 0;
-            margin-bottom: 0;
-            border: none;
-            overflow: hidden;
-            top: 0;
-        }
+        /* Ukrycie panelu po zalogowaniu */
+        #admin-panel.hidden-panel {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            height: 0;
+            padding: 0;
+            margin-top: 0;
+            margin-bottom: 0;
+            border: none;
+            overflow: hidden;
+            top: 0;
+        }
 
-        #admin-panel input {
-            padding: 8px;
-            border: 1px solid var(--input-border);
-            border-radius: 3px;
-            width: 100%;
-            box-sizing: border-box;
-            height: 50px;
-            font-size: 1.5em;
-            background-color: var(--input-bg);
-            color: var(--input-color);
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-            order: 3;
-        }
+        #admin-panel input {
+            padding: 8px;
+            border: 1px solid var(--input-border);
+            border-radius: 3px;
+            width: 100%;
+            box-sizing: border-box;
+            height: 50px;
+            font-size: 1.5em;
+            background-color: var(--input-bg);
+            color: var(--input-color);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+            order: 3;
+        }
 
-        /* Zmieniamy styl przycisku Odblokuj na ten sam co Fullscreen */
-        #admin-panel button {
-            padding: 8px 15px;
-            background-color: var(--dark-navy-button-bg); /* Zmieniono na bardzo ciemny granatowy */
-            color: var(--display-color);
-            border: none;
-            border-radius: 3px;
-            cursor: pointer;
-            width: 100%;
-            box-sizing: border-box;
-            height: 60px;
-            font-size: 2em;
-            transition: background-color 0.2s;
-        }
+        /* Zmieniamy styl przycisku Odblokuj na ten sam co Fullscreen */
+        #admin-panel button {
+            padding: 8px 15px;
+            background-color: var(--dark-navy-button-bg); /* Zmieniono na bardzo ciemny granatowy */
+            color: var(--display-color);
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+            height: 60px;
+            font-size: 2em;
+            transition: background-color 0.2s;
+        }
 
-        #admin-panel button:hover {
-            background-color: var(--dark-navy-button-hover-bg); /* Zmieniono na nieco jaśniejszy granatowy dla hovera */
-        }
+        #admin-panel button:hover {
+            background-color: var(--dark-navy-button-hover-bg); /* Zmieniono na nieco jaśniejszy granatowy dla hovera */
+        }
 
-        /* Ustawiamy kolejność przycisków w panelu logowania */
-        #admin-panel .btn-fullscreen {
-            order: 1;
-        }
+        /* Ustawiamy kolejność przycisków w panelu logowania */
+        #admin-panel .btn-fullscreen {
+            order: 1;
+        }
 
-        #admin-panel button:not(.btn-fullscreen) {
-            order: 2;
-        }
+        #admin-panel button:not(.btn-fullscreen) {
+            order: 2;
+        }
 
-        #admin-panel .qr-code {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-            order: 4;
-        }
+        #admin-panel .qr-code {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            order: 4;
+        }
 
-        /* Sekcja do wyświetlania zawartości pliku */
-        #file-content-section {
-            width: 90vw;
-            max-width: 600px;
-            height: auto;
-            min-height: 100px;
-            flex-grow: 1;
-            background-color: var(--file-content-section-bg);
-            color: var(--file-content-section-color);
-            font-size: 1.1em;
-            padding: 10px;
-            border-radius: 4px;
-            overflow-y: scroll;
-            box-sizing: border-box;
-            margin-top: 20px;
-            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
-            transition: background-color 0.3s ease, color 0.3s ease;
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-        }
+        /* Sekcja do wyświetlania zawartości pliku */
+        #file-content-section {
+            width: 90vw;
+            max-width: 600px;
+            height: auto;
+            min-height: 100px;
+            flex-grow: 1;
+            background-color: var(--file-content-section-bg);
+            color: var(--file-content-section-color);
+            font-size: 1.1em;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-y: scroll;
+            box-sizing: border-box;
+            margin-top: 20px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
-        /* Styl dla pojedynczych linii w liście */
-        .list-item {
-            padding: 5px 0;
-            border-bottom: 1px solid var(--list-item-border);
-            cursor: pointer;
-            transition: background-color 0.2s, color 0.2s, border-bottom 0.3s ease;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .list-item:last-child {
-            border-bottom: none;
-        }
-        .list-item:hover {
-            background-color: var(--list-item-hover-bg);
-            color: var(--list-item-hover-color);
-        }
+        /* Styl dla pojedynczych linii w liście */
+        .list-item {
+            padding: 5px 0;
+            border-bottom: 1px solid var(--list-item-border);
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s, border-bottom 0.3s ease;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .list-item:last-child {
+            border-bottom: none;
+        }
+        .list-item:hover {
+            background-color: var(--list-item-hover-bg);
+            color: var(--list-item-hover-color);
+        }
 
-        /* Ukryj input file */
-        #file-input {
-            display: none;
-        }
+        /* Ukryj input file */
+        #file-input {
+            display: none;
+        }
 
-        /* Klasa ukrywająca elementy */
-        .hidden {
-            display: none !important;
-        }
+        /* Klasa ukrywająca elementy */
+        .hidden {
+            display: none !important;
+        }
 
-    </style>
+    </style>
 </head>
 <body>
-    <div id="message-section" class="hidden">
-        <p id="admin-message"></p>
-    </div>
+    <div id="message-section" class="hidden">
+        <p id="admin-message"></p>
+    </div>
 
-    <div id="display-section">
-        <div id="display-content-wrapper">
-            <span id="display"></span>
-            <span id="countdown-timer"></span>
-        </div>
-    </div>
+    <div id="display-section">
+        <div id="display-content-wrapper">
+            <span id="display"></span>
+            <span id="countdown-timer"></span>
+        </div>
+    </div>
 
-    <div id="top-overlay"></div>
+    <div id="top-overlay"></div>
 
-    <div id="logo-container">
-        <img src="HBB_Logo.png" alt="Logo HBB">
-    </div>
+    <div id="logo-container">
+        <img src="HBB_Logo.png" alt="Logo HBB">
+    </div>
 
-    <div class="main-content-container">
-        <div class="buttons hidden" id="keypad-buttons">
-            <button class="btn" onclick="appendToDisplay('1')">1</button>
-            <button class="btn" onclick="appendToDisplay('2')">2</button>
-            <button class="btn" onclick="appendToDisplay('3')">3</button>
-            <button class="btn" onclick="appendToDisplay('4')">4</button>
-            <button class="btn" onclick="appendToDisplay('5')">5</button>
-            <button class="btn" onclick="appendToDisplay('6')">6</button>
-            <button class="btn" onclick="appendToDisplay('7')">7</button>
-            <button class="btn" onclick="appendToDisplay('8')">8</button>
-            <button class="btn" onclick="appendToDisplay('9')">9</button>
-            <button class="btn" onclick="appendToDisplay('I')">I</button>
-            <button class="btn" onclick="appendToDisplay('0')">0</button>
-            <button class="btn" onclick="appendToDisplay('W')">W</button>
-            <button class="btn btn-reset" onclick="clearDisplay()">Reset</button>
-            <label for="file-input" class="btn btn-list-label" id="list-button-label">Lista</label>
-            <input type="file" id="file-input" accept=".txt">
-            <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
-        </div>
-        
-        <div id="file-content-section" class="hidden"></div>
-    </div>
+    <div class="main-content-container">
+        <div class="buttons hidden" id="keypad-buttons">
+            <button class="btn" onclick="appendToDisplay('1')">1</button>
+            <button class="btn" onclick="appendToDisplay('2')">2</button>
+            <button class="btn" onclick="appendToDisplay('3')">3</button>
+            <button class="btn" onclick="appendToDisplay('4')">4</button>
+            <button class="btn" onclick="appendToDisplay('5')">5</button>
+            <button class="btn" onclick="appendToDisplay('6')">6</button>
+            <button class="btn" onclick="appendToDisplay('7')">7</button>
+            <button class="btn" onclick="appendToDisplay('8')">8</button>
+            <button class="btn" onclick="appendToDisplay('9')">9</button>
+            <button class="btn" onclick="appendToDisplay('I')">Instr.</button>
+            <button class="btn" onclick="appendToDisplay('0')">0</button>
+            <button class="btn" onclick="appendToDisplay('W')">Wok.</button>
+            <button class="btn btn-reset" onclick="clearDisplay()">Reset</button>
+            <label for="file-input" class="btn btn-list-label" id="list-button-label">Lista</label>
+            <input type="file" id="file-input" accept=".txt">
+            <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
+        </div>
+        
+        <div id="file-content-section" class="hidden"></div>
+    </div>
 
-    <div id="admin-panel">
-        <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
-        <button onclick="attemptAdminLogin()">Odblokuj</button>
-        <input type="text" id="secret-code-input" placeholder="Podaj hasło">
-        <img src="CoGramy_QRCode.png" alt="CoGramy QR Code" class="qr-code">
-    </div>
+    <div id="admin-panel">
+        <button class="btn btn-fullscreen" onclick="toggleFullScreen()">Pełny Ekran</button>
+        <button onclick="attemptAdminLogin()">Odblokuj</button>
+        <input type="text" id="secret-code-input" placeholder="Podaj hasło">
+        <img src="CoGramy_QRCode.png" alt="CoGramy QR Code" class="qr-code">
+    </div>
 
-    <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
