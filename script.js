@@ -135,17 +135,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateAdminMessage('', '', false);
             if (fileContentSection.children.length > 0) {
-                   fileContentSection.classList.remove('hidden');
+                fileContentSection.classList.remove('hidden');
             }
         });
     }
 
     fileInput.addEventListener('change', (event) => {
         if (!isAdmin) {
-             updateAdminMessage('Tylko uprawnieni użytkownicy mogą ładować listy.', 'red', true);
-             fileInput.value = '';
-             fileContentSection.classList.add('hidden');
-             return;
+            updateAdminMessage('Tylko uprawnieni użytkownicy mogą ładować listy.', 'red', true);
+            fileInput.value = '';
+            fileContentSection.classList.add('hidden');
+            return;
         }
 
         const file = event.target.files[0];
@@ -238,14 +238,14 @@ function attemptAdminLogin() {
     }
 }
 
-// Zmodyfikowana funkcja appendToDisplay, aby wysyłać pełne słowa 'Instrumental' i 'Wokal'
+// Zmodyfikowana funkcja appendToDisplay, aby dodawała spację przed słowami Instrumental i Wokal
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
         let charToSend = char;
-        if (char === 'I') { 
-            charToSend = 'Instrumental';
-        } else if (char === 'W') { 
-            charToSend = 'Wokal';
+        if (char === 'I') {
+            charToSend = ' Instrumental'; // DODANO SPACJĘ PRZED
+        } else if (char === 'W') {
+            charToSend = ' Wokal'; // DODANO SPACJĘ PRZED
         }
         socket.send(JSON.stringify({ type: 'input', value: charToSend }));
         updateAdminMessage('', '', false);
@@ -274,12 +274,14 @@ document.addEventListener('keydown', (event) => {
     if (/[0-9]/.test(key)) {
         appendToDisplay(key);
     } else if (key === 'I') {
-        appendToDisplay('I'); // Wysyła 'Instrumental' dzięki appendToDisplay()
+        // Wysyłamy 'I', a funkcja appendToDisplay() zamieni to na ' Instrumental'
+        appendToDisplay('I');
     } else if (key === 'W') {
-        appendToDisplay('W'); // Wysyła 'Wokal' dzięki appendToDisplay()
+        // Wysyłamy 'W', a funkcja appendToDisplay() zamieni to na ' Wokal'
+        appendToDisplay('W');
     } else if (event.key === 'Backspace') {
         if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-            socket.send(JSON.stringify({ type: 'backspace' })); 
+            socket.send(JSON.stringify({ type: 'backspace' }));
         }
     } else if (event.key === 'Delete') {
         clearDisplay();
