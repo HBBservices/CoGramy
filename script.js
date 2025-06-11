@@ -118,20 +118,20 @@ function connectWebSocket() {
 // Funkcja dodająca znak do wyświetlacza (wywoływana przez przyciski)
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-        let textToAppend = char; // Domyślnie użyj znaku
+        let textToSend = char;
 
+        // Tutaj dodajemy logikę spacji, aby była ona dodawana na froncie przed wysłaniem.
         // Sprawdzamy, czy display jest pusty, aby dodać spację tylko wtedy, gdy jest to pierwszy element,
         // albo jeśli nie jest pusty i ostatni znak to nie spacja.
         const currentDisplayText = display.textContent;
         const needsLeadingSpace = currentDisplayText.length > 0 && !currentDisplayText.endsWith(' ');
-
-        if (char === 'I') {
-            textToAppend = (needsLeadingSpace ? ' ' : '') + 'Instrumental';
-        } else if (char === 'W') {
-            textToAppend = (needsLeadingSpace ? ' ' : '') + 'Wokal';
+        
+        // Dodaj spację tylko do "Instrumental" i "Wokal", jeśli potrzeba
+        if ((char === 'Instrumental' || char === 'Wokal') && needsLeadingSpace) {
+            textToSend = ' ' + char;
         }
 
-        socket.send(JSON.stringify({ type: 'input', value: textToAppend }));
+        socket.send(JSON.stringify({ type: 'input', value: textToSend }));
         updateAdminMessage('', '', false);
     } else if (!isAdmin) {
         updateAdminMessage('Tylko uprawnieni użytkownicy mogą wprowadzać znaki.', 'red', true);
@@ -139,6 +139,7 @@ function appendToDisplay(char) {
         updateAdminMessage('Brak połączenia z serwerem.', 'red', true);
     }
 }
+
 
 // Funkcja obsługująca przycisk Reset
 function clearDisplay() {
