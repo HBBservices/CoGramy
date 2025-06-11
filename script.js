@@ -135,17 +135,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateAdminMessage('', '', false);
             if (fileContentSection.children.length > 0) {
-                fileContentSection.classList.remove('hidden');
+                   fileContentSection.classList.remove('hidden');
             }
         });
     }
 
     fileInput.addEventListener('change', (event) => {
         if (!isAdmin) {
-            updateAdminMessage('Tylko uprawnieni użytkownicy mogą ładować listy.', 'red', true);
-            fileInput.value = '';
-            fileContentSection.classList.add('hidden');
-            return;
+             updateAdminMessage('Tylko uprawnieni użytkownicy mogą ładować listy.', 'red', true);
+             fileInput.value = '';
+             fileContentSection.classList.add('hidden');
+             return;
         }
 
         const file = event.target.files[0];
@@ -238,14 +238,12 @@ function attemptAdminLogin() {
     }
 }
 
-// Zmodyfikowana funkcja appendToDisplay, aby wysyłać pełne słowa
+// Zmodyfikowana funkcja appendToDisplay, aby dodawać spację przed 'I' i 'W'
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
         let charToSend = char;
-        if (char === 'I') { // Jeśli to 'I', wysyłamy 'Instrumental'
-            charToSend = 'Instrumental';
-        } else if (char === 'W') { // Jeśli to 'W', wysyłamy 'Wokal'
-            charToSend = 'Wokal';
+        if (char === 'I' || char === 'W') {
+            charToSend = ' ' + char; // Dodajemy spację bezpośrednio
         }
         socket.send(JSON.stringify({ type: 'input', value: charToSend }));
         updateAdminMessage('', '', false);
