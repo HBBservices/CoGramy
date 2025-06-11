@@ -72,11 +72,15 @@
             transition: background-color 0.3s ease, color 0.3s ease;
             margin: 0;
             padding: 0;
-            min-height: 100vh; /* Zmieniono na 100vh, aby body zawsze miało co najmniej wysokość okna przeglądarki */
+            min-height: 1200px; /* Zwiększona wysokość body o 50px do 1100px (poprzednio 1050px) */
             height: auto;
             overflow-y: visible;
             overflow-x: hidden;
             position: relative;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
         }
 
         /* Sekcja dla komunikatów serwera przeniesiona wyżej i z fixed position */
@@ -190,7 +194,7 @@
             width: 100vw;
             /* Wysokość top-overlay: Od góry strony do 10px PONIŻEJ dolnej krawędzi displaya */
             /* 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (nowy odstęp) */
-            height: calc(10px + 25px + 5px + 60px + 10px); /* Całkowita wysokość nagłówka fixed */
+            height: calc(10px + 25px + 5px + 60px + 10px);
             background-color: var(--body-bg); /* Ten sam kolor co tło body */
             z-index: 999; /* Niżej niż display i message-section, ale wyżej niż przewijana zawartość */
             pointer-events: none; /* Pozwala na klikanie przez warstwę (np. na display) */
@@ -201,8 +205,8 @@
             width: 90vw;
             max-width: 600px;
             text-align: center;
-            /* Nowe przesunięcie logo: margin-top równy wysokości #top-overlay + dodatkowy odstęp */
-            margin-top: calc(10px + 25px + 5px + 60px + 10px + 20px); /* wysokość top-overlay + 20px odstępu */
+            /* Nowe przesunięcie logo: 10px (top message) + 25px (min-height message) + 5px (odstęp) + 60px (display height) + 10px (odstęp top-overlay) + 10px (nowy odstęp) */
+            margin-top: calc(10px + 25px + 5px + 60px + 10px + 10px);
             margin-bottom: 20px; /* Margines poniżej logo */
             z-index: 1; /* Upewnij się, że jest nad tłem, ale pod keypadem */
             flex-shrink: 0; /* Zapobiega zmniejszaniu się kontenera */
@@ -215,6 +219,7 @@
             margin: 0 auto;
             max-height: 90px; /* Nowa wysokość: 60% z poprzednich 150px (tj. 90px) */
         }
+
 
         .main-content-container {
             max-width: 320px;
@@ -229,7 +234,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 500px; /* Może wymagać dalszego dostosowania */
+            min-height: 500px;
         }
 
         .buttons {
@@ -312,11 +317,12 @@
             display: flex;
             flex-direction: column;
             gap: 10px;
-            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease, padding 0.5s ease, border 0.5s ease, margin 0.5s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease, visibility 0.5s ease, height 0.5s ease, padding 0.5s ease, border 0.5s ease;
 
-            /* Zmieniono pozycjonowanie na standardowe */
-            position: relative; /* Ważne! Zmieniamy na relative */
-            margin-top: 20px; /* Odstęp od poprzedniego elementu (keypad-buttons) */
+            position: absolute;
+            top: 700px;
+            left: 50%;
+            transform: translateX(-50%);
             margin-left: auto;
             margin-right: auto;
             width: 90vw;
@@ -337,6 +343,7 @@
             margin-bottom: 0;
             border: none;
             overflow: hidden;
+            top: 0;
         }
 
         #admin-panel input {
@@ -414,7 +421,6 @@
             z-index: 1;
             display: flex;
             flex-direction: column;
-            margin-bottom: 20px; /* Dodatkowy margines na dole */
         }
 
         /* Styl dla pojedynczych linii w liście */
@@ -476,9 +482,9 @@
             <button class="btn" onclick="appendToDisplay('7')">7</button>
             <button class="btn" onclick="appendToDisplay('8')">8</button>
             <button class="btn" onclick="appendToDisplay('9')">9</button>
-            <button class="btn" onclick="appendToDisplay('Instrumental')">Instr.</button>
+            <button class="btn" onclick="appendToDisplay('Instrumental')">I</button>
             <button class="btn" onclick="appendToDisplay('0')">0</button>
-            <button class="btn" onclick="appendToDisplay('Wokal')">Wok.</button>
+            <button class="btn" onclick="appendToDisplay('Wokal')">W</button>
             <button class="btn btn-reset" onclick="clearDisplay()">Reset</button>
             <label for="file-input" class="btn btn-list-label" id="list-button-label">Lista</label>
             <input type="file" id="file-input" accept=".txt">
