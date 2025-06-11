@@ -241,7 +241,13 @@ function attemptAdminLogin() {
 // Zmodyfikowana funkcja appendToDisplay: tylko podstawienie
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-        socket.send(JSON.stringify({ type: 'input', value: char }));
+        let charToSend = char;
+        if (char === 'I') { // Jeśli to 'I', wysyłamy 'Instrumental'
+            charToSend = 'Instrumental';
+        } else if (char === 'W') { // Jeśli to 'W', wysyłamy 'Wokal';
+            charToSend = 'Wokal';
+        }
+        socket.send(JSON.stringify({ type: 'input', value: charToSend }));
         updateAdminMessage('', '', false);
     } else if (!isAdmin) {
         updateAdminMessage('Tylko uprawnieni użytkownicy mogą wprowadzać znaki.', 'red', true);
