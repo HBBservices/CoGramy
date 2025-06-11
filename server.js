@@ -123,10 +123,10 @@ wss.on('connection', ws => {
                 ws.send(JSON.stringify({ type: 'resetConfirmed' }));
                 shouldStartNewCountUp = false; // Po manualnym resecie nie rozpoczynamy liczenia, tylko czekamy na kolejny input
             }
-            // Poprawiony warunek dla 'input'
+            // ZMODYFIKOWANY WARUNEK: Akceptuje cyfry, oraz słowa ' Instrumental' i ' Wokal' ze spacją
             else if (parsedMessage.type === 'input' && typeof parsedMessage.value === 'string') {
-                // Sprawdź, czy wartość jest cyfrą lub jednym ze specjalnych słów
-                if (/[0-9]/.test(parsedMessage.value) || parsedMessage.value === 'Instrumental' || parsedMessage.value === 'Wokal') {
+                // Sprawdź, czy wartość jest cyfrą lub jednym ze specjalnych słów ze spacją
+                if (/[0-9]/.test(parsedMessage.value) || parsedMessage.value === ' Instrumental' || parsedMessage.value === ' Wokal') {
                     currentDisplayValue += parsedMessage.value; // Dodaj otrzymany znak/słowo
                     shouldStartNewCountUp = true; // Wpisanie znaku/słowa -> start licznika
                 } else {
