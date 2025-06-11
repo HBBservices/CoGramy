@@ -238,12 +238,14 @@ function attemptAdminLogin() {
     }
 }
 
-// Zmodyfikowana funkcja appendToDisplay, aby dodawać spację przed 'I' i 'W'
+// Zmodyfikowana funkcja appendToDisplay, aby wysyłać pełne słowa 'Instrumental' i 'Wokal'
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
         let charToSend = char;
-        if (char === 'I' || char === 'W') {
-            charToSend = ' ' + char; // Dodajemy spację bezpośrednio
+        if (char === 'I') { 
+            charToSend = 'Instrumental';
+        } else if (char === 'W') { 
+            charToSend = 'Wokal';
         }
         socket.send(JSON.stringify({ type: 'input', value: charToSend }));
         updateAdminMessage('', '', false);
@@ -269,18 +271,15 @@ document.addEventListener('keydown', (event) => {
     if (!isAdmin) return;
 
     const key = event.key.toUpperCase();
-    // Tutaj również musimy zmodyfikować logikę dla klawiszy I i W
     if (/[0-9]/.test(key)) {
         appendToDisplay(key);
     } else if (key === 'I') {
-        appendToDisplay('I'); // appendToDisplay() już dodaje spację
+        appendToDisplay('I'); // Wysyła 'Instrumental' dzięki appendToDisplay()
     } else if (key === 'W') {
-        appendToDisplay('W'); // appendToDisplay() już dodaje spację
+        appendToDisplay('W'); // Wysyła 'Wokal' dzięki appendToDisplay()
     } else if (event.key === 'Backspace') {
-        // Implementacja usunięcia ostatniego znaku powinna być obsłużona na serwerze
-        // Na potrzeby front-endu możemy dodać tymczasowe usunięcie
         if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-            socket.send(JSON.stringify({ type: 'backspace' })); // Nowy typ wiadomości dla serwera
+            socket.send(JSON.stringify({ type: 'backspace' })); 
         }
     } else if (event.key === 'Delete') {
         clearDisplay();
