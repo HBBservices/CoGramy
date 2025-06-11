@@ -125,11 +125,10 @@ wss.on('connection', ws => {
             }
             // ZMODYFIKOWANA LINIA (server.js): Teraz akceptuje pełne słowa "Instrumental" i "Wokal"
             else if (parsedMessage.type === 'input' && typeof parsedMessage.value === 'string') {
-                // Sprawdzamy czy wartość to cyfra, " Instrumental" lub " Wokal"
-                if (parsedMessage.value.length === 1 && /[0-9]/.test(parsedMessage.value)) { // Cyfry
-                    currentDisplayValue += parsedMessage.value;
-                    shouldStartNewCountUp = true;
-                } else if (parsedMessage.value === ' Instrumental' || parsedMessage.value === ' Wokal') { // Pełne słowa
+                // Sprawdzamy czy wartość to cyfra, " Instrumental", " Wokal", "Instrumental" lub "Wokal"
+                // Ta część została zmieniona, aby akceptować pełne słowa bez spacji wiodącej od frontendu,
+                // bo spacja jest już dodawana na froncie, jeśli potrzeba.
+                if (/[0-9]/.test(parsedMessage.value) || parsedMessage.value === ' Instrumental' || parsedMessage.value === ' Wokal' || parsedMessage.value === 'Instrumental' || parsedMessage.value === 'Wokal') {
                     currentDisplayValue += parsedMessage.value;
                     shouldStartNewCountUp = true;
                 } else {
