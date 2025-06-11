@@ -131,7 +131,7 @@ wss.on('connection', ws => {
                     shouldStartNewCountUp = true; // Wpisanie znaku/słowa -> start licznika
                 } else {
                     // Jeśli wartość nie pasuje do żadnego z oczekiwanych formatów, nie rób nic i zaloguj
-                    console.warn('Nieprawidłowa wartość input od autoryzowanego klienta:', parsedMessage.value);
+                    console.warn('Nieznana lub nieprawidłowa wartość input od autoryzowanego klienta:', parsedMessage.value);
                 }
             } else if (parsedMessage.type === 'backspace') {
                 // Obsługa backspace: usuwamy ostatni znak
