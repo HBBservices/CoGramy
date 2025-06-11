@@ -123,7 +123,7 @@ wss.on('connection', ws => {
                 ws.send(JSON.stringify({ type: 'resetConfirmed' }));
                 shouldStartNewCountUp = false; // Po manualnym resecie nie rozpoczynamy liczenia, tylko czekamy na kolejny input
             }
-            // ZMODYFIKOWANA LINIA: Teraz akceptuje stringi o długości 1 (cyfry) lub pełne słowa 'Instrumental', 'Wokal'
+            // Poprawiony warunek dla 'input'
             else if (parsedMessage.type === 'input' && typeof parsedMessage.value === 'string') {
                 // Sprawdź, czy wartość jest cyfrą lub jednym ze specjalnych słów
                 if (/[0-9]/.test(parsedMessage.value) || parsedMessage.value === 'Instrumental' || parsedMessage.value === 'Wokal') {
