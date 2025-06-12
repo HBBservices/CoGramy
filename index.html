@@ -119,7 +119,7 @@
         #display-section {
             background-color: var(--display-bg);
             color: var(--display-color);
-            font-size: 2em;
+            font-size: 2em; /* Bazowy rozmiar czcionki dla wyświetlacza */
             display: flex;
             justify-content: flex-start;
             align-items: center;
@@ -176,6 +176,16 @@
         #display::-webkit-scrollbar-thumb:hover {
             background: var(--button-hover-bg);
         }
+
+        /* NOWA KLASA DLA SŁÓW "INSTRUMENTAL" I "WOKAL" */
+        .special-word {
+            font-family: "Courier New", monospace; /* Inna czcionka dla odróżnienia */
+            font-weight: bold; /* Pogrubienie */
+            color: #A9CCE3; /* Jasny niebieski kolor */
+            font-size: 0.8em; /* 80% rozmiaru czcionki elementu nadrzędnego (2em * 0.8 = 1.6em) */
+            margin-left: 0.2em; /* Mały margines z lewej, aby nie były przyklejone do poprzedzającego tekstu */
+        }
+
 
         #countdown-timer {
             margin-left: 10px;
