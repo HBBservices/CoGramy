@@ -74,7 +74,8 @@ function connectWebSocket() {
         const message = JSON.parse(event.data);
 
         if (message.type === 'displayUpdate') {
-            display.textContent = message.value;
+            // ZMODYFIKOWANA LINIA: Użyj funkcji formatującej tekst z HTML
+            display.innerHTML = formatDisplayText(message.value);
         } else if (message.type === 'authResponse') {
             if (message.success) {
                 isAdmin = true;
@@ -89,7 +90,8 @@ function connectWebSocket() {
         } else if (message.type === 'countUpUpdate') {
             updateCountUpDisplay(message.value);
         } else if (message.type === 'resetConfirmed') {
-            display.textContent = '';
+            // Po resecie, upewnij się, że display jest czysty i zresetowany
+            display.innerHTML = ''; // Użyj innerHTML, żeby usunąć ewentualne spany
             updateCountUpDisplay(0);
         } else if (message.type === 'message') {
             updateAdminMessage(message.text, 'red', true); // Ten komunikat również zostanie skrócony
@@ -179,6 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         lineDiv.addEventListener('click', () => {
                             if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
+                                // Wysyłamy do serwera surowy tekst, formatowanie dzieje się na frontendzie
                                 socket.send(JSON.stringify({ type: 'updateDisplay', value: lineDiv.dataset.displayContent }));
                                 fileInput.value = '';
                                 updateAdminMessage('', '', false);
@@ -237,6 +240,16 @@ function attemptAdminLogin() {
         connectWebSocket();
     }
 }
+
+// NOWA FUNKCJA: Formatowanie tekstu do wyświetlenia na displayu
+function formatDisplayText(text) {
+    // Owijamy " Instrumental" w span
+    let formattedText = text.replace(/(\sInstrumental)/g, '<span class="special-word">$1</span>');
+    // Owijamy " Wokal" w span
+    formattedText = formattedText.replace(/(\sWokal)/g, '<span class="special-word">$1</span>');
+    return formattedText;
+}
+
 
 // Zmodyfikowana funkcja appendToDisplay, aby dodawała spację przed słowami Instrumental i Wokal
 function appendToDisplay(char) {
