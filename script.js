@@ -74,8 +74,7 @@ function connectWebSocket() {
         const message = JSON.parse(event.data);
 
         if (message.type === 'displayUpdate') {
-            // ZMODYFIKOWANA LINIA: Powrót do textContent, ponieważ nie ma już formatowania HTML
-            display.textContent = message.value;
+            display.textContent = message.value; // Powrót do textContent
         } else if (message.type === 'authResponse') {
             if (message.success) {
                 isAdmin = true;
@@ -90,8 +89,7 @@ function connectWebSocket() {
         } else if (message.type === 'countUpUpdate') {
             updateCountUpDisplay(message.value);
         } else if (message.type === 'resetConfirmed') {
-            // Po resecie, upewnij się, że display jest czysty
-            display.textContent = '';
+            display.textContent = ''; // Upewnij się, że display jest czysty
             updateCountUpDisplay(0);
         } else if (message.type === 'message') {
             updateAdminMessage(message.text, 'red', true); // Ten komunikat również zostanie skrócony
@@ -241,16 +239,16 @@ function attemptAdminLogin() {
     }
 }
 
-// Funkcja formatDisplayText ZOSTAŁA USUNIĘTA
-
 // Zmodyfikowana funkcja appendToDisplay
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
         let charToSend = char;
+        // Ważne: Spacje na początku " Instr." i " Wokal" są dodawane, aby zachować formatowanie jak w oryginalnym " Instrumental".
+        // Serwer musi być dostosowany do przyjmowania tych ciągów.
         if (char === 'I') {
-            charToSend = ' Instr.'; // Zmieniono na " Instr."
+            charToSend = ' Instr.'; 
         } else if (char === 'W') {
-            charToSend = ' Wokal'; // Pozostaje " Wokal"
+            charToSend = ' Wokal';
         }
         socket.send(JSON.stringify({ type: 'input', value: charToSend }));
         updateAdminMessage('', '', false);
