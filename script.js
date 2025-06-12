@@ -74,8 +74,8 @@ function connectWebSocket() {
         const message = JSON.parse(event.data);
 
         if (message.type === 'displayUpdate') {
-            // ZMODYFIKOWANA LINIA: Użyj funkcji formatującej tekst z HTML
-            display.innerHTML = formatDisplayText(message.value);
+            // ZMODYFIKOWANA LINIA: Powrót do textContent, ponieważ nie ma już formatowania HTML
+            display.textContent = message.value;
         } else if (message.type === 'authResponse') {
             if (message.success) {
                 isAdmin = true;
@@ -90,8 +90,8 @@ function connectWebSocket() {
         } else if (message.type === 'countUpUpdate') {
             updateCountUpDisplay(message.value);
         } else if (message.type === 'resetConfirmed') {
-            // Po resecie, upewnij się, że display jest czysty i zresetowany
-            display.innerHTML = ''; // Użyj innerHTML, żeby usunąć ewentualne spany
+            // Po resecie, upewnij się, że display jest czysty
+            display.textContent = '';
             updateCountUpDisplay(0);
         } else if (message.type === 'message') {
             updateAdminMessage(message.text, 'red', true); // Ten komunikat również zostanie skrócony
@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         lineDiv.addEventListener('click', () => {
                             if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
-                                // Wysyłamy do serwera surowy tekst, formatowanie dzieje się na frontendzie
+                                // Wysyłamy do serwera surowy tekst z listy
                                 socket.send(JSON.stringify({ type: 'updateDisplay', value: lineDiv.dataset.displayContent }));
                                 fileInput.value = '';
                                 updateAdminMessage('', '', false);
@@ -241,24 +241,16 @@ function attemptAdminLogin() {
     }
 }
 
-// NOWA FUNKCJA: Formatowanie tekstu do wyświetlenia na displayu
-function formatDisplayText(text) {
-    // Owijamy " Instrumental" w span
-    let formattedText = text.replace(/(\sInstrumental)/g, '<span class="special-word">$1</span>');
-    // Owijamy " Wokal" w span
-    formattedText = formattedText.replace(/(\sWokal)/g, '<span class="special-word">$1</span>');
-    return formattedText;
-}
+// Funkcja formatDisplayText ZOSTAŁA USUNIĘTA
 
-
-// Zmodyfikowana funkcja appendToDisplay, aby dodawała spację przed słowami Instrumental i Wokal
+// Zmodyfikowana funkcja appendToDisplay
 function appendToDisplay(char) {
     if (socket && socket.readyState === WebSocket.OPEN && isAdmin) {
         let charToSend = char;
         if (char === 'I') {
-            charToSend = ' Instrumental'; // DODANO SPACJĘ PRZED
+            charToSend = ' Instr.'; // Zmieniono na " Instr."
         } else if (char === 'W') {
-            charToSend = ' Wokal'; // DODANO SPACJĘ PRZED
+            charToSend = ' Wokal'; // Pozostaje " Wokal"
         }
         socket.send(JSON.stringify({ type: 'input', value: charToSend }));
         updateAdminMessage('', '', false);
@@ -287,7 +279,7 @@ document.addEventListener('keydown', (event) => {
     if (/[0-9]/.test(key)) {
         appendToDisplay(key);
     } else if (key === 'I') {
-        // Wysyłamy 'I', a funkcja appendToDisplay() zamieni to na ' Instrumental'
+        // Wysyłamy 'I', a funkcja appendToDisplay() zamieni to na ' Instr.'
         appendToDisplay('I');
     } else if (key === 'W') {
         // Wysyłamy 'W', a funkcja appendToDisplay() zamieni to na ' Wokal'
