@@ -1,3 +1,4 @@
+// server.js
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
@@ -13,6 +14,9 @@ let currentDisplayValue = ''; // Przechowuje bieżącą wartość wyświetlacza
 let countUpIntervalId = null; // ID interwału liczącego w górę
 const MAX_COUNT_SECONDS = 60; // Czas do osiągnięcia (od 0 do 60)
 let currentCountUpValue = 0; // Aktualna wartość liczenia w górę, widoczna dla klientów
+
+// STAŁA: PRZECHOWUJE WGRANĄ LISTĘ PLIKÓW
+let currentFileList = []; // Przechowuje listę pozycji z wgranego pliku
 
 // TAJNY KOD - ZMIEŃ NA SILNIEJSZY W PRODUKCJI!
 const ADMIN_SECRET_CODE = 'Hbb'; // <--- ZMIEŃ TO NA SILNIEJSZE HASŁO!
@@ -71,6 +75,11 @@ wss.on('connection', ws => {
     ws.send(JSON.stringify({ type: 'displayUpdate', value: currentDisplayValue }));
     // Wyślij bieżący stan licznika nowemu klientowi
     ws.send(JSON.stringify({ type: 'countUpUpdate', value: currentCountUpValue }));
+    // Wyślij bieżącą listę plików nowemu klientowi (jeśli jakaś jest załadowana)
+    if (currentFileList.length > 0) {
+        ws.send(JSON.stringify({ type: 'fileContent', content: currentFileList.join('\\n') }));
+    }
+
 
     ws.on('message', message => {
         let parsedMessage;
@@ -124,6 +133,19 @@ wss.on('connection', ws => {
                 // Obsługa backspace: usuwamy ostatni znak
                 currentDisplayValue = currentDisplayValue.slice(0, -1);
                 displayChanged = true; // Backspace should also restart the timer
+            } else if (parsedMessage.type === 'fileUpload') {
+                // Nowa obsługa przesyłania plików z listą
+                const fileContent = parsedMessage.content;
+                currentFileList = fileContent.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+                
+                // Rozgłoś nową listę do wszystkich klientów
+                wss.clients.forEach(client => {
+                    if (client.readyState === WebSocket.OPEN) {
+                        client.send(JSON.stringify({ type: 'fileContent', content: currentFileList.join('\\n') }));
+                    }
+                });
+                console.log('Nowa lista plików załadowana i rozesłana.');
+                ws.send(JSON.stringify({ type: 'message', text: 'Lista załadowana pomyślnie!' })); // Potwierdzenie dla admina
             }
             else {
                 // Ta sekcja powinna być wykonywana tylko dla naprawdę nieznanych typów wiadomości
