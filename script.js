@@ -1,3 +1,4 @@
+// script.js
 const display = document.getElementById('display');
 const adminPanel = document.getElementById('admin-panel');
 const secretCodeInput = document.getElementById('secret-code-input');
@@ -19,7 +20,9 @@ let socket;
 let isAdmin = false;
 let metronomeIntervalId = null; // Zmienna do przechowywania ID interwału metronomu
 
-const RENDER_SERVER_URL = 'wss://cogramy.onrender.com';
+// WAŻNE: Zmień ten URL na URL Twojego serwera Render, gdy go wdrożysz.
+// Lokalnie użyj 'ws://localhost:3000'
+const RENDER_SERVER_URL = 'wss://cogramy.onrender.com'; // Zaktualizuj na URL swojego wdrożenia!
 
 // Funkcja skracająca komunikaty
 function shortenMessage(message, maxLength = 35) { // Domyślna długość, możesz dostosować
@@ -50,9 +53,15 @@ function updateAdminMessage(text, color = 'black', show = true) {
 
 // Funkcja do wyodrębniania BPM z tekstu
 function extractBPM(text) {
-    const match = text.match(/\((\d{1,3})\)/); // Szuka liczby 1-3 cyfrowej w nawiasach
-    if (match && match[1]) {
-        return parseInt(match[1], 10);
+    // Używamy globalnej flagi 'g' i szukamy ostatniego wystąpienia,
+    // aby obsługiwać przypadki, gdy w nazwie pliku jest wiele nawiasów,
+    // ale tylko ostatni zawiera BPM utworu.
+    const matches = text.match(/\((\d{1,3})\)/g); 
+    if (matches && matches.length > 0) {
+        // Weź ostatnie dopasowanie
+        const lastMatch = matches[matches.length - 1];
+        const bpm = parseInt(lastMatch.match(/\((\d{1,3})\)/)[1], 10);
+        return bpm;
     }
     return null; // Zwróć null, jeśli nie znaleziono BPM
 }
@@ -70,8 +79,9 @@ function startMetronome(bpm) {
     if (bpm && bpm > 0) {
         const intervalTime = (60 / bpm) * 1000; // Czas w milisekundach na jedno mignięcie
         
-        // Upewnij się, że dioda LED jest widoczna
+        // Upewnij się, że dioda LED jest widoczna i aktywna
         ledIndicator.style.opacity = '1';
+        ledIndicator.style.filter = 'none'; // Usuń filtr grayscale jeśli był
 
         metronomeIntervalId = setInterval(() => {
             // Mignięcie: na chwilę jaśniej, potem z powrotem do normalnego stanu
@@ -87,6 +97,7 @@ function startMetronome(bpm) {
         ledIndicator.style.opacity = '0.5'; // Lekko przyciemnij
         ledIndicator.style.backgroundColor = 'white'; // Resetuj kolor
         ledIndicator.style.boxShadow = 'none'; // Usuń cień
+        ledIndicator.style.filter = 'grayscale(100%)'; // Dodaj filtr grayscale dla "wyłączonej" diody
         bpmDisplay.textContent = ''; // Wyczyść wyświetlacz BPM
     }
 }
