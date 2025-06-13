@@ -213,14 +213,35 @@
             margin-bottom: 20px; /* Margines poniżej logo */
             z-index: 1; /* Upewnij się, że jest nad tłem, ale pod keypadem */
             flex-shrink: 0; /* Zapobiega zmniejszaniu się kontenera */
+            display: flex; /* Dodane */
+            justify-content: space-between; /* Dodane */
+            align-items: center; /* Dodane */
         }
 
         #logo-container img {
-            max-width: 100%;
+            max-width: 50%; /* Zmniejszone logo */
             height: auto;
             display: block;
             margin: 0 auto;
             max-height: 90px; /* Nowa wysokość: 60% z poprzednich 150px (tj. 90px) */
+        }
+
+        /* Nowe style dla LED i BPM display */
+        #led-indicator {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            margin-right: 10px;
+            box-shadow: 0 0 5px white;
+        }
+
+        #bpm-display {
+            width: 50px;
+            text-align: center;
+            font-size: 1.2em;
+            color: white;
+            margin-left: 10px;
         }
 
 
@@ -471,7 +492,9 @@
     <div id="top-overlay"></div>
 
     <div id="logo-container">
+        <div id="led-indicator"></div>
         <img src="HBB_Logo.png" alt="Logo HBB">
+        <span id="bpm-display"></span>
     </div>
 
     <div class="main-content-container">
