@@ -51,6 +51,8 @@ function startServerCountUp() {
             clearInterval(countUpIntervalId); // Zatrzymaj licznik po osiągnięciu MAX_COUNT_SECONDS
             countUpIntervalId = null; // Zresetuj ID interwału
             currentCountUpValue = 0; // Opcjonalnie: zresetuj wartość po zakończeniu
+            currentDisplayValue = ''; // Clear the display after 60 seconds
+            broadcastDisplayUpdate(); // Broadcast the cleared display
             broadcastCountUpUpdate(); // Wyślij ostatnią aktualizację (0 lub 60)
         }
     }, 1000); // Co sekundę
@@ -79,8 +81,6 @@ wss.on('connection', ws => {
             return;
         }
 
-        let shouldStartNewCountUp = false; // Flaga do określenia, czy licznik ma się zrestartować
-
         if (parsedMessage.type === 'auth') {
             if (parsedMessage.code === ADMIN_SECRET_CODE) {
                 ws.send(JSON.stringify({ type: 'authResponse', success: true }));
@@ -91,46 +91,47 @@ wss.on('connection', ws => {
                 console.log('Nieudana próba autoryzacji.');
             }
         } else if (ws.isAuthenticated) {
+            let displayChanged = false; // Flag to indicate if display value was actually changed
+
             if (parsedMessage.type === 'input') {
                 const value = parsedMessage.value;
                 
                 // PRIORYTET: Sprawdź specjalne ciągi " Instr." i " Wokal"
                 if (value === ' Instr.' || value === ' Wokal') {
                     currentDisplayValue += value; // Dodaj cały ciąg
-                    shouldStartNewCountUp = true;
+                    displayChanged = true;
                 } else if (value.length === 1 && /[0-9]/.test(value)) {
                     // Jeśli to pojedyncza cyfra, dodaj ją
                     currentDisplayValue += value;
-                    shouldStartNewCountUp = true;
+                    displayChanged = true;
                 } else if (value.length > 1) {
                     // Jeśli to dłuższy tekst (np. z listy), zastąp nim wyświetlacz
                     currentDisplayValue = value;
-                    shouldStartNewCountUp = true;
+                    displayChanged = true;
                 } else {
                     // Jeśli wartość input nie pasuje do żadnego znanego wzorca
                     console.warn('Nieznana lub nieprawidłowa wartość input od autoryzowanego klienta:', value);
-                    // Nie zmieniaj currentDisplayValue i nie uruchamiaj timera dla nieznanych inputów
                 }
             } else if (parsedMessage.type === 'reset') {
                 currentDisplayValue = ''; // Wyczyść wyświetlacz
-                shouldStartNewCountUp = true; // Reset także inicjuje licznik
+                displayChanged = true; // Reset także inicjuje licznik
                 ws.send(JSON.stringify({ type: 'resetConfirmed' })); // Potwierdź reset do klienta
             } else if (parsedMessage.type === 'updateDisplay') {
                 // To jest używane, gdy admin klika na element listy
                 currentDisplayValue = parsedMessage.value;
-                shouldStartNewCountUp = true; // Zmiana wyświetlacza z listy także inicjuje licznik
+                displayChanged = true; // Zmiana wyświetlacza z listy także inicjuje licznik
             } else if (parsedMessage.type === 'backspace') {
                 // Obsługa backspace: usuwamy ostatni znak
                 currentDisplayValue = currentDisplayValue.slice(0, -1);
-                shouldStartNewCountUp = false; // Backspace nie uruchamia timera od nowa
+                displayChanged = true; // Backspace should also restart the timer
             }
             else {
                 // Ta sekcja powinna być wykonywana tylko dla naprawdę nieznanych typów wiadomości
                 console.warn('Nieznany typ wiadomości od autoryzowanego klienta:', parsedMessage);
             }
 
-            // Rozpocznij nowe liczenie w górę TYLKO jeśli była zmiana wartości wyświetlacza, która powinna to zainicjować
-            if (shouldStartNewCountUp) {
+            // Rozpocznij nowe liczenie w górę TYLKO jeśli była zmiana wartości wyświetlacza
+            if (displayChanged) {
                 startServerCountUp();
             }
 
